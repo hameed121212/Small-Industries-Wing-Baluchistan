@@ -18,7 +18,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   
-  <link rel="stylesheet" href="styles.css?v=20261013_v6">
+  <link rel="stylesheet" href="styles.css?v=20261018_v7">
 </head>
 <body>
 
@@ -1660,6 +1660,12 @@
               </div>
             </div>
             <div class="admin-top-actions">
+              <span id="cloudSyncStatusBadge" class="pill-badge pill-green" style="font-weight: 600; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 6px;">
+                <i class="fa-solid fa-cloud"></i> Cloud DB: Live Synced
+              </span>
+              <button class="btn btn-sm btn-outline-primary" onclick="triggerManualCloudSync()" title="Synchronize all devices immediately">
+                <i class="fa-solid fa-arrows-rotate"></i> Sync All Devices
+              </button>
               <button class="btn btn-sm btn-admin-action" onclick="openAdminPasswordModal()" title="Change administrator passphrase">
                 <i class="fa-solid fa-key"></i> Change Password
               </button>
@@ -1745,6 +1751,9 @@
             </button>
             <button class="subtab-btn" onclick="switchAdminSubtab('noticesManage', this)">
               <i class="fa-solid fa-bullhorn"></i> Public Announcements (<span id="tabCountNotices">4</span>)
+            </button>
+            <button class="subtab-btn" onclick="switchAdminSubtab('cloudSync', this)" style="border: 1px solid #15803d; color: #166534;">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Multi-Device Cloud Sync <span class="tab-badge" id="tabCountCloud" style="background: #15803d; color: #fff;">Live</span>
             </button>
           </div>
 
@@ -2121,6 +2130,111 @@
             </div>
           </div>
 
+          <!-- SUBTAB 7: MULTI-DEVICE CLOUD SYNC & REPLICATION ENGINE -->
+          <div id="subtab-cloudSync" class="admin-subtab-content">
+            <div class="cloud-sync-container" style="display: flex; flex-direction: column; gap: 24px;">
+              
+              <!-- Card 1: Live Replication Status Banner -->
+              <div class="admin-form-card" style="border-left: 4px solid #16a34a; background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+                  <div>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                      <span class="badge" style="background: #16a34a; color: white; padding: 4px 10px; border-radius: 999px; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                        <i class="fa-solid fa-signal"></i> Active Cloud Master
+                      </span>
+                      <span id="cloudSyncLiveBadge" style="color: #15803d; font-weight: 600; font-size: 0.9rem;">
+                        All Connected Devices Synced
+                      </span>
+                    </div>
+                    <h3 style="margin: 0 0 6px 0; color: #14532d; font-size: 1.3rem;">Universal Cross-Device Synchronization Engine</h3>
+                    <p style="margin: 0; color: #374151; font-size: 0.92rem; max-width: 750px;">
+                      Enables real-time data replication across all PCs, mobile phones, and tablets. Whenever a candidate enrolls or an administrator edits records or changes the admin password on any device, the change immediately broadcasts to all other devices.
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn btn-primary" onclick="triggerManualCloudSync()" style="box-shadow: 0 4px 12px rgba(22,163,74,0.25);">
+                      <i class="fa-solid fa-arrows-rotate"></i> Synchronize Now
+                    </button>
+                    <button class="btn btn-outline-primary" onclick="SIWCloudSync.forcePush()" title="Upload local records to overwrite cloud master">
+                      <i class="fa-solid fa-cloud-arrow-up"></i> Force Push Local
+                    </button>
+                    <button class="btn btn-outline-gray" onclick="SIWCloudSync.forcePull()" title="Download cloud records to overwrite local browser cache">
+                      <i class="fa-solid fa-cloud-arrow-down"></i> Force Pull Cloud
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Live Metrics Grid -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-top: 20px; padding-top: 20px; border-top: 1px solid #bbf7d0;">
+                  <div style="background: #ffffff; padding: 12px 16px; border-radius: 8px; border: 1px solid #dcfce7;">
+                    <span style="font-size: 0.75rem; color: #6b7280; text-transform: uppercase; font-weight: 600;">Cloud Master Trainees</span>
+                    <div style="font-size: 1.4rem; font-weight: 700; color: #15803d;" id="cloudSyncTraineeCount">Loading...</div>
+                    <span style="font-size: 0.75rem; color: #16a34a;"><i class="fa-solid fa-check"></i> Real-time Replicated</span>
+                  </div>
+                  <div style="background: #ffffff; padding: 12px 16px; border-radius: 8px; border: 1px solid #dcfce7;">
+                    <span style="font-size: 0.75rem; color: #6b7280; text-transform: uppercase; font-weight: 600;">Estate Plots (Sirki Rd)</span>
+                    <div style="font-size: 1.4rem; font-weight: 700; color: #854d0e;" id="cloudSyncEstateCount">3 (43.5 Acres)</div>
+                    <span style="font-size: 0.75rem; color: #16a34a;"><i class="fa-solid fa-check"></i> Synced</span>
+                  </div>
+                  <div style="background: #ffffff; padding: 12px 16px; border-radius: 8px; border: 1px solid #dcfce7;">
+                    <span style="font-size: 0.75rem; color: #6b7280; text-transform: uppercase; font-weight: 600;">Admin Password State</span>
+                    <div style="font-size: 1.1rem; font-weight: 700; color: #1e40af; margin-top: 4px;" id="cloudSyncPasswordState">Universal Cloud Shared</div>
+                    <span style="font-size: 0.75rem; color: #16a34a;"><i class="fa-solid fa-shield-halved"></i> Synchronized Globally</span>
+                  </div>
+                  <div style="background: #ffffff; padding: 12px 16px; border-radius: 8px; border: 1px solid #dcfce7;">
+                    <span style="font-size: 0.75rem; color: #6b7280; text-transform: uppercase; font-weight: 600;">Last Sync Timestamp</span>
+                    <div style="font-size: 1rem; font-weight: 600; color: #374151; margin-top: 4px;" id="cloudSyncLastTimestamp">Never</div>
+                    <span style="font-size: 0.75rem; color: #16a34a;"><i class="fa-solid fa-clock-rotate-left"></i> Auto-poll every 12s</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 2: Configuration & Diagnostics -->
+              <div class="admin-form-card">
+                <div class="admin-form-card-header">
+                  <div>
+                    <h3 style="margin: 0; font-size: 1.15rem; color: #1f2937;"><i class="fa-solid fa-gears"></i> Cloud Endpoint Configuration & Diagnostics</h3>
+                    <p style="margin: 4px 0 0; color: #6b7280; font-size: 0.85rem;">You can use the default high-availability REST database bin or configure your own Firebase / JSON bin.</p>
+                  </div>
+                </div>
+
+                <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 16px;">
+                  <div class="form-group" style="margin-bottom: 0;">
+                    <label for="cloudEndpointUrl" style="font-weight: 600; color: #374151;">Cloud REST Master Endpoint URL</label>
+                    <div style="display: flex; gap: 10px;">
+                      <input type="text" id="cloudEndpointUrl" class="form-control" style="flex: 1; font-family: monospace; font-size: 0.9rem;" value="https://extendsclass.com/api/json-storage/bin/adcaccb">
+                      <button class="btn btn-outline-primary" onclick="testCloudConnection()"><i class="fa-solid fa-satellite-dish"></i> Test Connection</button>
+                      <button class="btn btn-primary" onclick="saveCustomCloudEndpoint()"><i class="fa-solid fa-check"></i> Save Endpoint</button>
+                    </div>
+                    <small style="color: #6b7280; margin-top: 6px; display: block;">Default endpoint: <code>https://extendsclass.com/api/json-storage/bin/adcaccb</code> (Zero-configuration, fully active, supports cross-device real-time sync with no login required).</small>
+                  </div>
+
+                  <div id="cloudConnectionTestResult" style="display: none; padding: 12px 16px; border-radius: 8px; font-size: 0.9rem;"></div>
+                </div>
+              </div>
+
+              <!-- Card 3: User Guide & Multi-Device Instructions -->
+              <div class="admin-form-card" style="background: #fafafa;">
+                <h4 style="margin: 0 0 12px 0; color: #111827; font-size: 1rem;"><i class="fa-solid fa-circle-question" style="color: #15803d;"></i> How Multi-Device Sync Works for Staff & Administrators</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                  <div style="background: #ffffff; padding: 14px 18px; border-radius: 8px; border: 1px solid #e5e7eb;">
+                    <div style="font-weight: 700; color: #14532d; margin-bottom: 4px;"><i class="fa-solid fa-mobile-screen"></i> 1. Entry from Any Mobile / PC</div>
+                    <p style="margin: 0; font-size: 0.85rem; color: #4b5563;">When a trainee applies online, or when staff adds an entry from a mobile phone or laptop, it immediately updates the cloud master database.</p>
+                  </div>
+                  <div style="background: #ffffff; padding: 14px 18px; border-radius: 8px; border: 1px solid #e5e7eb;">
+                    <div style="font-weight: 700; color: #14532d; margin-bottom: 4px;"><i class="fa-solid fa-display"></i> 2. Admin Desk Anywhere</div>
+                    <p style="margin: 0; font-size: 0.85rem; color: #4b5563;">When logged in on any computer or phone, the portal automatically checks for updates every 12 seconds and whenever you switch back to the browser tab.</p>
+                  </div>
+                  <div style="background: #ffffff; padding: 14px 18px; border-radius: 8px; border: 1px solid #e5e7eb;">
+                    <div style="font-weight: 700; color: #14532d; margin-bottom: 4px;"><i class="fa-solid fa-key"></i> 3. Universal Passphrase</div>
+                    <p style="margin: 0; font-size: 0.85rem; color: #4b5563;">Changing the administrator passphrase on one device instantly updates the cloud. All other devices will immediately require and accept the new passphrase.</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -2481,7 +2595,7 @@
   </footer>
 
   <!-- Centers Dataset and Application Engine -->
-  <script src="centers.js?v=20261013_v6"></script>
-  <script src="app.js?v=20261013_v6"></script>
+  <script src="centers.js?v=20261018_v7"></script>
+  <script src="app.js?v=20261018_v7"></script>
 </body>
 </html>

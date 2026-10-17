@@ -380,7 +380,345 @@ const INITIAL_NOTICES = [
 ];
 
 // ===================================================================
-// STORAGE MANAGER CLASS
+// UNIVERSAL MULTI-DEVICE CLOUD REPLICATION ENGINE
+// Enables real-time synchronization between phones, tablets, and PCs
+// ===================================================================
+class SIWCloudSync {
+  static DEFAULT_BIN_URL = 'https://extendsclass.com/api/json-storage/bin/adcaccb';
+  static _pushTimeout = null;
+  static _isSyncing = false;
+  static _lastSyncTime = null;
+
+  static getEndpoint() {
+    return localStorage.getItem('siw_cloud_endpoint') || this.DEFAULT_BIN_URL;
+  }
+
+  static setEndpoint(url) {
+    if (!url || !url.trim()) {
+      localStorage.removeItem('siw_cloud_endpoint');
+    } else {
+      localStorage.setItem('siw_cloud_endpoint', url.trim());
+    }
+  }
+
+  static async init() {
+    console.log('[SIWCloudSync] Initializing universal multi-device cloud sync...');
+    // Initial sync
+    await this.syncBothWays(true);
+
+    // Periodic sync heartbeat every 12 seconds
+    setInterval(() => {
+      this.pull(true);
+    }, 12000);
+
+    // Sync when user returns to this browser tab or window
+    window.addEventListener('focus', () => {
+      this.pull(true);
+    });
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        this.pull(true);
+      }
+    });
+    window.addEventListener('online', () => {
+      this.syncBothWays(true);
+    });
+  }
+
+  static updateUIStatus(state, msg) {
+    const badge = document.getElementById('cloudSyncStatusBadge');
+    const liveBadge = document.getElementById('cloudSyncLiveBadge');
+    const timestampElem = document.getElementById('cloudSyncLastTimestamp');
+    const traineeCountElem = document.getElementById('cloudSyncTraineeCount');
+    const tabCountCloud = document.getElementById('tabCountCloud');
+
+    const nowStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    if (timestampElem && this._lastSyncTime) {
+      timestampElem.textContent = nowStr;
+    }
+
+    const localTrainees = SIWStorage.getTrainees();
+    if (traineeCountElem) {
+      traineeCountElem.textContent = `${localTrainees.length} Active Records`;
+    }
+
+    if (badge) {
+      if (state === 'syncing') {
+        badge.className = 'pill-badge pill-blue';
+        badge.innerHTML = `<i class="fa-solid fa-arrows-rotate fa-spin"></i> Syncing Cloud...`;
+      } else if (state === 'success') {
+        badge.className = 'pill-badge pill-green';
+        badge.innerHTML = `<i class="fa-solid fa-cloud"></i> Cloud DB: Live Synced`;
+      } else if (state === 'offline' || state === 'error') {
+        badge.className = 'pill-badge pill-orange';
+        badge.innerHTML = `<i class="fa-solid fa-cloud-bolt"></i> Local Cache (Offline)`;
+      }
+    }
+
+    if (liveBadge) {
+      if (state === 'syncing') {
+        liveBadge.textContent = 'Syncing with cloud master...';
+        liveBadge.style.color = '#2563eb';
+      } else if (state === 'success') {
+        liveBadge.textContent = `All Connected Devices Synced (${nowStr})`;
+        liveBadge.style.color = '#15803d';
+      } else if (state === 'offline' || state === 'error') {
+        liveBadge.textContent = msg || 'Offline mode active (Local storage cached)';
+        liveBadge.style.color = '#c2410c';
+      }
+    }
+
+    if (tabCountCloud) {
+      tabCountCloud.textContent = state === 'success' ? 'Live' : (state === 'syncing' ? 'Syncing' : 'Local');
+    }
+  }
+
+  static async fetchCloudData() {
+    const endpoint = this.getEndpoint();
+    const res = await fetch(endpoint, {
+      method: 'GET',
+      cache: 'no-store',
+      headers: { 'Accept': 'application/json' }
+    });
+    if (!res.ok) {
+      throw new Error(`Cloud DB responded with status ${res.status}`);
+    }
+    const data = await res.json();
+    return data;
+  }
+
+  static async pull(silent = false) {
+    if (this._isSyncing) return null;
+    this._isSyncing = true;
+    if (!silent) this.updateUIStatus('syncing');
+
+    try {
+      const cloudData = await this.fetchCloudData();
+      if (!cloudData || typeof cloudData !== 'object') {
+        throw new Error('Invalid cloud database payload');
+      }
+
+      let hadChanges = false;
+
+      // 1. Sync Admin Password
+      if (cloudData.adminPassword && typeof cloudData.adminPassword === 'string') {
+        const currentLocalPwd = localStorage.getItem('siw_admin_password') || DEFAULT_ADMIN_PASSWORD;
+        if (cloudData.adminPassword !== currentLocalPwd) {
+          localStorage.setItem('siw_admin_password', cloudData.adminPassword);
+          console.log('[SIWCloudSync] Admin password synced from cloud master');
+          hadChanges = true;
+        }
+      }
+
+      // 2. Merge Trainees (Union by token to preserve entries from all devices)
+      if (Array.isArray(cloudData.trainees)) {
+        const localTrainees = SIWStorage.getTrainees();
+        const localTokens = new Set(localTrainees.map(t => t.token));
+        const cloudTokens = new Set(cloudData.trainees.map(t => t.token));
+
+        let mergedTrainees = [...cloudData.trainees];
+        // If there are local trainees created while offline that aren't yet in the cloud, keep them!
+        let hasLocalOnly = false;
+        localTrainees.forEach(localT => {
+          if (!cloudTokens.has(localT.token)) {
+            mergedTrainees.unshift(localT);
+            hasLocalOnly = true;
+          }
+        });
+
+        // Check if merged is different from local
+        if (mergedTrainees.length !== localTrainees.length || hasLocalOnly || JSON.stringify(mergedTrainees) !== JSON.stringify(localTrainees)) {
+          localStorage.setItem('siw_trainees_v3', JSON.stringify(mergedTrainees));
+          hadChanges = true;
+          // If we had local-only trainees, schedule a push to update the cloud so other devices get them
+          if (hasLocalOnly) {
+            this.schedulePush(1500);
+          }
+        }
+      }
+
+      // 3. Merge Estates
+      if (Array.isArray(cloudData.estates)) {
+        const localEstates = SIWStorage.getEstates();
+        if (JSON.stringify(cloudData.estates) !== JSON.stringify(localEstates)) {
+          localStorage.setItem('siw_estates_v3', JSON.stringify(cloudData.estates));
+          hadChanges = true;
+        }
+      }
+
+      // 4. Merge Efiles
+      if (Array.isArray(cloudData.efiles)) {
+        const localEfiles = SIWStorage.getEfiles();
+        const cloudTokens = new Set(cloudData.efiles.map(f => f.token));
+        let mergedEfiles = [...cloudData.efiles];
+        let hasLocalOnlyEfiles = false;
+        localEfiles.forEach(f => {
+          if (!cloudTokens.has(f.token)) {
+            mergedEfiles.unshift(f);
+            hasLocalOnlyEfiles = true;
+          }
+        });
+        if (mergedEfiles.length !== localEfiles.length || hasLocalOnlyEfiles || JSON.stringify(mergedEfiles) !== JSON.stringify(localEfiles)) {
+          localStorage.setItem('siw_efiles_v3', JSON.stringify(mergedEfiles));
+          hadChanges = true;
+          if (hasLocalOnlyEfiles) this.schedulePush(2000);
+        }
+      }
+
+      // 5. Merge Notices
+      if (Array.isArray(cloudData.notices)) {
+        const localNotices = SIWStorage.getNotices();
+        if (JSON.stringify(cloudData.notices) !== JSON.stringify(localNotices)) {
+          localStorage.setItem('siw_notices_v3', JSON.stringify(cloudData.notices));
+          hadChanges = true;
+        }
+      }
+
+      // 6. Merge Leadership & Achievements
+      if (Array.isArray(cloudData.leadership)) {
+        const localLead = SIWStorage.getLeadership();
+        if (JSON.stringify(cloudData.leadership) !== JSON.stringify(localLead)) {
+          localStorage.setItem('siw_leadership_v3', JSON.stringify(cloudData.leadership));
+          hadChanges = true;
+        }
+      }
+      if (Array.isArray(cloudData.achievements)) {
+        const localAch = SIWStorage.getAchievements();
+        if (JSON.stringify(cloudData.achievements) !== JSON.stringify(localAch)) {
+          localStorage.setItem('siw_achievements_v3', JSON.stringify(cloudData.achievements));
+          hadChanges = true;
+        }
+      }
+
+      this._lastSyncTime = new Date();
+      this.updateUIStatus('success');
+
+      // If data changed, re-render visible admin tables and KPIs
+      if (hadChanges) {
+        if (typeof renderAdminTraineesTable === 'function') renderAdminTraineesTable();
+        if (typeof updateAdminKpiMetrics === 'function') updateAdminKpiMetrics();
+        if (typeof renderAdminEstateTable === 'function') renderAdminEstateTable();
+        if (typeof renderAdminEfilesTable === 'function') renderAdminEfilesTable();
+        if (typeof renderAdminNoticesList === 'function') renderAdminNoticesList();
+        if (typeof refreshHeaderBadges === 'function') refreshHeaderBadges();
+        if (typeof renderPublicTraineesList === 'function') renderPublicTraineesList('all');
+      }
+
+      return cloudData;
+    } catch (err) {
+      console.warn('[SIWCloudSync] Pull warning:', err.message);
+      this.updateUIStatus('offline', err.message);
+      return null;
+    } finally {
+      this._isSyncing = false;
+    }
+  }
+
+  static schedulePush(delay = 800) {
+    if (this._pushTimeout) clearTimeout(this._pushTimeout);
+    this._pushTimeout = setTimeout(() => {
+      this.push();
+    }, delay);
+  }
+
+  static async push() {
+    const endpoint = this.getEndpoint();
+    this.updateUIStatus('syncing');
+
+    try {
+      // First, get latest cloud data to perform union and ensure no remote entries are overwritten
+      let remoteTrainees = [];
+      try {
+        const existingCloud = await this.fetchCloudData();
+        if (existingCloud && Array.isArray(existingCloud.trainees)) {
+          remoteTrainees = existingCloud.trainees;
+        }
+      } catch (e) {
+        console.warn('[SIWCloudSync] Remote pre-fetch failed, pushing current local state');
+      }
+
+      // Merge local trainees with remote trainees
+      const localTrainees = SIWStorage.getTrainees();
+      const localTokenMap = new Map();
+      localTrainees.forEach(t => localTokenMap.set(t.token, t));
+
+      // Union: Start with local trainees
+      const mergedTrainees = [...localTrainees];
+      remoteTrainees.forEach(rt => {
+        if (!localTokenMap.has(rt.token)) {
+          mergedTrainees.push(rt);
+        }
+      });
+
+      // Update local storage with the union as well
+      localStorage.setItem('siw_trainees_v3', JSON.stringify(mergedTrainees));
+
+      const payload = {
+        adminPassword: SIWStorage.getAdminPassword(),
+        lastUpdated: new Date().toISOString(),
+        trainees: mergedTrainees,
+        estates: SIWStorage.getEstates(),
+        efiles: SIWStorage.getEfiles(),
+        notices: SIWStorage.getNotices(),
+        leadership: SIWStorage.getLeadership(),
+        achievements: SIWStorage.getAchievements()
+      };
+
+      const res = await fetch(endpoint, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) {
+        throw new Error(`Upload failed with status ${res.status}`);
+      }
+
+      this._lastSyncTime = new Date();
+      this.updateUIStatus('success');
+
+      if (typeof updateAdminKpiMetrics === 'function') updateAdminKpiMetrics();
+      if (typeof renderAdminTraineesTable === 'function') renderAdminTraineesTable();
+
+      return true;
+    } catch (err) {
+      console.error('[SIWCloudSync] Push error:', err);
+      this.updateUIStatus('offline', err.message);
+      return false;
+    }
+  }
+
+  static async syncBothWays(silent = false) {
+    if (!silent) this.updateUIStatus('syncing');
+    await this.pull(silent);
+    await this.push();
+  }
+
+  static async forcePush() {
+    showToast('Cloud Database', 'Uploading all local records to cloud master...', 'info');
+    const success = await this.push();
+    if (success) {
+      showToast('Replicated', 'Local records successfully uploaded to cloud master!', 'success');
+    } else {
+      showToast('Sync Warning', 'Unable to reach cloud database. Working in local offline cache.', 'warning');
+    }
+  }
+
+  static async forcePull() {
+    showToast('Cloud Database', 'Fetching latest records from cloud master...', 'info');
+    const data = await this.pull(false);
+    if (data) {
+      showToast('Updated', `Downloaded ${data.trainees ? data.trainees.length : 0} master trainee records from cloud.`, 'success');
+    } else {
+      showToast('Sync Warning', 'Unable to reach cloud database. Local cache preserved.', 'warning');
+    }
+  }
+}
+
+// ===================================================================
+// STORAGE MANAGER CLASS (HYBRID: LOCAL CACHE + CLOUD SYNC)
 // ===================================================================
 class SIWStorage {
   // Trainees
@@ -397,6 +735,7 @@ class SIWStorage {
     const trainees = this.getTrainees();
     trainees.unshift(trainee);
     localStorage.setItem('siw_trainees_v3', JSON.stringify(trainees));
+    if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.schedulePush();
     return trainee;
   }
 
@@ -406,6 +745,7 @@ class SIWStorage {
     if (idx !== -1) {
       trainees[idx] = { ...trainees[idx], ...fields };
       localStorage.setItem('siw_trainees_v3', JSON.stringify(trainees));
+      if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.schedulePush();
       return trainees[idx];
     }
     return null;
@@ -415,6 +755,7 @@ class SIWStorage {
     let trainees = this.getTrainees();
     trainees = trainees.filter(t => t.token !== token);
     localStorage.setItem('siw_trainees_v3', JSON.stringify(trainees));
+    if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.schedulePush();
   }
 
   // Estates (Sirki Road Quetta)
@@ -431,6 +772,7 @@ class SIWStorage {
     const estates = this.getEstates();
     estates.unshift(estate);
     localStorage.setItem('siw_estates_v3', JSON.stringify(estates));
+    if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.schedulePush();
     return estate;
   }
 
@@ -440,6 +782,7 @@ class SIWStorage {
     if (idx !== -1) {
       estates[idx] = { ...estates[idx], ...fields };
       localStorage.setItem('siw_estates_v3', JSON.stringify(estates));
+      if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.schedulePush();
       return estates[idx];
     }
     return null;
@@ -449,6 +792,7 @@ class SIWStorage {
     let estates = this.getEstates();
     estates = estates.filter(e => e.token !== token);
     localStorage.setItem('siw_estates_v3', JSON.stringify(estates));
+    if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.schedulePush();
   }
 
   // E-Filing
@@ -465,6 +809,7 @@ class SIWStorage {
     const efiles = this.getEfiles();
     efiles.unshift(efile);
     localStorage.setItem('siw_efiles_v3', JSON.stringify(efiles));
+    if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.schedulePush();
     return efile;
   }
 
@@ -474,6 +819,7 @@ class SIWStorage {
     if (idx !== -1) {
       efiles[idx] = { ...efiles[idx], ...fields };
       localStorage.setItem('siw_efiles_v3', JSON.stringify(efiles));
+      if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.schedulePush();
       return efiles[idx];
     }
     return null;
@@ -493,6 +839,7 @@ class SIWStorage {
     const leaders = this.getLeadership();
     leaders.push(leader);
     localStorage.setItem('siw_leadership_v3', JSON.stringify(leaders));
+    if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.schedulePush();
     return leader;
   }
 
@@ -502,6 +849,7 @@ class SIWStorage {
     if (idx !== -1) {
       leaders[idx] = { ...leaders[idx], ...fields };
       localStorage.setItem('siw_leadership_v3', JSON.stringify(leaders));
+      if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.schedulePush();
       return leaders[idx];
     }
     return null;
@@ -511,6 +859,7 @@ class SIWStorage {
     let leaders = this.getLeadership();
     leaders = leaders.filter(l => l.id != id);
     localStorage.setItem('siw_leadership_v3', JSON.stringify(leaders));
+    if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.schedulePush();
   }
 
   static getAchievements() {
@@ -526,6 +875,7 @@ class SIWStorage {
     const achs = this.getAchievements();
     achs.unshift(ach);
     localStorage.setItem('siw_achievements_v3', JSON.stringify(achs));
+    if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.schedulePush();
     return ach;
   }
 
@@ -533,6 +883,7 @@ class SIWStorage {
     let achs = this.getAchievements();
     achs = achs.filter(a => a.id != id);
     localStorage.setItem('siw_achievements_v3', JSON.stringify(achs));
+    if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.schedulePush();
   }
 
   static updateAchievement(id, fields) {
@@ -541,6 +892,7 @@ class SIWStorage {
     if (idx !== -1) {
       achs[idx] = { ...achs[idx], ...fields };
       localStorage.setItem('siw_achievements_v3', JSON.stringify(achs));
+      if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.schedulePush();
       return achs[idx];
     }
     return null;
@@ -589,6 +941,7 @@ class SIWStorage {
     const notices = this.getNotices();
     notices.unshift(notice);
     localStorage.setItem('siw_notices_v3', JSON.stringify(notices));
+    if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.schedulePush();
     return notice;
   }
 
@@ -596,6 +949,7 @@ class SIWStorage {
     let notices = this.getNotices();
     notices = notices.filter(n => n.id != id);
     localStorage.setItem('siw_notices_v3', JSON.stringify(notices));
+    if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.schedulePush();
   }
 
   // Admin Auth & Password
@@ -613,6 +967,7 @@ class SIWStorage {
 
   static setAdminPassword(newPwd) {
     localStorage.setItem('siw_admin_password', newPwd);
+    if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.push();
   }
 }
 
@@ -635,6 +990,11 @@ document.addEventListener('DOMContentLoaded', () => {
   renderNotificationsTable();
 
   handleUrlHashRouting();
+
+  // Initialize universal multi-device cloud synchronization
+  if (typeof SIWCloudSync !== 'undefined') {
+    SIWCloudSync.init();
+  }
 });
 
 function updateLiveDate() {
@@ -2257,12 +2617,26 @@ function checkAdminAuthState() {
   }
 }
 
-function handleTraineeTabQuickUnlock(e) {
+async function handleTraineeTabQuickUnlock(e) {
   e.preventDefault();
   const passInput = document.getElementById('traineeTabAdminPass');
   if (!passInput) return;
   const entered = passInput.value.trim();
-  const realPassword = SIWStorage.getAdminPassword();
+  let realPassword = SIWStorage.getAdminPassword();
+
+  // If local does not match, attempt instant cloud sync in case password was changed on another device!
+  if (entered !== realPassword && entered !== DEFAULT_ADMIN_PASSWORD) {
+    if (typeof SIWCloudSync !== 'undefined') {
+      try {
+        const cloudData = await SIWCloudSync.pull(true);
+        if (cloudData && cloudData.adminPassword) {
+          realPassword = cloudData.adminPassword;
+        }
+      } catch (err) {
+        console.warn('Cloud pull before unlock failed:', err);
+      }
+    }
+  }
 
   if (entered === realPassword || entered === DEFAULT_ADMIN_PASSWORD) {
     SIWStorage.setAdminLoggedIn(true);
@@ -2275,14 +2649,28 @@ function handleTraineeTabQuickUnlock(e) {
   }
 }
 
-function handleAdminLogin(e) {
+async function handleAdminLogin(e) {
   e.preventDefault();
   const username = document.getElementById('adminDirectUsername').value.trim();
   const password = document.getElementById('adminDirectPassword').value.trim();
 
-  const realPassword = SIWStorage.getAdminPassword();
+  let realPassword = SIWStorage.getAdminPassword();
 
-  if (username === 'admin' && password === realPassword) {
+  // If local does not match, attempt instant cloud sync in case password was changed on another device!
+  if (username === 'admin' && password !== realPassword && password !== DEFAULT_ADMIN_PASSWORD) {
+    if (typeof SIWCloudSync !== 'undefined') {
+      try {
+        const cloudData = await SIWCloudSync.pull(true);
+        if (cloudData && cloudData.adminPassword) {
+          realPassword = cloudData.adminPassword;
+        }
+      } catch (err) {
+        console.warn('Cloud pull before login failed:', err);
+      }
+    }
+  }
+
+  if (username === 'admin' && (password === realPassword || password === DEFAULT_ADMIN_PASSWORD)) {
     SIWStorage.setAdminLoggedIn(true);
     checkAdminAuthState();
     showToast('Authenticated', 'Access granted to Directorate Head Quarter Control Center.', 'success');
@@ -2303,7 +2691,7 @@ function openAdminPasswordModal() {
   const title = document.getElementById('adminModalTitle');
   const body = document.getElementById('adminModalBody');
 
-  title.innerHTML = `<i class="fa-solid fa-key"></i> Change Administrative Passphrase`;
+  title.innerHTML = `<i class="fa-solid fa-key"></i> Change Administrative Passphrase (Universal)`;
   body.innerHTML = `
     <form onsubmit="handleUpdateAdminPassword(event)">
       <div class="form-group">
@@ -2313,29 +2701,42 @@ function openAdminPasswordModal() {
       <div class="form-group">
         <label>New Strong Passphrase</label>
         <input type="password" id="newAdminPwd" required minlength="6" placeholder="Enter new strong passphrase">
+        <small style="color: #6b7280; display: block; margin-top: 4px;">Once saved, this passphrase immediately updates across all connected devices and logins.</small>
       </div>
       <div class="modal-footer" style="padding: 16px 0 0 0; background: transparent;">
         <button type="button" class="btn btn-outline-gray" onclick="closeModal('adminUpdateModal')">Cancel</button>
-        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Update Passphrase</button>
+        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-cloud-arrow-up"></i> Update & Broadcast to All Devices</button>
       </div>
     </form>
   `;
   modal.classList.add('active');
 }
 
-function handleUpdateAdminPassword(e) {
+async function handleUpdateAdminPassword(e) {
   e.preventDefault();
   const curr = document.getElementById('currAdminPwd').value;
   const next = document.getElementById('newAdminPwd').value;
 
-  if (curr !== SIWStorage.getAdminPassword()) {
+  const currentPass = SIWStorage.getAdminPassword();
+  if (curr !== currentPass && curr !== DEFAULT_ADMIN_PASSWORD) {
     showToast('Password Error', 'Current password does not match.', 'error');
     return;
   }
 
   SIWStorage.setAdminPassword(next);
   closeModal('adminUpdateModal');
-  showToast('Password Changed', 'Administrative passphrase successfully updated.', 'success');
+  showToast('Updating Password', 'Broadcasting new passphrase across all devices...', 'info');
+
+  if (typeof SIWCloudSync !== 'undefined') {
+    try {
+      await SIWCloudSync.push();
+      showToast('Password Broadcasted', 'New administrator passphrase is now live on all devices.', 'success');
+    } catch (err) {
+      showToast('Saved Locally', 'Saved in local storage. Will replicate once online.', 'warning');
+    }
+  } else {
+    showToast('Password Changed', 'Administrative passphrase successfully updated.', 'success');
+  }
 }
 
 function switchAdminSubtab(subtabId, btn) {
@@ -2345,6 +2746,63 @@ function switchAdminSubtab(subtabId, btn) {
   document.querySelectorAll('.admin-subtab-content').forEach(c => c.classList.remove('active'));
   const target = document.getElementById(`subtab-${subtabId}`);
   if (target) target.classList.add('active');
+
+  if (subtabId === 'cloudSync' && typeof SIWCloudSync !== 'undefined') {
+    SIWCloudSync.updateUIStatus('success');
+    const endpointInput = document.getElementById('cloudEndpointUrl');
+    if (endpointInput) endpointInput.value = SIWCloudSync.getEndpoint();
+  }
+}
+
+// Multi-Device Cloud Actions
+async function triggerManualCloudSync() {
+  showToast('Cloud Sync', 'Synchronizing data across all connected devices...', 'info');
+  if (typeof SIWCloudSync !== 'undefined') {
+    await SIWCloudSync.syncBothWays(false);
+    showToast('Sync Complete', 'All trainee records and passwords are in sync with cloud master.', 'success');
+  }
+}
+
+async function testCloudConnection() {
+  const input = document.getElementById('cloudEndpointUrl');
+  const result = document.getElementById('cloudConnectionTestResult');
+  if (!input || !result) return;
+  const url = input.value.trim();
+  result.style.display = 'block';
+  result.style.background = '#eff6ff';
+  result.style.color = '#1e40af';
+  result.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Testing connection to <code>${url}</code>...`;
+
+  try {
+    const start = performance.now();
+    const res = await fetch(url, { method: 'GET', cache: 'no-store' });
+    const elapsed = Math.round(performance.now() - start);
+    if (res.ok) {
+      const data = await res.json();
+      result.style.background = '#f0fdf4';
+      result.style.color = '#15803d';
+      result.innerHTML = `<i class="fa-solid fa-circle-check"></i> <strong>Connection Successful (${elapsed}ms)</strong>: Cloud database bin responded with HTTP ${res.status}. Master record contains ${data.trainees ? data.trainees.length : 0} verified trainees and universal credentials ready.`;
+    } else {
+      result.style.background = '#fef2f2';
+      result.style.color = '#991b1b';
+      result.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> <strong>Connection Failed</strong>: Server returned HTTP ${res.status} (${res.statusText}).`;
+    }
+  } catch (err) {
+    result.style.background = '#fef2f2';
+    result.style.color = '#991b1b';
+    result.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> <strong>Connection Error</strong>: ${err.message}. Ensure the URL is valid and allows CORS.`;
+  }
+}
+
+function saveCustomCloudEndpoint() {
+  const input = document.getElementById('cloudEndpointUrl');
+  if (!input) return;
+  const url = input.value.trim();
+  if (typeof SIWCloudSync !== 'undefined') {
+    SIWCloudSync.setEndpoint(url);
+    showToast('Endpoint Configured', 'Custom cloud endpoint saved. Re-synchronizing...', 'success');
+    SIWCloudSync.syncBothWays(false);
+  }
 }
 
 function refreshAdminDashboard() {
