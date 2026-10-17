@@ -1,0 +1,2487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Small Industries Wing Balochistan | Official Portal</title>
+  <meta name="description" content="Official Portal of Small Industries Wing, Directorate of Industries & Commerce, Government of Balochistan. Trainee Enrolment with Duplicate CNIC/Bank/Vendor Protection, Estate Office Sirki Road Quetta, and Multi-Desk E-Filing System.">
+  
+  <!-- Google Fonts: TEVTA Executive Design System (Source Serif 4 + Inter + Noto Nastaliq Urdu) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;0,8..60,800;1,8..60,400&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  
+  <link rel="stylesheet" href="styles.css?v=20261013_v6">
+</head>
+<body>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="container topbar-content">
+      <div class="topbar-left">
+        <span class="gov-badge"><i class="fa-solid fa-landmark-flag"></i> Government of Balochistan</span>
+        <span class="divider">|</span>
+        <span><i class="fa-solid fa-phone"></i> Directorate Line: <strong>0819211161</strong></span>
+        <span class="divider">|</span>
+        <span><i class="fa-solid fa-envelope"></i> hq@siw.balochistan.gov.pk</span>
+      </div>
+      <div class="topbar-right">
+        <span id="currentDateDisplay" class="live-clock"><i class="fa-regular fa-calendar-days"></i> Loading date...</span>
+        <div class="auth-pill" id="navAuthStatus">
+          <button class="btn-topbar-admin" id="openAdminLoginBtn" onclick="toggleAdminModal()">
+            <i class="fa-solid fa-lock"></i> <span id="adminBtnText">Admin Portal</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Header with Provincial Emblem -->
+  <header class="main-header">
+    <div class="container header-container">
+      <div class="brand-section">
+        <div class="gov-crest">
+          <svg viewBox="0 0 100 100" class="crest-svg" aria-label="Balochistan Emblem">
+            <circle cx="50" cy="50" r="46" fill="#064e2e" stroke="#d4af37" stroke-width="4" />
+            <circle cx="50" cy="50" r="41" fill="none" stroke="#d4af37" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <path d="M 20 68 L 38 42 L 54 62 L 68 36 L 82 68 Z" fill="#d4af37" opacity="0.95"/>
+            <path d="M 28 68 L 45 48 L 58 64 L 75 44 L 80 68 Z" fill="#094d2e" opacity="0.4"/>
+            <path d="M 50 18 A 12 12 0 0 0 50 40 A 10 10 0 0 1 50 20 Z" fill="#ffffff" />
+            <polygon points="56,22 58,28 64,28 59,32 61,38 56,34 51,38 53,32 48,28 54,28" fill="#ffffff" transform="scale(0.6) translate(38,10)"/>
+            <rect x="22" y="70" width="56" height="5" rx="2.5" fill="#d4af37"/>
+            <text x="50" y="86" font-size="8" fill="#ffffff" font-weight="bold" text-anchor="middle" letter-spacing="1">BALOCHISTAN</text>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <div class="urdu-title">ڈائریکٹوریٹ آف سمال انڈسٹریز و اسٹیٹ آفس بلوچستان</div>
+          <h1 class="main-title">Small Industries Wing Balochistan</h1>
+          <p class="sub-title">Head Quarter (HQ) Quetta • Estate Office Sirki Road Quetta • Skill Centers Network</p>
+        </div>
+      </div>
+
+      <div class="header-badges">
+        <div class="h-badge">
+          <i class="fa-solid fa-building-columns"></i>
+          <div>
+            <strong id="badgeCentersCount">130+</strong>
+            <small>Registered Centers</small>
+          </div>
+        </div>
+        <div class="h-badge">
+          <i class="fa-solid fa-user-graduate"></i>
+          <div>
+            <strong id="badgeTraineesCount">1,420+</strong>
+            <small>Active Trainees</small>
+          </div>
+        </div>
+        <div class="h-badge">
+          <i class="fa-solid fa-industry"></i>
+          <div>
+            <strong>Sirki Road</strong>
+            <small>Industrial Estate Qta</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar" id="siteNav">
+    <div class="container nav-content">
+      <ul class="nav-links">
+        <li><a href="#home" class="nav-item active" data-tab="home"><i class="fa-solid fa-house"></i> Home</a></li>
+        
+        <!-- Academics Dropdown (TEVTA Style) -->
+        <li class="nav-dropdown">
+          <a href="javascript:void(0)" class="nav-item nav-dropdown-toggle" data-tab="academics">
+            <i class="fa-solid fa-graduation-cap"></i> Academics <i class="fa-solid fa-chevron-down nav-caret"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="javascript:void(0)" onclick="openAcademicModal('education')" class="dropdown-link">
+              <span><i class="fa-solid fa-chalkboard-user"></i> Education</span>
+              <i class="fa-solid fa-chevron-right sub-caret"></i>
+            </a>
+            <a href="javascript:void(0)" onclick="openAcademicModal('calendar')" class="dropdown-link">
+              <span><i class="fa-solid fa-calendar-days"></i> Academic Calendars</span>
+              <i class="fa-solid fa-chevron-right sub-caret"></i>
+            </a>
+            <a href="javascript:void(0)" onclick="openAcademicModal('fees')" class="dropdown-link">
+              <span><i class="fa-solid fa-receipt"></i> Fee Structure</span>
+            </a>
+            <a href="javascript:void(0)" onclick="openAcademicModal('guide')" class="dropdown-link">
+              <span><i class="fa-solid fa-book-open-reader"></i> Admission Guide</span>
+            </a>
+            <div class="dropdown-separator"></div>
+            <a href="#trainees" onclick="switchTab('trainees', '#enrolForm')" class="dropdown-link dropdown-highlight">
+              <span><i class="fa-solid fa-file-pen"></i> Online Admission Form</span>
+            </a>
+          </div>
+        </li>
+
+        <!-- Trainee Enrolment Tab -->
+        <li><a href="#trainees" class="nav-item" data-tab="trainees"><i class="fa-solid fa-user-graduate"></i> Trainee Enrolment <span class="nav-pill">Open</span></a></li>
+
+        <!-- Notifications Tab (TEVTA Style) -->
+        <li><a href="#notifications" class="nav-item" data-tab="notifications" onclick="switchTab('notifications')"><i class="fa-solid fa-bell"></i> Notifications</a></li>
+
+        <!-- Downloads Dropdown (TEVTA Style) -->
+        <li class="nav-dropdown">
+          <a href="#downloads" class="nav-item nav-dropdown-toggle" data-tab="downloads" onclick="switchTab('downloads')">
+            <i class="fa-solid fa-download"></i> Downloads <i class="fa-solid fa-chevron-down nav-caret"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="javascript:void(0)" onclick="triggerDownload('prospectus')" class="dropdown-link">
+              <span><i class="fa-solid fa-file-pdf"></i> Prospectus</span>
+            </a>
+            <a href="javascript:void(0)" onclick="triggerDownload('newsletter')" class="dropdown-link">
+              <span><i class="fa-solid fa-newspaper"></i> News Letters</span>
+            </a>
+            <a href="javascript:void(0)" onclick="triggerDownload('magazine')" class="dropdown-link">
+              <span><i class="fa-solid fa-book"></i> Skill Magazine</span>
+            </a>
+            <div class="dropdown-separator"></div>
+            <a href="#downloads" onclick="switchTab('downloads')" class="dropdown-link">
+              <span><i class="fa-solid fa-folder-open"></i> All Downloads Desk</span>
+            </a>
+          </div>
+        </li>
+
+        <!-- Contact Us Dropdown (TEVTA Style) -->
+        <li class="nav-dropdown">
+          <a href="javascript:void(0)" class="nav-item nav-dropdown-toggle" data-tab="contact">
+            <i class="fa-solid fa-address-book"></i> Contact Us <i class="fa-solid fa-chevron-down nav-caret"></i>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#home" onclick="scrollToBureau()" class="dropdown-link">
+              <span><i class="fa-solid fa-building-flag"></i> Headquarters Directorate</span>
+            </a>
+            <a href="#centers" onclick="switchTab('centers')" class="dropdown-link">
+              <span><i class="fa-solid fa-map-location-dot"></i> Field Offices</span>
+            </a>
+            <div class="dropdown-separator"></div>
+            <a href="javascript:void(0)" onclick="openComplaintModal()" class="dropdown-link dropdown-highlight">
+              <span><i class="fa-solid fa-headset"></i> Complaint System</span>
+            </a>
+          </div>
+        </li>
+      </ul>
+      
+      <div class="nav-right-cluster">
+        <button class="btn btn-sm btn-gold" onclick="switchTab('trainees', '#enrolForm')">
+          <i class="fa-solid fa-pen-to-square"></i> Enroll Trainee
+        </button>
+
+        <!-- Professional Three Dots (⋮) Menu -->
+        <div class="kebab-menu-container" id="kebabContainer">
+          <button class="kebab-btn" id="kebabBtn" onclick="toggleKebabDropdown(event)" title="More Directorate Desks & Portals" aria-label="More options">
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+          </button>
+          
+          <div class="kebab-dropdown-menu" id="kebabDropdown">
+            <div class="kebab-dropdown-header">
+              <span><i class="fa-solid fa-building-columns"></i> Directorate Portals & Desks</span>
+            </div>
+            
+            <a href="#centers" class="kebab-item" data-tab="centers" onclick="onKebabItemClick('centers')">
+              <div class="kebab-item-icon"><i class="fa-solid fa-list-check"></i></div>
+              <div class="kebab-item-text">
+                <strong>Centers & Trades Directory</strong>
+                <small>130+ accredited field centers in Balochistan</small>
+              </div>
+            </a>
+
+            <a href="#estates" class="kebab-item" data-tab="estates" onclick="onKebabItemClick('estates')">
+              <div class="kebab-item-icon"><i class="fa-solid fa-city"></i></div>
+              <div class="kebab-item-text">
+                <strong>Estate Office Sirki Road Quetta</strong>
+                <small>43.5 Acres industrial estate & allotment desk</small>
+              </div>
+            </a>
+
+            <a href="#efiling" class="kebab-item" data-tab="efiling" onclick="onKebabItemClick('efiling')">
+              <div class="kebab-item-icon"><i class="fa-solid fa-file-invoice"></i></div>
+              <div class="kebab-item-text">
+                <strong>Multi-Desk E-Filing Desk</strong>
+                <small>Official electronic movement HQ & centers</small>
+              </div>
+            </a>
+
+            <a href="#tracking" class="kebab-item" data-tab="tracking" onclick="onKebabItemClick('tracking')">
+              <div class="kebab-item-icon"><i class="fa-solid fa-magnifying-glass-location"></i></div>
+              <div class="kebab-item-text">
+                <strong>Track File / Application</strong>
+                <small>Inquire Trainee, Sirki Road Plot & E-File</small>
+              </div>
+            </a>
+
+            <div class="kebab-divider"></div>
+
+            <a href="#admin" class="kebab-item kebab-item-admin" data-tab="admin" id="adminNavTab" onclick="onKebabItemClick('admin')">
+              <div class="kebab-item-icon kebab-admin-icon"><i class="fa-solid fa-shield-halved"></i></div>
+              <div class="kebab-item-text">
+                <strong id="adminBtnText">HQ Admin Portal</strong>
+                <small>Passphrase protected control desk</small>
+              </div>
+              <i class="fa-solid fa-lock" style="color: #b45309; font-size: 0.85rem; margin-left: auto;"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- News Ticker -->
+  <div class="ticker-bar">
+    <div class="container ticker-container">
+      <div class="ticker-label"><i class="fa-solid fa-bullhorn"></i> Official Announcements</div>
+      <div class="ticker-track">
+        <div class="ticker-content" id="tickerItems">
+          <span>• Trainee Admissions Session 2026-27: Trainee CNIC, Bank Account, and Vendor Number verification active with zero duplicate tolerance.</span>
+          <span>• Official E-Filing Movement: Directorate HQ, Centers, B-TEVTA, and Labour Department interconnected with addressed-only privacy.</span>
+          <span>• Estate Office Sirki Road Quetta: Industrial plot allotment applications and lease renewal desk active online.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN TAB CONTENT CONTAINER -->
+  <main class="main-content">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: HOME VIEW (EXECUTIVE & ACTIONABLE)   -->
+    <!-- ========================================== -->
+    <section id="tab-home" class="tab-page active">
+      
+      <!-- Professional Executive Hero -->
+      <section class="hero-section">
+        <div class="container hero-grid">
+          <div class="hero-text-col">
+            <div class="hero-chip"><i class="fa-solid fa-landmark-flag"></i> Directorate of Industries & Commerce</div>
+            <h2 class="hero-heading">Small Industries Wing Balochistan</h2>
+            <div class="urdu-title" style="font-size: 1.25rem; margin-bottom: 8px;">ڈائریکٹوریٹ آف سمال انڈسٹریز و اسٹیٹ آفس بلوچستان</div>
+            <p class="hero-subtext" style="font-size: 1.05rem; font-weight: 500; color: #334155;">
+              Head Quarter (HQ) Quetta • Estate Office Sirki Road Quetta (43.5 Acres) • 130+ Vocational & Craft Centers
+            </p>
+            <div class="hero-cta-group">
+              <button class="btn btn-primary btn-lg" onclick="switchTab('trainees', '#enrolForm')">
+                <i class="fa-solid fa-graduation-cap"></i> Trainee Enrolment
+              </button>
+              <button class="btn btn-outline-white btn-lg" onclick="switchTab('estates', '#plotForm')">
+                <i class="fa-solid fa-city"></i> Estate Office Sirki Road
+              </button>
+              <button class="btn btn-glass btn-lg" onclick="switchTab('efiling')">
+                <i class="fa-solid fa-file-import"></i> E-Filing Desk
+              </button>
+            </div>
+            
+            <div class="hero-tracker-card">
+              <label for="quickTrackInput"><i class="fa-solid fa-magnifying-glass"></i> Track Trainee Application, Sirki Road Plot, or E-File:</label>
+              <div class="tracker-input-group">
+                <input type="text" id="quickTrackInput" placeholder="Enter Token ID (e.g. SIW-TR-2026-101, SIW-EF-2026-401, or CNIC)...">
+                <button class="btn btn-gold" onclick="executeQuickTrack()"><i class="fa-solid fa-arrow-right"></i> Track</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-visual-col">
+            <div class="showcase-card">
+              <div class="showcase-header">
+                <div class="badge-status online"><span class="dot"></span> Directorate HQ Online</div>
+                <div class="badge-year">Sirki Road, Quetta</div>
+              </div>
+              <div class="showcase-metrics">
+                <div class="metric-box">
+                  <div class="metric-icon"><i class="fa-solid fa-landmark"></i></div>
+                  <div class="metric-details">
+                    <h3 id="statTotalCenters">134</h3>
+                    <p>Accredited Centers</p>
+                  </div>
+                </div>
+                <div class="metric-box">
+                  <div class="metric-icon"><i class="fa-solid fa-city"></i></div>
+                  <div class="metric-details">
+                    <h3>43.5 Acres</h3>
+                    <p>Sirki Road Estate Qta</p>
+                  </div>
+                </div>
+                <div class="metric-box">
+                  <div class="metric-icon"><i class="fa-solid fa-user-shield"></i></div>
+                  <div class="metric-details">
+                    <h3>Zero Duplicate</h3>
+                    <p>CNIC / Bank / Vendor</p>
+                  </div>
+                </div>
+                <div class="metric-box">
+                  <div class="metric-icon"><i class="fa-solid fa-sitemap"></i></div>
+                  <div class="metric-details">
+                    <h3>HQ ➔ Desks</h3>
+                    <p>Addressed File Route</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SIMPLE DEFINITIONS SECTION -->
+      <section class="section definitions-section" style="padding-top: 32px; padding-bottom: 24px;">
+        <div class="container">
+          <div class="definitions-grid">
+            <div class="definition-card def-card-green">
+              <div class="def-icon-circle icon-green">
+                <i class="fa-solid fa-graduation-cap"></i>
+              </div>
+              <div class="def-content">
+                <span class="def-tag">Skill Development Mandate</span>
+                <h3 class="def-title">Vocational Training</h3>
+                <p class="def-desc">
+                  Practical, trade-oriented skill education equipping youth with certified crafts for sustainable self-employment.
+                </p>
+              </div>
+            </div>
+
+            <div class="definition-card def-card-gold">
+              <div class="def-icon-circle icon-gold">
+                <i class="fa-solid fa-industry"></i>
+              </div>
+              <div class="def-content">
+                <span class="def-tag">Industrial Infrastructure</span>
+                <h3 class="def-title">Small Industrial Estate</h3>
+                <p class="def-desc">
+                  A dedicated industrial corridor on Sirki Road, Quetta (43.5 Acres) providing developed plots, dedicated utilities, and infrastructure for local SME manufacturing.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURED OPERATIONAL DESKS & SERVICES (TEVTA EXECUTIVE PORTAL GRID) -->
+      <section class="section home-services-section" style="padding: 42px 0; background: var(--bg-subtle);">
+        <div class="container">
+          <div class="section-title-wrap text-center" style="margin-bottom: 32px; text-align: center;">
+            <span class="sub-badge"><i class="fa-solid fa-layer-group"></i> Key Directorate Portals</span>
+            <h2 class="section-title" style="margin-bottom: 6px;">Integrated Portals & Operational Desks</h2>
+            <p class="section-subtitle">Official online services facilitating youth, artisans, industrialists, and departmental desks across Balochistan</p>
+          </div>
+
+          <div class="tevta-services-grid">
+            <div class="tevta-service-card" onclick="switchTab('trainees', '#enrolForm')">
+              <div class="service-icon-box icon-green">
+                <i class="fa-solid fa-user-graduate"></i>
+              </div>
+              <div class="service-content">
+                <span class="service-pill-tag">Open Admissions</span>
+                <h3>Trainee Admission Portal</h3>
+                <p>Online registration across 130+ accredited vocational centers with strict duplicate CNIC, Bank Account & Vendor verification.</p>
+                <div class="service-action-link">
+                  <span>Apply Online</span> <i class="fa-solid fa-arrow-right"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="tevta-service-card" onclick="switchTab('centers')">
+              <div class="service-icon-box icon-navy">
+                <i class="fa-solid fa-building-columns"></i>
+              </div>
+              <div class="service-content">
+                <span class="service-pill-tag">130+ Facilities</span>
+                <h3>Centers & Trades Directory</h3>
+                <p>Complete provincial directory of vocational training institutions, specialized trades, course durations, and center incharge contacts.</p>
+                <div class="service-action-link">
+                  <span>Browse Centers</span> <i class="fa-solid fa-arrow-right"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="tevta-service-card" onclick="switchTab('estates')">
+              <div class="service-icon-box icon-gold">
+                <i class="fa-solid fa-city"></i>
+              </div>
+              <div class="service-content">
+                <span class="service-pill-tag">43.5 Acres Estate</span>
+                <h3>Estate Office Sirki Road Quetta</h3>
+                <p>Industrial plot allotment desk, lease deed management, and municipal utility facilitation for Quetta's premier SME manufacturing zone.</p>
+                <div class="service-action-link">
+                  <span>Estate Services</span> <i class="fa-solid fa-arrow-right"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="tevta-service-card" onclick="switchTab('efiling')">
+              <div class="service-icon-box icon-emerald">
+                <i class="fa-solid fa-file-invoice"></i>
+              </div>
+              <div class="service-content">
+                <span class="service-pill-tag">Official Despatch</span>
+                <h3>Multi-Desk E-Filing System</h3>
+                <p>Confidential electronic file movement and minute sheets interconnecting Directorate HQ, Field Centers, B-TEVTA, and Labour Department.</p>
+                <div class="service-action-link">
+                  <span>Access E-Files</span> <i class="fa-solid fa-arrow-right"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COMPETENT AUTHORITY & EXECUTIVE LEADERSHIP (EMBEDDED DIRECTLY ON HOME) -->
+      <section class="section home-authority-section" id="homeAuthoritySection" style="background: #ffffff; padding: 48px 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+        <div class="container">
+          <div class="section-title-wrap" style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 28px; flex-wrap: wrap; gap: 16px;">
+            <div>
+              <span class="sub-badge"><i class="fa-solid fa-user-tie"></i> Apex Administration</span>
+              <h2 class="section-title" style="margin-bottom: 4px;">Competent Authority & Executive Leadership</h2>
+              <p class="section-subtitle">Leadership directing the Small Industries Wing, B-TEVTA, and Labour & Manpower Department</p>
+            </div>
+            <div>
+              <!-- Admin-Only Upload Action (Hidden from Public) -->
+              <button class="btn btn-sm btn-outline-primary" id="btnHomeAddLeadership" style="display: none;" onclick="openAddLeadershipModal()">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Upload / Add Authority Profile
+              </button>
+            </div>
+          </div>
+
+          <div class="leadership-cards-grid" id="homeLeadershipGrid">
+            <!-- Populated via JS from persistent storage -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================= -->
+      <!-- SECTION 1: VIDEOS GALLERY (EXACT TEVTA DESIGN - SCREENSHOT 4) -->
+      <!-- ============================================================= -->
+      <section class="section tevta-videos-section" id="homeVideosSection">
+        <div class="container">
+          <div class="tevta-gallery-header">
+            <h2 class="tevta-gallery-heading">Videos Gallery</h2>
+            <div id="adminVideoActionWrap" style="display: none;">
+              <button class="btn btn-sm btn-outline-primary" onclick="openAddAchievementModal('video')">
+                <i class="fa-solid fa-video"></i> Upload New Video
+              </button>
+            </div>
+          </div>
+
+          <!-- 3 Video Cards Carousel / Grid -->
+          <div class="tevta-videos-grid" id="tevtaVideosGrid">
+            <!-- Video Card 1: Hunarmand Beti Hunarmand Balochistan -->
+            <div class="tevta-video-card" onclick="openVideoPlayer('hunarmand-beti')">
+              <div class="video-thumb-wrap">
+                <img src="video-tailoring.jpg" alt="Hunarmand Beti Hunarmand Balochistan" class="video-thumb-img">
+                <div class="video-urdu-banner">ہنر مند بیٹی ہنر مند بلوچستان</div>
+                <button class="tevta-play-circle" aria-label="Play Hunarmand Beti Video">
+                  <i class="fa-solid fa-play"></i>
+                </button>
+                <div class="video-badge-runtime"><i class="fa-regular fa-clock"></i> 06:45</div>
+              </div>
+              <div class="video-card-info">
+                <span class="video-category-tag">Women Craft & Vocational Stream</span>
+                <h4 class="video-card-title">Hunarmand Beti: Traditional Crafts & Tailoring Centers</h4>
+                <p class="video-card-excerpt">Comprehensive documentary filmed at accredited stitching, embroidery, and handicraft training centers across Balochistan.</p>
+              </div>
+            </div>
+
+            <!-- Video Card 2: Tamir-e-Watan: Empowering the Youth -->
+            <div class="tevta-video-card" onclick="openVideoPlayer('tamir-watan')">
+              <div class="video-thumb-wrap">
+                <img src="video-youth.jpg" alt="Tamir-e-Watan: Empowering Youth" class="video-thumb-img">
+                <div class="video-urdu-banner">تعمیرِ وطن: نوجوانانِ بلوچستان کو بااختیار بنانا</div>
+                <button class="tevta-play-circle" aria-label="Play Tamir-e-Watan Video">
+                  <i class="fa-solid fa-play"></i>
+                </button>
+                <div class="video-badge-runtime"><i class="fa-regular fa-clock"></i> 08:20</div>
+              </div>
+              <div class="video-card-info">
+                <span class="video-category-tag">Youth Skill Development</span>
+                <h4 class="video-card-title">Tamir-e-Watan: Youth Vocational Training & Future Prospects</h4>
+                <p class="video-card-excerpt">Equipping Balochistan's youth with certified technical trade skills, modern tools, and SME entrepreneurship guidance.</p>
+              </div>
+            </div>
+
+            <!-- Video Card 3: National Anthem & Industrial Heritage -->
+            <div class="tevta-video-card" onclick="openVideoPlayer('national-anthem')">
+              <div class="video-thumb-wrap">
+                <img src="video-anthem.jpg" alt="National Anthem and Industrial Heritage" class="video-thumb-img">
+                <div class="video-urdu-banner">قومی ترانہ اور بلوچستان کا صنعتی ورثہ</div>
+                <button class="tevta-play-circle" aria-label="Play National Anthem Video">
+                  <i class="fa-solid fa-play"></i>
+                </button>
+                <div class="video-badge-runtime"><i class="fa-regular fa-clock"></i> 04:15</div>
+              </div>
+              <div class="video-card-info">
+                <span class="video-category-tag">Industrial Heritage</span>
+                <h4 class="video-card-title">National Anthem & Industrial Heritage of Balochistan</h4>
+                <p class="video-card-excerpt">Filmed and picturized across Small Industrial Estate Sirki Road Quetta (43.5 Acres) & regional trades network.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Carousel Dots (Screenshot 4) -->
+          <div class="tevta-carousel-dots">
+            <span class="c-dot active" onclick="switchVideoSlide(0)"></span>
+            <span class="c-dot" onclick="switchVideoSlide(1)"></span>
+            <span class="c-dot" onclick="switchVideoSlide(2)"></span>
+            <span class="c-dot" onclick="switchVideoSlide(3)"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================= -->
+      <!-- SECTION 2: IMAGE GALLERY (EXACT TEVTA DESIGN - SCREENSHOT 5)  -->
+      <!-- ============================================================= -->
+      <section class="section tevta-images-section" id="homeImagesSection">
+        <div class="container">
+          <div class="tevta-gallery-header">
+            <h2 class="tevta-gallery-heading">Image Gallery</h2>
+            <div class="tevta-view-more-container">
+              <button class="btn btn-gold btn-tevta-view-more" id="btnToggleGalleryMore" onclick="toggleImageGalleryMore()">
+                View More <i class="fa-solid fa-angle-down" id="galleryMoreAngle"></i>
+              </button>
+              <div id="adminPhotoActionWrap" style="display: none; margin-left: 10px;">
+                <button class="btn btn-sm btn-outline-primary" onclick="openAddAchievementModal('photo')">
+                  <i class="fa-solid fa-camera"></i> Upload Photo
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3 Image Cards Grid (Screenshot 5) -->
+          <div class="tevta-images-grid" id="tevtaImagesGrid">
+            <!-- Image Card 1: Annual Convocation Ceremony -->
+            <div class="tevta-image-card" onclick="openLightboxImage('gallery-convocation.jpg', 'Annual Convocation & Trade Diploma Distribution Ceremony', 'Directorate of Small Industries Provincial Heritage Grounds, Quetta')">
+              <div class="image-thumb-wrap">
+                <img src="gallery-convocation.jpg" alt="Annual Convocation Ceremony" class="image-thumb-img">
+                <div class="image-zoom-overlay">
+                  <i class="fa-solid fa-magnifying-glass-plus"></i>
+                  <span>View Full Photo</span>
+                </div>
+              </div>
+              <div class="image-caption-area">
+                <span class="gallery-category-badge">Convocation & Ceremony</span>
+                <h4>Annual Convocation & Trade Diploma Distribution</h4>
+                <p>Provincial convocation ceremony at Directorate Heritage Grounds with provincial dignitaries and graduating artisans.</p>
+              </div>
+            </div>
+
+            <!-- Image Card 2: Grand Handicraft Pavilion & Artisan Gathering -->
+            <div class="tevta-image-card" onclick="openLightboxImage('gallery-marquee.jpg', 'Provincial Gathering of Master Artisans & Center Supervisors', 'Grand Handicraft Pavilion and Annual Exhibition Canopy')">
+              <div class="image-thumb-wrap">
+                <img src="gallery-marquee.jpg" alt="Provincial Gathering of Artisans" class="image-thumb-img">
+                <div class="image-zoom-overlay">
+                  <i class="fa-solid fa-magnifying-glass-plus"></i>
+                  <span>View Full Photo</span>
+                </div>
+              </div>
+              <div class="image-caption-area">
+                <span class="gallery-category-badge">Artisan Exhibition</span>
+                <h4>Grand Handicraft Pavilion & Artisan Gathering</h4>
+                <p>Provincial gathering of master craftsmen and center supervisors under grand canopy showcasing Balochistan crafts.</p>
+              </div>
+            </div>
+
+            <!-- Image Card 3: Technopreneurship Training Seminar -->
+            <div class="tevta-image-card" onclick="openLightboxImage('gallery-technopreneur.jpg', 'Technopreneurship & Digital Skills Seminar for Instructors', 'Directorate Executive Conference Room, Sirki Road Quetta')">
+              <div class="image-thumb-wrap">
+                <img src="gallery-technopreneur.jpg" alt="Technopreneurship Training Seminar" class="image-thumb-img">
+                <div class="image-zoom-overlay">
+                  <i class="fa-solid fa-magnifying-glass-plus"></i>
+                  <span>View Full Photo</span>
+                </div>
+              </div>
+              <div class="image-caption-area">
+                <span class="gallery-category-badge">Capacity Building</span>
+                <h4>Technopreneurship & Digital Skills Seminar</h4>
+                <p>High-level training program on digital enterprise and vocational management for technical instructors.</p>
+              </div>
+            </div>
+
+            <!-- Extra Images shown when 'View More' is clicked -->
+            <div class="tevta-image-card extra-image-item" style="display: none;" onclick="openLightboxImage('exhibition.jpg', 'Balochistan Traditional Handicrafts & Mirror-work Exhibition', 'Directorate Crafts Display Pavilion')">
+              <div class="image-thumb-wrap">
+                <img src="exhibition.jpg" alt="Balochistan Traditional Handicrafts" class="image-thumb-img">
+                <div class="image-zoom-overlay">
+                  <i class="fa-solid fa-magnifying-glass-plus"></i>
+                  <span>View Full Photo</span>
+                </div>
+              </div>
+              <div class="image-caption-area">
+                <span class="gallery-category-badge">Provincial Exhibition</span>
+                <h4>Balochistan Traditional Crafts Exhibition</h4>
+                <p>Exquisite display of Balochi Doch embroidery, carpet weaving, and leather work by center trainees.</p>
+              </div>
+            </div>
+
+            <div class="tevta-image-card extra-image-item" style="display: none;" onclick="openLightboxImage('sirki_estate.jpg', 'Small Industrial Estate Sirki Road Quetta (43.5 Acres)', 'Infrastructure Modernization & Active Industrial Corridor')">
+              <div class="image-thumb-wrap">
+                <img src="sirki_estate.jpg" alt="Sirki Road Estate Quetta" class="image-thumb-img">
+                <div class="image-zoom-overlay">
+                  <i class="fa-solid fa-magnifying-glass-plus"></i>
+                  <span>View Full Photo</span>
+                </div>
+              </div>
+              <div class="image-caption-area">
+                <span class="gallery-category-badge">Industrial Estate</span>
+                <h4>Sirki Road Industrial Estate (43.5 Acres)</h4>
+                <p>Modernized infrastructure, road carpeting, and utility facilities supporting active SME industrial units.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- OFFICIAL DIRECTORATE CONTACT & HEADQUARTERS BUREAU (CLEAR & PROMINENT) -->
+      <section class="section home-contact-section" style="background: #ffffff; padding: 48px 0; border-top: 1px solid var(--border-color);">
+        <div class="container">
+          <div class="home-contact-card">
+            <div class="section-title-wrap" style="margin-bottom: 24px;">
+              <span class="sub-badge"><i class="fa-solid fa-building-columns"></i> Official Information & Public Liaison</span>
+              <h2 class="section-title" style="margin-bottom: 0;">Headquarters Directorate & Estate Office Contact Bureau</h2>
+            </div>
+
+            <div class="contact-info-grid">
+              <div class="contact-info-item">
+                <i class="fa-solid fa-location-dot"></i>
+                <h4>Headquarters Directorate</h4>
+                <p><strong>Directorate of Small Industries, Sirki Road, Quetta</strong><br>Balochistan, Pakistan</p>
+              </div>
+
+              <div class="contact-info-item">
+                <i class="fa-solid fa-city"></i>
+                <h4>Estate Office Sirki Road</h4>
+                <p><strong>Small Industrial Estate Office</strong><br>Sirki Road Quetta (43.5 Acres Allotment & Lease Desk)</p>
+              </div>
+
+              <div class="contact-info-item">
+                <i class="fa-solid fa-phone"></i>
+                <h4>Official Phone & Timings</h4>
+                <p><strong>0819211161</strong><br><small>Direct Official Line: 0819211161<br>Mon – Fri: 08:30 AM – 04:30 PM</small></p>
+              </div>
+
+              <div class="contact-info-item">
+                <i class="fa-solid fa-envelope"></i>
+                <h4>Official Digital Despatch</h4>
+                <p><strong>hq@siw.balochistan.gov.pk</strong><br>Liaison: B-TEVTA & Labour Department Secretariat</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB: NOTIFICATIONS & CIRCULARS (TEVTA STYLE) -->
+    <!-- ========================================== -->
+    <section id="tab-notifications" class="tab-page">
+      <div class="container page-container">
+        <div class="page-header-card">
+          <div class="page-header-text">
+            <span class="sub-badge"><i class="fa-solid fa-bullhorn"></i> Directorate Gazette & Regulations</span>
+            <h2>Notifications & Circulars – Session 2026-27</h2>
+            <p>Official regulatory orders, circular notifications, admission announcements, fee structures, estate guidelines, and SOPs issued by Directorate of Small Industries & B-TEVTA.</p>
+          </div>
+          <div class="page-header-actions">
+            <div class="search-input-wrap">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" id="notifSearchInput" placeholder="Search by Notification #, Title, or Date..." oninput="filterNotificationsTable(this.value)">
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Category Tabs -->
+        <div class="notif-filter-bar">
+          <button class="notif-pill active" onclick="filterNotifCategory('all', this)"><i class="fa-solid fa-layer-group"></i> All Notifications (<span id="notifTotalCount">9</span>)</button>
+          <button class="notif-pill" onclick="filterNotifCategory('admissions', this)"><i class="fa-solid fa-graduation-cap"></i> Admissions & Academics</button>
+          <button class="notif-pill" onclick="filterNotifCategory('sop', this)"><i class="fa-solid fa-scale-balanced"></i> Rules & SOPs</button>
+          <button class="notif-pill" onclick="filterNotifCategory('estate', this)"><i class="fa-solid fa-city"></i> Estate Sirki Road (43.5 Acres)</button>
+          <button class="notif-pill" onclick="filterNotifCategory('admin', this)"><i class="fa-solid fa-briefcase"></i> Administration & HR</button>
+        </div>
+
+        <!-- Official TEVTA Notification Table (Screenshot 1) -->
+        <div class="table-responsive-card">
+          <table class="tevta-notif-table" id="tevtaNotifTable">
+            <thead>
+              <tr>
+                <th style="width: 70px; text-align: center;">Sr.#</th>
+                <th style="width: 260px;">Notification/Circular No.</th>
+                <th style="width: 130px; text-align: center;">Dated</th>
+                <th>Description / Title</th>
+                <th style="width: 140px; text-align: center;">Download</th>
+              </tr>
+            </thead>
+            <tbody id="tevtaNotifTableBody">
+              <!-- Populated dynamically via renderNotificationsTable() -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB: DOWNLOADS DESK (TEVTA STYLE)          -->
+    <!-- ========================================== -->
+    <section id="tab-downloads" class="tab-page">
+      <div class="container page-container">
+        <div class="page-header-card">
+          <div class="page-header-text">
+            <span class="sub-badge"><i class="fa-solid fa-file-arrow-down"></i> Official Publications</span>
+            <h2>Directorate Downloads Desk</h2>
+            <p>Download official admission prospectuses, quarterly newsletters, Balochistan Skill Magazines, operational handbooks, and industrial estate rulebooks.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-outline-primary" onclick="switchTab('notifications')"><i class="fa-solid fa-bell"></i> View Notifications</button>
+            <button class="btn btn-primary" onclick="switchTab('trainees', '#enrolForm')"><i class="fa-solid fa-pen-to-square"></i> Apply Online</button>
+          </div>
+        </div>
+
+        <!-- Downloads Grid Cards -->
+        <div class="tevta-downloads-grid">
+          <!-- Item 1: Prospectus -->
+          <div class="tevta-download-card">
+            <div class="download-card-icon icon-emerald">
+              <i class="fa-solid fa-file-pdf"></i>
+            </div>
+            <div class="download-card-body">
+              <span class="download-tag">Admission 2026-27</span>
+              <h3>Annual Admission Prospectus 2026-27</h3>
+              <p>Comprehensive guide to 130+ accredited vocational centers, certified trades, eligibility criteria, and examination rules across all districts of Balochistan.</p>
+              <div class="download-card-meta">
+                <span><i class="fa-regular fa-file-lines"></i> 48 Pages</span>
+                <span><i class="fa-regular fa-hard-drive"></i> 4.2 MB PDF</span>
+                <span><i class="fa-regular fa-calendar"></i> August 2026</span>
+              </div>
+            </div>
+            <div class="download-card-action">
+              <button class="btn btn-download-green" onclick="triggerDownload('prospectus')">
+                <i class="fa-solid fa-download"></i> Download Prospectus
+              </button>
+            </div>
+          </div>
+
+          <!-- Item 2: News Letters -->
+          <div class="tevta-download-card">
+            <div class="download-card-icon icon-navy">
+              <i class="fa-solid fa-newspaper"></i>
+            </div>
+            <div class="download-card-body">
+              <span class="download-tag">Quarterly Bulletin</span>
+              <h3>Directorate Quarterly Newsletter (Vol. 14)</h3>
+              <p>Highlights of provincial artisan expos, infrastructure upgrades at Sirki Road Industrial Estate (43.5 Acres), trainee convocation, and trade induction.</p>
+              <div class="download-card-meta">
+                <span><i class="fa-regular fa-file-lines"></i> 16 Pages</span>
+                <span><i class="fa-regular fa-hard-drive"></i> 2.8 MB PDF</span>
+                <span><i class="fa-regular fa-calendar"></i> September 2026</span>
+              </div>
+            </div>
+            <div class="download-card-action">
+              <button class="btn btn-download-green" onclick="triggerDownload('newsletter')">
+                <i class="fa-solid fa-download"></i> Download Newsletter
+              </button>
+            </div>
+          </div>
+
+          <!-- Item 3: Skill Magazine -->
+          <div class="tevta-download-card">
+            <div class="download-card-icon icon-gold">
+              <i class="fa-solid fa-book-journal-whills"></i>
+            </div>
+            <div class="download-card-body">
+              <span class="download-tag">Official Publication</span>
+              <h3>Balochistan Skill Magazine (Hunarmand Balochistan)</h3>
+              <p>Special feature on indigenous Balochi Doch embroidery, carpet weaving guilds, marble mosaic, and modern CNC machinery adoption in cottage sectors.</p>
+              <div class="download-card-meta">
+                <span><i class="fa-regular fa-file-lines"></i> 32 Pages</span>
+                <span><i class="fa-regular fa-hard-drive"></i> 5.1 MB PDF</span>
+                <span><i class="fa-regular fa-calendar"></i> October 2026</span>
+              </div>
+            </div>
+            <div class="download-card-action">
+              <button class="btn btn-download-green" onclick="triggerDownload('magazine')">
+                <i class="fa-solid fa-download"></i> Download Magazine
+              </button>
+            </div>
+          </div>
+
+          <!-- Item 4: Center SOPs & Trade Syllabus -->
+          <div class="tevta-download-card">
+            <div class="download-card-icon icon-purple">
+              <i class="fa-solid fa-book-open"></i>
+            </div>
+            <div class="download-card-body">
+              <span class="download-tag">Institutional Guidelines</span>
+              <h3>Field Centers Operational Handbook & Trade Curricula</h3>
+              <p>Accreditation standards, instructor guidelines, daily logbook management, examination protocols, and machinery maintenance for 130+ field centers.</p>
+              <div class="download-card-meta">
+                <span><i class="fa-regular fa-file-lines"></i> 64 Pages</span>
+                <span><i class="fa-regular fa-hard-drive"></i> 3.6 MB PDF</span>
+                <span><i class="fa-regular fa-calendar"></i> July 2026</span>
+              </div>
+            </div>
+            <div class="download-card-action">
+              <button class="btn btn-download-green" onclick="triggerDownload('handbook')">
+                <i class="fa-solid fa-download"></i> Download Handbook
+              </button>
+            </div>
+          </div>
+
+          <!-- Item 5: Estate Rules & Allotment Guidelines -->
+          <div class="tevta-download-card">
+            <div class="download-card-icon icon-teal">
+              <i class="fa-solid fa-city"></i>
+            </div>
+            <div class="download-card-body">
+              <span class="download-tag">Estate Office Sirki Road</span>
+              <h3>Industrial Plot Allotment Regulations & Lease Deeds (43.5 Acres)</h3>
+              <p>Standardized allotment rules, construction bylaws, utility NOC procedures, and 99-year lease agreement proformas for Small Industrial Estate Sirki Road, Quetta.</p>
+              <div class="download-card-meta">
+                <span><i class="fa-regular fa-file-lines"></i> 24 Pages</span>
+                <span><i class="fa-regular fa-hard-drive"></i> 1.9 MB PDF</span>
+                <span><i class="fa-regular fa-calendar"></i> May 2026</span>
+              </div>
+            </div>
+            <div class="download-card-action">
+              <button class="btn btn-download-green" onclick="triggerDownload('estaterules')">
+                <i class="fa-solid fa-download"></i> Download Regulations
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: TRAINEE ENROLMENT (WITH REJECTION REASON TAB & SEQUENCE) -->
+    <!-- ========================================== -->
+    <section id="tab-trainees" class="tab-page">
+      <div class="container page-container">
+        <div class="page-header-card">
+          <div class="page-header-text">
+            <span class="sub-badge"><i class="fa-solid fa-graduation-cap"></i> Directorate of Vocational Training</span>
+            <h2>Online Trainee Admission & Trainee Registry</h2>
+            <p>Register trainees across accredited centers in Balochistan. Trainees are organized in sequence by center. In accordance with Directorate rules, <strong>CNIC, Bank Account Number, and Government Vendor Number are strictly checked for uniqueness</strong>.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-outline-primary" onclick="switchTab('centers')"><i class="fa-solid fa-list-ul"></i> Centers Directory</button>
+            <button class="btn btn-primary" onclick="document.getElementById('enrolForm').scrollIntoView({behavior: 'smooth'})"><i class="fa-solid fa-plus"></i> New Trainee Form</button>
+            <button id="btnAdminDownloadTraineesTop" class="btn btn-gold" onclick="downloadTraineesCSV()" style="display: none;"><i class="fa-solid fa-file-csv"></i> Download Register (CSV)</button>
+          </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- CONFIDENTIAL LOCKED CARD (VISIBLE WHEN NOT LOGGED IN AS ADMIN) -->
+        <!-- ============================================================== -->
+        <div id="lockedTraineesSection" class="locked-trainee-card">
+          <div class="locked-card-header">
+            <div class="locked-icon-circle">
+              <i class="fa-solid fa-user-lock"></i>
+            </div>
+            <div>
+              <h3>Enrolled Trainees Registry & Downloads (Confidential • Admin Access Only)</h3>
+              <p>Official Directorate Registry • Confidential Records Restricted to Authorized Administration</p>
+            </div>
+          </div>
+          <div class="locked-card-desc">
+            <p style="margin: 0 0 8px 0;"><strong><i class="fa-solid fa-shield-halved" style="color: #064e2e;"></i> Privacy & Data Protection Protocol:</strong> Under Government of Balochistan policies, candidate admission rolls, CNIC numbers, Bank Account / IBAN credentials, and Provincial Vendor Numbers are confidential.</p>
+            <p style="margin: 0; color: #475569;">To view the full enrolled trainees sequential register or download the complete registry data (CSV), please authenticate as an authorized Administrator below or via the HQ Admin Portal.</p>
+          </div>
+          <div class="locked-card-actions">
+            <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+              <button class="btn btn-primary" onclick="switchTab('admin')">
+                <i class="fa-solid fa-lock"></i> HQ Admin Portal Login
+              </button>
+              <button class="btn btn-outline-primary" onclick="document.getElementById('enrolForm').scrollIntoView({behavior: 'smooth'})">
+                <i class="fa-solid fa-file-pen"></i> Submit Enrolment Application
+              </button>
+            </div>
+            <div class="quick-unlock-wrap">
+              <form onsubmit="handleTraineeTabQuickUnlock(event)" style="display: flex; gap: 8px; align-items: center;">
+                <input type="password" id="traineeTabAdminPass" placeholder="Admin Passphrase to unlock..." required style="width: 220px; padding: 8px 12px; font-size: 0.88rem;">
+                <button type="submit" class="btn btn-gold btn-sm"><i class="fa-solid fa-key"></i> Unlock Register</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- ADMIN ONLY: ENROLLED TRAINEES SEQUENTIAL DIRECTORY & DOWNLOADS -->
+        <!-- ============================================================== -->
+        <div id="adminTraineesSection" style="display: none;">
+          <!-- Trainee Filter / Status Navigation with REJECTION REASON TAB -->
+          <div class="trainee-status-tabs-wrap">
+            <button class="status-tab-btn active" onclick="filterTraineeView('all', this)">
+              <i class="fa-solid fa-users"></i> All Enrolled Trainees (<span id="countTraineesAll">0</span>)
+            </button>
+            <button class="status-tab-btn" onclick="filterTraineeView('Approved', this)">
+              <i class="fa-solid fa-circle-check" style="color: #15803d;"></i> Confirmed Admissions (<span id="countTraineesApproved">0</span>)
+            </button>
+            <button class="status-tab-btn" onclick="filterTraineeView('Under Scrutiny', this)">
+              <i class="fa-solid fa-hourglass-half" style="color: #b45309;"></i> In Scrutiny (<span id="countTraineesScrutiny">0</span>)
+            </button>
+            <button class="status-tab-btn btn-tab-rejected" onclick="filterTraineeView('Rejected', this)">
+              <i class="fa-solid fa-ban" style="color: #b91c1c;"></i> Rejected Trainees & Reasons Tab (<span id="countTraineesRejected">0</span>)
+            </button>
+          </div>
+
+          <!-- Trainee Directory Card (Sequential by Center) -->
+          <div class="form-card" style="margin-bottom: 28px;">
+            <div class="form-card-header">
+              <div>
+                <h3 id="traineeListTitle"><i class="fa-solid fa-graduation-cap"></i> Enrolled Trainees (Ordered by Center Sequence)</h3>
+                <p>Trainees automatically organized in continuous sequence by allocated center • <strong>Admin Authorized Access</strong></p>
+              </div>
+              <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <div id="rejectionTabBadge" class="pill-badge status-rejected" style="display: none;">
+                  <i class="fa-solid fa-circle-info"></i> Viewing Rejection Reasons
+                </div>
+                <button class="btn btn-sm btn-gold" onclick="downloadTraineesCSV()">
+                  <i class="fa-solid fa-file-csv"></i> Download Trainees Register (CSV)
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-data-table" id="publicTraineesTable">
+                <thead>
+                  <tr>
+                    <th>Roll / Token</th>
+                    <th>Center Name & Code</th>
+                    <th>Candidate Particulars</th>
+                    <th>CNIC Number</th>
+                    <th>Trade / Course</th>
+                    <th>Status</th>
+                    <th id="rejectionReasonTh">Admission Note / Rejection Reason</th>
+                    <th>Slip</th>
+                  </tr>
+                </thead>
+                <tbody id="publicTraineesBody">
+                  <!-- Injected sequentially via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trainee Form Card -->
+        <div class="form-card" id="enrolForm">
+          <div class="form-card-header">
+            <div class="form-header-title">
+              <div class="form-icon-circle"><i class="fa-solid fa-file-pen"></i></div>
+              <div>
+                <h3>Trainee Admission Application Form</h3>
+                <p>Ensure Bank Account & Vendor credentials match the applicant's official AG Balochistan record</p>
+              </div>
+            </div>
+            <div class="form-badge badge-gold"><i class="fa-solid fa-shield-halved"></i> Duplicate Protected</div>
+          </div>
+
+          <!-- Live Duplicate Alert Container -->
+          <div id="duplicateAlertBox" class="alert-box-warning" style="display: none;">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span id="duplicateAlertMessage">A duplicate record was detected.</span>
+          </div>
+
+          <form id="traineeEnrollmentForm" onsubmit="handleTraineeSubmit(event)">
+            
+            <!-- Section 1: Candidate Particulars -->
+            <div class="form-section-title"><i class="fa-solid fa-user"></i> 1. Candidate Personal Particulars</div>
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label for="trFullName">Candidate Full Name <span class="req">*</span></label>
+                <input type="text" id="trFullName" required placeholder="e.g. Bibi Mehrin Baloch">
+              </div>
+
+              <div class="form-group">
+                <label for="trFatherName">Father's / Guardian's Name <span class="req">*</span></label>
+                <input type="text" id="trFatherName" required placeholder="e.g. Master Abdul Sattar">
+              </div>
+
+              <div class="form-group">
+                <label for="trCnic">CNIC / Form-B Number <span class="req">*</span> <small class="text-danger">(Unique)</small></label>
+                <input type="text" id="trCnic" required placeholder="54400-XXXXXXX-X" maxlength="15" oninput="formatCNIC(this)" onblur="checkFieldDuplicate('cnic', this.value)">
+                <small class="form-hint">Duplicate CNIC is strictly prohibited</small>
+              </div>
+
+              <div class="form-group">
+                <label for="trGender">Gender <span class="req">*</span></label>
+                <select id="trGender" required>
+                  <option value="">-- Select Gender --</option>
+                  <option value="Female">Female</option>
+                  <option value="Male">Male</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="trDob">Date of Birth <span class="req">*</span></label>
+                <input type="date" id="trDob" required max="2010-01-01" min="1970-01-01">
+              </div>
+
+              <div class="form-group">
+                <label for="trPhone">Mobile Contact Number <span class="req">*</span></label>
+                <input type="tel" id="trPhone" required placeholder="03XXXXXXXXX" maxlength="11">
+              </div>
+            </div>
+
+            <!-- Section 2: Bank & Vendor No -->
+            <div class="form-section-title">
+              <i class="fa-solid fa-building-columns"></i> 2. Bank & Vendor Credentials
+              <span class="pill-badge pill-green" style="margin-left: 10px; font-size: 0.72rem;"><i class="fa-solid fa-lock"></i> Strict Unique Check</span>
+            </div>
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label for="trBankName">Bank Name <span class="req">*</span></label>
+                <select id="trBankName" required>
+                  <option value="">-- Select Bank --</option>
+                  <option value="National Bank of Pakistan (NBP)">National Bank of Pakistan (NBP)</option>
+                  <option value="Bank of Khyber (BOK)">Bank of Khyber (BOK)</option>
+                  <option value="Habib Bank Limited (HBL)">Habib Bank Limited (HBL)</option>
+                  <option value="United Bank Limited (UBL)">United Bank Limited (UBL)</option>
+                  <option value="MCB Bank Limited">MCB Bank Limited</option>
+                  <option value="Allied Bank Limited (ABL)">Allied Bank Limited (ABL)</option>
+                  <option value="Bank Alfalah">Bank Alfalah</option>
+                  <option value="Meezan Bank Limited">Meezan Bank Limited</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="trAccountNo">Bank Account / IBAN Number <span class="req">*</span> <small class="text-danger">(Unique)</small></label>
+                <input type="text" id="trAccountNo" required placeholder="e.g. 0010023456789012 or PK36NBPA..." onblur="checkFieldDuplicate('accountNo', this.value)">
+                <small class="form-hint">Duplicate bank account is blocked</small>
+              </div>
+
+              <div class="form-group">
+                <label for="trVendorNo">AG Balochistan / SAP Vendor Number <span class="req">*</span> <small class="text-danger">(Unique)</small></label>
+                <input type="text" id="trVendorNo" required placeholder="e.g. VR-304912 or 3004819" onblur="checkFieldDuplicate('vendorNo', this.value)">
+                <small class="form-hint">Government vendor registration ID</small>
+              </div>
+            </div>
+
+            <!-- Section 3: Official Center & Trade Selection -->
+            <div class="form-section-title"><i class="fa-solid fa-map-location-dot"></i> 3. Center & Trade Selection (Official Network)</div>
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label for="trDistrict">Domicile District <span class="req">*</span></label>
+                <select id="trDistrict" required onchange="handleTraineeDistrictChange(this.value)">
+                  <option value="">-- Select District --</option>
+                </select>
+              </div>
+
+              <div class="form-group full-width" style="grid-column: span 2;">
+                <label for="trCenter">Allocated Training Center (Official Centers List) <span class="req">*</span></label>
+                <select id="trCenter" required onchange="handleCenterSelectChange(this.value)">
+                  <option value="">-- First Select District Above --</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="trCourse">Trade / Course <span class="req">*</span></label>
+                <input type="text" id="trCourse" required placeholder="Auto-populated from Center Trade" readonly style="background: #f1f5f9; font-weight: bold; color: #064e2e;">
+              </div>
+
+              <div class="form-group">
+                <label for="trShift">Training Shift <span class="req">*</span></label>
+                <select id="trShift" required>
+                  <option value="Morning (08:30 AM - 01:30 PM)">Morning (08:30 AM - 01:30 PM)</option>
+                  <option value="Afternoon (02:00 PM - 06:00 PM)">Afternoon (02:00 PM - 06:00 PM)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="trQualification">Academic Qualification <span class="req">*</span></label>
+                <select id="trQualification" required>
+                  <option value="Middle (8th Grade)">Middle (8th Grade)</option>
+                  <option value="Matriculation (SSC)">Matriculation (SSC)</option>
+                  <option value="Intermediate (F.A / F.Sc)">Intermediate (F.A / F.Sc)</option>
+                  <option value="Diploma (DAE)">Diploma of Associate Engineering (DAE)</option>
+                  <option value="Graduation (BA/BSc)">Graduation (BA / BSc / BS)</option>
+                  <option value="Literate / Traditional">Literate / Traditional Artisan</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group full-width">
+              <label for="trAddress">Permanent Residential Address <span class="req">*</span></label>
+              <input type="text" id="trAddress" required placeholder="Village, Killi, Tehsil, District">
+            </div>
+
+            <div class="form-declaration">
+              <label class="checkbox-label">
+                <input type="checkbox" id="trDeclaration" required>
+                <span>I solemnly affirm that the CNIC, Bank Account Number, and Vendor Number provided belong strictly to the candidate. I agree that duplicate entries will result in immediate disqualification and rejection.</span>
+              </label>
+            </div>
+
+            <div class="form-actions">
+              <button type="reset" class="btn btn-outline-gray"><i class="fa-solid fa-rotate-left"></i> Reset Form</button>
+              <button type="submit" class="btn btn-primary btn-lg"><i class="fa-solid fa-id-card"></i> Verify & Submit Enrolment</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: CENTERS & TRADES DIRECTORY          -->
+    <!-- ========================================== -->
+    <section id="tab-centers" class="tab-page">
+      <div class="container page-container">
+        <div class="page-header-card">
+          <div class="page-header-text">
+            <span class="sub-badge"><i class="fa-solid fa-network-wired"></i> Official Directorate Network</span>
+            <h2>Small Industries Wing Balochistan — Centers & Trades Directory</h2>
+            <p>Official list of 130+ Small Industries Centers across Quetta, Killah Abdullah, Pishin, Kalat, Mastung, Khuzdar, Lasbela, Jaffarabad, Sibi, Loralai, Gwadar, Turbat/Kech, and all divisions.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-outline-primary" onclick="exportCentersCSV()"><i class="fa-solid fa-download"></i> Export Centers List (CSV)</button>
+          </div>
+        </div>
+
+        <div class="admin-table-header">
+          <div class="admin-filter-group">
+            <input type="text" id="centerSearchQuery" placeholder="Search center code, name, trade..." oninput="renderCentersDirectory()">
+            <select id="centerFilterDistrict" onchange="renderCentersDirectory()">
+              <option value="All">All Districts / Divisions</option>
+            </select>
+            <select id="centerFilterStatus" onchange="renderCentersDirectory()">
+              <option value="All">All Statuses</option>
+              <option value="Functional">Functional Centers</option>
+              <option value="Non-functional">Non-functional Centers</option>
+            </select>
+          </div>
+          <div>
+            <span id="centerCountDisplay" style="font-weight: 700; color: #064e2e;">Showing Centers</span>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="admin-data-table" id="centersDirectoryTable">
+            <thead>
+              <tr>
+                <th>Center Code</th>
+                <th>Center Name</th>
+                <th>District / Location</th>
+                <th>Official Trade</th>
+                <th>Center Status</th>
+                <th>Premises Type</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="centersDirectoryBody">
+              <!-- Populated dynamically via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 4: ESTATE OFFICE SIRKI ROAD QUETTA ONLY -->
+    <!-- ========================================== -->
+    <section id="tab-estates" class="tab-page">
+      <div class="container page-container">
+        <div class="page-header-card">
+          <div class="page-header-text">
+            <span class="sub-badge"><i class="fa-solid fa-building-flag"></i> Directorate of Small Industries</span>
+            <h2>Small Industrial Estate Office, Sirki Road, Quetta</h2>
+            <p>Administering 43.5 Acres of developed SME industrial land on Sirki Road, Quetta. Dedicated zones for Marble Processing, Cold Storage, Carpet Weaving, Handlooms, Food Processing, and Light Engineering.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-primary" onclick="document.getElementById('plotForm').scrollIntoView({behavior: 'smooth'})"><i class="fa-solid fa-file-signature"></i> Apply for Industrial Plot</button>
+          </div>
+        </div>
+
+        <!-- Sirki Road Estate Highlights -->
+        <div class="sirki-estate-banner">
+          <div class="sirki-banner-left">
+            <span class="estate-tag tag-gold"><i class="fa-solid fa-location-dot"></i> Directorate of Small Industries, Sirki Road, Quetta</span>
+            <h3>Small Industrial Estate, Sirki Road, Quetta</h3>
+            <p>
+              Established under the Directorate of Small Industries Balochistan to promote local manufacturing and value addition. Fully equipped with dedicated 11kV electrical feeders, Sui Northern Gas connections, municipal water lines, and wide arterial road networks connecting directly to Sariab Road and Western Bypass.
+            </p>
+            <div class="sirki-specs-grid">
+              <div class="spec-item">
+                <i class="fa-solid fa-expand"></i>
+                <div><strong>Total Land Area:</strong> 43.5 Acres Planned</div>
+              </div>
+              <div class="spec-item">
+                <i class="fa-solid fa-bolt"></i>
+                <div><strong>Power Supply:</strong> Dedicated QESC Industrial Feeder</div>
+              </div>
+              <div class="spec-item">
+                <i class="fa-solid fa-fire-flame-curved"></i>
+                <div><strong>Sui Gas Supply:</strong> Dedicated Commercial Line</div>
+              </div>
+              <div class="spec-item">
+                <i class="fa-solid fa-industry"></i>
+                <div><strong>Key Sectors:</strong> Marble, Carpet, Cold Storage, SME</div>
+              </div>
+            </div>
+          </div>
+          <div class="sirki-banner-right">
+            <div class="estate-stat-card">
+              <h4>Estate Office Quetta Desk</h4>
+              <p>In-charge Estate Officer: <strong>Directorate SIW Quetta</strong></p>
+              <div class="divider"></div>
+              <div class="estate-quick-facts">
+                <div><span>Total Plots:</span> <strong>280 Units</strong></div>
+                <div><span>Operational Units:</span> <strong>194 Factories</strong></div>
+                <div><span>Vacant / Re-allocation:</span> <strong>22 Plots</strong></div>
+                <div><span>Lease Period:</span> <strong>99 Years Renewable</strong></div>
+              </div>
+              <button class="btn btn-gold btn-block" style="margin-top: 14px;" onclick="document.getElementById('plotForm').scrollIntoView({behavior: 'smooth'})">
+                <i class="fa-solid fa-file-contract"></i> Submit Plot Expression of Interest
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Plot Application Form -->
+        <div class="form-card" id="plotForm">
+          <div class="form-card-header">
+            <div class="form-header-title">
+              <div class="form-icon-circle"><i class="fa-solid fa-building-wheat"></i></div>
+              <div>
+                <h3>Plot Allotment Application — Small Industrial Estate Sirki Road Quetta</h3>
+                <p>Submit your formal application to the Estate Office, Sirki Road, Quetta</p>
+              </div>
+            </div>
+            <div class="form-badge badge-gold"><i class="fa-solid fa-stamp"></i> Estate Office Sirki Road</div>
+          </div>
+
+          <form id="estatePlotForm" onsubmit="handlePlotSubmit(event)">
+            <div class="form-section-title"><i class="fa-solid fa-briefcase"></i> 1. Enterprise & Sponsor Information</div>
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label for="epCompanyName">Proposed Enterprise / Factory Name <span class="req">*</span></label>
+                <input type="text" id="epCompanyName" required placeholder="e.g. Bolan Marble & Granite Works Quetta">
+              </div>
+
+              <div class="form-group">
+                <label for="epOwnerName">Principal Sponsor / Proprietor Name <span class="req">*</span></label>
+                <input type="text" id="epOwnerName" required placeholder="e.g. Haji Ghulam Nabi Kakar">
+              </div>
+
+              <div class="form-group">
+                <label for="epCnic">Sponsor CNIC Number <span class="req">*</span></label>
+                <input type="text" id="epCnic" required placeholder="54400-XXXXXXX-X" maxlength="15" oninput="formatCNIC(this)">
+              </div>
+
+              <div class="form-group">
+                <label for="epNtn">FBR NTN Number</label>
+                <input type="text" id="epNtn" placeholder="e.g. 7483921-5">
+              </div>
+
+              <div class="form-group">
+                <label for="epPhone">Contact Phone Number <span class="req">*</span></label>
+                <input type="tel" id="epPhone" required placeholder="03XXXXXXXXX">
+              </div>
+
+              <div class="form-group">
+                <label for="epEmail">Email Address <span class="req">*</span></label>
+                <input type="email" id="epEmail" required placeholder="contact@enterprise.com">
+              </div>
+            </div>
+
+            <div class="form-section-title"><i class="fa-solid fa-ruler-combined"></i> 2. Plot Specifications at Sirki Road Quetta</div>
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label for="epEstateFixed">Industrial Estate Location</label>
+                <input type="text" id="epEstateFixed" value="Small Industrial Estate, Sirki Road, Quetta" readonly style="background: #f1f5f9; font-weight: bold; color: #064e2e;">
+              </div>
+
+              <div class="form-group">
+                <label for="epPlotSize">Required Plot Size <span class="req">*</span></label>
+                <select id="epPlotSize" required>
+                  <option value="500 Sq. Yards (Cottage / Workshop)">500 Sq. Yards (Cottage / Workshop)</option>
+                  <option value="1,000 Sq. Yards (Standard SME)">1,000 Sq. Yards (Standard SME)</option>
+                  <option value="0.5 Acre (2,420 Sq. Yards)">0.5 Acre (2,420 Sq. Yards)</option>
+                  <option value="1.0 Acre (4,840 Sq. Yards)">1.0 Acre (4,840 Sq. Yards - Processing Unit)</option>
+                  <option value="2.0 Acres (Anchor Industry)">2.0 Acres (Anchor Industry)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="epIndustryCategory">Industrial Sector Classification <span class="req">*</span></label>
+                <select id="epIndustryCategory" required>
+                  <option value="Marble Cutting & Granite Finishing">Marble Cutting & Granite Finishing</option>
+                  <option value="Cold Storage & Fruit Preservation">Cold Storage & Fruit Preservation</option>
+                  <option value="Carpet Weaving & Textile Handicrafts">Carpet Weaving & Textile Handicrafts</option>
+                  <option value="Light Engineering & Metal Fabrication">Light Engineering & Metal Fabrication</option>
+                  <option value="Food, Flour & Spice Processing">Food, Flour & Spice Processing</option>
+                  <option value="Leather Crafting & Footwear Assembly">Leather Crafting & Footwear Assembly</option>
+                  <option value="Plastic Moulding & Packaging">Plastic Moulding & Packaging</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="epInvestment">Estimated Capital Investment (PKR Million) <span class="req">*</span></label>
+                <input type="number" id="epInvestment" min="1" step="0.5" required placeholder="e.g. 15 (PKR 15 Million)">
+              </div>
+
+              <div class="form-group">
+                <label for="epEmployment">Projected Direct Jobs Created <span class="req">*</span></label>
+                <input type="number" id="epEmployment" min="1" required placeholder="e.g. 25">
+              </div>
+
+              <div class="form-group">
+                <label for="epPowerWater">Estimated Power Load & Water Need</label>
+                <input type="text" id="epPowerWater" placeholder="e.g. 75 kW Load, 2,000 Gal/Day">
+              </div>
+            </div>
+
+            <div class="form-group full-width">
+              <label for="epBrief">Brief Project Description & Production Plan <span class="req">*</span></label>
+              <textarea id="epBrief" rows="3" required placeholder="Describe proposed industrial operations, machinery to be installed at Sirki Road Quetta, and effluent treatment compliance..."></textarea>
+            </div>
+
+            <div class="form-declaration">
+              <label class="checkbox-label">
+                <input type="checkbox" id="epDeclaration" required>
+                <span>We undertake that the allotted plot at Small Industrial Estate Sirki Road Quetta shall be utilized strictly for industrial production within 18 months, complying with Directorate bylaws.</span>
+              </label>
+            </div>
+
+            <div class="form-actions">
+              <button type="reset" class="btn btn-outline-gray"><i class="fa-solid fa-rotate-left"></i> Clear</button>
+              <button type="submit" class="btn btn-gold btn-lg"><i class="fa-solid fa-stamp"></i> Submit Plot Application to Sirki Road Office</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 5: MULTI-DESK E-FILING SYSTEM          -->
+    <!-- (Center ➔ Directorate Only | Directorate ➔ Centers, BTEVTA, Labour | Addressed-Only Privacy) -->
+    <!-- ========================================== -->
+    <section id="tab-efiling" class="tab-page">
+      <div class="container page-container">
+        <div class="page-header-card">
+          <div class="page-header-text">
+            <span class="sub-badge"><i class="fa-solid fa-sitemap"></i> Inter-Departmental Official Movement</span>
+            <h2>Multi-Desk E-Filing System (Addressed-Only Confidentiality)</h2>
+            <p>
+              Official electronic movement protocol: <strong>District Centers file only to Directorate HQ</strong>. 
+              <strong>Directorate HQ despatches to Centers, B-TEVTA, or Labour Department</strong>. 
+              Files are strictly visible only to the addressed desk to protect official confidentiality.
+            </p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-outline-primary" onclick="switchTab('tracking')"><i class="fa-solid fa-magnifying-glass"></i> Track File Token</button>
+            <button class="btn btn-primary" onclick="document.getElementById('efilingForm').scrollIntoView({behavior: 'smooth'})"><i class="fa-solid fa-paper-plane"></i> Lodge New Official File</button>
+          </div>
+        </div>
+
+        <!-- Addressed-Only View Desk Switcher Banner -->
+        <div class="desk-switcher-banner">
+          <div class="desk-switcher-left">
+            <i class="fa-solid fa-shield-halved desk-icon"></i>
+            <div>
+              <strong>Active Official Desk View (Confidentiality Filter):</strong>
+              <p>Select your authorized desk to view files specifically addressed to or originated by your office:</p>
+            </div>
+          </div>
+          <div class="desk-switcher-right">
+            <select id="efileActiveDeskView" onchange="handleDeskViewFilterChange(this.value)" class="select-desk-filter">
+              <option value="Directorate (HQ) Quetta">🏢 Directorate (HQ) Quetta Desk (Inbox & Sent)</option>
+              <option value="District Centers">🏫 District Training Centers Desk</option>
+              <option value="B-TEVTA Balochistan">📜 B-TEVTA Balochistan Desk</option>
+              <option value="Labour & Manpower Department">🏛️ Labour & Manpower Department Desk</option>
+              <option value="All (Authorized Headquarters Audit)">🔐 Full Audit View (Admin Only)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Confidentiality Badge Indicator -->
+        <div class="privacy-active-callout" id="deskPrivacyIndicator">
+          <i class="fa-solid fa-user-lock"></i>
+          <span id="deskPrivacyText">Displaying files strictly addressed to or originated by Directorate (HQ) Quetta Desk.</span>
+        </div>
+
+        <!-- Addressed Files Registry Table -->
+        <div class="form-card" style="margin-bottom: 28px;">
+          <div class="form-card-header">
+            <div>
+              <h3><i class="fa-solid fa-folder-closed"></i> Desk In-Tray & Movement Register</h3>
+              <p>Confidential electronic movements matching the active desk</p>
+            </div>
+            <div>
+              <span id="deskFileCountBadge" class="pill-badge pill-green">0 Files in Desk</span>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-data-table" id="deskFilteredFilesTable">
+              <thead>
+                <tr>
+                  <th>Token ID</th>
+                  <th>Originating Desk (Sender)</th>
+                  <th>Addressed To (Recipient)</th>
+                  <th>File Subject</th>
+                  <th>Category</th>
+                  <th>Stage</th>
+                  <th>Docs</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="deskFilteredFilesBody">
+                <!-- Injected via JS based on addressed-only privacy -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- E-Filing Submission Form with Dynamic Routing Rules -->
+        <div class="form-card" id="efilingForm">
+          <div class="form-card-header">
+            <div class="form-header-title">
+              <div class="form-icon-circle"><i class="fa-solid fa-file-import"></i></div>
+              <div>
+                <h3>Lodge Electronic File / Official Minute</h3>
+                <p>Select originating desk and destination according to official Balochistan Secretariat protocol</p>
+              </div>
+            </div>
+            <div class="form-badge badge-blue"><i class="fa-solid fa-lock"></i> Addressed-Only Route</div>
+          </div>
+
+          <form id="efilingSubmitForm" onsubmit="handleEfilingSubmit(event)">
+            <div class="form-section-title"><i class="fa-solid fa-arrows-split-up-and-left"></i> 1. Official Origin & Routing Desks</div>
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label for="efSenderSide">Originating Side (Sender Desk) <span class="req">*</span></label>
+                <select id="efSenderSide" required onchange="handleSenderSideChange(this.value)">
+                  <option value="District Center Incharge">🏫 District Center Incharge</option>
+                  <option value="Directorate (HQ) Quetta">🏢 Directorate (HQ) Quetta</option>
+                  <option value="B-TEVTA Balochistan">📜 B-TEVTA Balochistan Office</option>
+                  <option value="Labour & Manpower Department">🏛️ Labour & Manpower Department</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="efRecipientSide">Addressed To (Destination Desk) <span class="req">*</span></label>
+                <select id="efRecipientSide" required>
+                  <!-- Dynamically populated based on rules -->
+                </select>
+                <small class="form-hint" id="recipientRoutingHint">Centers can only route files to Directorate (HQ) Quetta.</small>
+              </div>
+
+              <div class="form-group" id="centerSelectionGroup">
+                <label for="efCenterSelect">Originating Center (if Center Incharge)</label>
+                <select id="efCenterSelect" onchange="handleEfilingCenterChange(this.value)">
+                  <option value="">-- Select Center from Official List --</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="efInchargeName">Officer / Incharge Name <span class="req">*</span></label>
+                <input type="text" id="efInchargeName" required placeholder="e.g. Engr. Muhammad Hashim Baloch">
+              </div>
+
+              <div class="form-group">
+                <label for="efDesignation">Official Designation <span class="req">*</span></label>
+                <select id="efDesignation" required>
+                  <option value="Center Incharge / Supervisor">Center Incharge / Supervisor</option>
+                  <option value="Director Small Industries">Director Small Industries</option>
+                  <option value="Managing Director (MD) B-TEVTA">Managing Director (MD) B-TEVTA</option>
+                  <option value="Secretary Labour & Manpower">Secretary Labour & Manpower</option>
+                  <option value="Deputy Director Field Operations">Deputy Director Field Operations</option>
+                  <option value="Assistant Director Accounts">Assistant Director Accounts</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="efPhone">Contact Official Phone <span class="req">*</span></label>
+                <input type="tel" id="efPhone" required placeholder="03XXXXXXXXX" maxlength="11">
+              </div>
+            </div>
+
+            <!-- Subject & Category -->
+            <div class="form-section-title"><i class="fa-solid fa-pen-nib"></i> 2. File Subject & Official Minute</div>
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label for="efCategory">Matter Classification <span class="req">*</span></label>
+                <select id="efCategory" required>
+                  <option value="Trainee Monthly Attendance & Account Bill">Trainee Monthly Attendance & Account Bill</option>
+                  <option value="Raw Materials & Machinery Requisition">Raw Materials & Machinery Requisition</option>
+                  <option value="Building Repair & Maintenance Contingency">Building Repair & Maintenance Contingency</option>
+                  <option value="B-TEVTA Examination & Certification">B-TEVTA Examination & Certification</option>
+                  <option value="Center Utility & Fuel Settlement">Center Utility & Fuel Settlement</option>
+                  <option value="Artisan Support & Toolkit Grant Case">Artisan Support & Toolkit Grant Case</option>
+                  <option value="Executive Directive / Notification">Executive Directive / Notification</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="efUrgency">Official Urgency Priority <span class="req">*</span></label>
+                <select id="efUrgency" required>
+                  <option value="Routine">Routine (Regular Despatch)</option>
+                  <option value="Urgent">Urgent (48 Hours Timeline)</option>
+                  <option value="Immediate Priority">Immediate Priority (Direct Table Review)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="efCenterCodeDisplay">Center / Branch Code</label>
+                <input type="text" id="efCenterCode" readonly placeholder="N/A" style="background: #f1f5f9; font-weight: bold; color: #064e2e;">
+              </div>
+            </div>
+
+            <div class="form-group full-width">
+              <label for="efSubject">File Subject Line <span class="req">*</span></label>
+              <input type="text" id="efSubject" required placeholder="e.g. Official Requisition for Trade Examination and Toolkits Batch 2026">
+            </div>
+
+            <div class="form-group full-width">
+              <label for="efDetails">Detailed Minute Note / Case Summary <span class="req">*</span></label>
+              <textarea id="efDetails" rows="4" required placeholder="Write official minute note, diary number, details of case, and relief or sanction requested..."></textarea>
+            </div>
+
+            <!-- SIMPLIFIED DOCUMENT ATTACHMENT AREA -->
+            <div class="form-section-title"><i class="fa-solid fa-paperclip"></i> 3. Attach Supporting Documents (Simple Multi-File Drop)</div>
+            
+            <div class="simple-upload-dropzone" id="uploadDropzone" onclick="document.getElementById('efSimpleFileInput').click()">
+              <input type="file" id="efSimpleFileInput" multiple style="display: none;" onchange="handleSimpleFilesSelected(this.files)" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls">
+              <div class="dropzone-content">
+                <div class="dropzone-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+                <h4>Click or Drag & Drop Documents Here</h4>
+                <p>Attach Monthly Bills, Vendor Sheets, Attendance Registers, CNIC copies, or Official Letters (PDF, Word, Excel, JPG, PNG)</p>
+                <span class="btn btn-sm btn-outline-primary" style="margin-top: 10px;"><i class="fa-solid fa-folder-open"></i> Browse Files on Computer</span>
+              </div>
+            </div>
+
+            <div id="attachedFilesContainer" class="attached-files-list" style="display: none;">
+              <!-- File items injected via JS -->
+            </div>
+
+            <div class="form-actions">
+              <button type="reset" class="btn btn-outline-gray" onclick="resetAttachedFiles()"><i class="fa-solid fa-rotate-left"></i> Reset Form</button>
+              <button type="submit" class="btn btn-primary btn-lg"><i class="fa-solid fa-paper-plane"></i> Despatch Addressed E-File</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 6: TRACK APPLICATION / E-FILE         -->
+    <!-- ========================================== -->
+    <section id="tab-tracking" class="tab-page">
+      <div class="container page-container">
+        <div class="page-header-card">
+          <div class="page-header-text">
+            <span class="sub-badge"><i class="fa-solid fa-magnifying-glass-location"></i> Live Digital Tracking</span>
+            <h2>Track Application, Estate Plot File & E-Filing</h2>
+            <p>Enter your Trainee Roll Number, Sirki Road Plot Reference, or Center E-File Token to view live scrutiny status and movement timestamps.</p>
+          </div>
+        </div>
+
+        <div class="tracker-box-container">
+          <div class="tracker-search-panel">
+            <div class="search-input-wrap">
+              <i class="fa-solid fa-fingerprint tracker-icon"></i>
+              <input type="text" id="mainTrackingInput" placeholder="Enter Token ID (e.g. SIW-TR-2026-101, SIW-EF-2026-401, SIW-EST-2026-301, or CNIC)">
+              <button class="btn btn-primary" onclick="searchTrackingItem()"><i class="fa-solid fa-magnifying-glass"></i> Track Status</button>
+            </div>
+            
+            <div class="tracking-hints">
+              <span>Quick Test Examples:</span>
+              <a href="javascript:void(0)" onclick="quickFillTrack('SIW-TR-2026-101')">SIW-TR-2026-101 (Trainee)</a> • 
+              <a href="javascript:void(0)" onclick="quickFillTrack('SIW-EST-2026-301')">SIW-EST-2026-301 (Sirki Road Plot)</a> • 
+              <a href="javascript:void(0)" onclick="quickFillTrack('SIW-EF-2026-401')">SIW-EF-2026-401 (E-File)</a>
+            </div>
+          </div>
+
+          <div id="trackingResultArea" class="tracking-result-area" style="display: none;">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 8: HQ ADMIN PORTAL (STRONG PASSWORD PROTECTED) -->
+    <!-- ========================================== -->
+    <section id="tab-admin" class="tab-page">
+      <div class="container page-container">
+        
+        <!-- Logged Out State View: SECURE LOGIN WITH NO ON-SCREEN PASSWORD DISPLAY -->
+        <div id="adminLoggedOutState" class="admin-auth-lock-card">
+          <div class="lock-icon-circle">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <h2>Small Industries Wing HQ Control Center</h2>
+          <p class="lock-subtext">Restricted administrative access. Authenticate using your authorized Directorate credentials.</p>
+          
+          <div class="login-box">
+            <form id="adminDirectLoginForm" onsubmit="handleAdminLogin(event)">
+              <div class="form-group text-left">
+                <label for="adminDirectUsername"><i class="fa-solid fa-user-lock"></i> Authorized Administrator ID</label>
+                <input type="text" id="adminDirectUsername" required placeholder="Enter administrative username" autocomplete="username">
+              </div>
+              <div class="form-group text-left" style="position: relative;">
+                <label for="adminDirectPassword"><i class="fa-solid fa-key"></i> Passphrase / Password</label>
+                <div class="password-input-wrap">
+                  <input type="password" id="adminDirectPassword" required placeholder="Enter secure passphrase" autocomplete="current-password">
+                  <button type="button" class="btn-toggle-pwd" onclick="togglePasswordVisibility('adminDirectPassword', this)" title="Show/Hide Password">
+                    <i class="fa-regular fa-eye"></i>
+                  </button>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-lock-open"></i> Secure Sign In</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Logged In State: Active Dashboard -->
+        <div id="adminLoggedInState" style="display: none;">
+          
+          <!-- Admin Dashboard Topbar (Executive Directorate Design) -->
+          <div class="admin-topbar-card">
+            <div class="admin-user-info">
+              <div class="admin-avatar">
+                <i class="fa-solid fa-user-shield"></i>
+              </div>
+              <div>
+                <div class="admin-org-tag"><i class="fa-solid fa-landmark-flag"></i> Government of Balochistan • Directorate of Small Industries</div>
+                <h3>Small Industries Wing Admin Control Bureau (HQ) Quetta</h3>
+                <div class="admin-badges-wrap">
+                  <span class="badge-role"><i class="fa-solid fa-circle-check"></i> Super Administrator (Directorate HQ & Estate Office)</span>
+                  <span class="badge-estate-tag"><i class="fa-solid fa-city"></i> Sirki Road Industrial Estate (43.5 Acres)</span>
+                  <span class="badge-session-tag"><i class="fa-regular fa-clock"></i> Session 2026-27 Active</span>
+                </div>
+              </div>
+            </div>
+            <div class="admin-top-actions">
+              <button class="btn btn-sm btn-admin-action" onclick="openAdminPasswordModal()" title="Change administrator passphrase">
+                <i class="fa-solid fa-key"></i> Change Password
+              </button>
+              <button class="btn btn-sm btn-admin-action" onclick="exportFullSystemBackup()" title="Download full JSON database archive">
+                <i class="fa-solid fa-download"></i> Backup JSON
+              </button>
+              <button class="btn btn-sm btn-admin-action" onclick="resetToSampleData()" title="Reset data to official defaults">
+                <i class="fa-solid fa-rotate-left"></i> Reset Demo Data
+              </button>
+              <button class="btn btn-sm btn-danger btn-signout" onclick="logoutAdmin()" title="Log out from administrative session">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
+              </button>
+            </div>
+          </div>
+
+          <!-- KPI Metric Cards (Executive 4-Column Row) -->
+          <div class="admin-metrics-grid">
+            <div class="kpi-card kpi-card-trainees">
+              <div class="kpi-icon icon-green"><i class="fa-solid fa-user-graduate"></i></div>
+              <div class="kpi-content">
+                <span class="kpi-label">Verified Trainees</span>
+                <h2 id="kpiTraineesCount">0</h2>
+                <div class="kpi-meta-row">
+                  <span class="kpi-tag tag-green"><i class="fa-solid fa-circle-check"></i> Verified</span>
+                  <span class="kpi-rejected-alert"><span id="kpiTraineesRejected">0</span> Rejected with Reason</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="kpi-card kpi-card-estate">
+              <div class="kpi-icon icon-gold"><i class="fa-solid fa-city"></i></div>
+              <div class="kpi-content">
+                <span class="kpi-label">Sirki Road Plots</span>
+                <h2 id="kpiEstatesCount">0</h2>
+                <div class="kpi-meta-row">
+                  <span class="kpi-tag tag-gold"><i class="fa-solid fa-industry"></i> 43.5 Acres</span>
+                  <span class="kpi-meta-sub">Estate Office Quetta</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="kpi-card kpi-card-efiles">
+              <div class="kpi-icon icon-blue"><i class="fa-solid fa-sitemap"></i></div>
+              <div class="kpi-content">
+                <span class="kpi-label">Inter-Desk E-Files</span>
+                <h2 id="kpiEfilesCount">0</h2>
+                <div class="kpi-meta-row">
+                  <span class="kpi-tag tag-blue"><i class="fa-solid fa-lock"></i> Addressed</span>
+                  <span class="kpi-meta-sub">Inter-Desk Despatch</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="kpi-card kpi-card-centers">
+              <div class="kpi-icon icon-purple"><i class="fa-solid fa-landmark"></i></div>
+              <div class="kpi-content">
+                <span class="kpi-label">Provincial Centers</span>
+                <h2 id="kpiCentersCount">0</h2>
+                <div class="kpi-meta-row">
+                  <span class="kpi-tag tag-purple"><i class="fa-solid fa-building-columns"></i> 130+ Units</span>
+                  <span class="kpi-meta-sub">Managed Trades</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Admin Subtabs Navigation Bar -->
+          <div class="admin-subtabs-nav">
+            <button class="subtab-btn active" onclick="switchAdminSubtab('traineesManage', this)">
+              <i class="fa-solid fa-user-graduate"></i> Trainee Registry (<span id="tabCountTrainees">0</span>)
+            </button>
+            <button class="subtab-btn" onclick="switchAdminSubtab('estatesManage', this)">
+              <i class="fa-solid fa-city"></i> Sirki Road Estate Office (<span id="tabCountEstates">0</span>)
+            </button>
+            <button class="subtab-btn" onclick="switchAdminSubtab('centersManage', this)">
+              <i class="fa-solid fa-network-wired"></i> Manage Centers & Trades (<span id="tabCountCenters">0</span>)
+            </button>
+            <button class="subtab-btn" onclick="switchAdminSubtab('efilesManage', this)">
+              <i class="fa-solid fa-sitemap"></i> Multi-Desk E-Filing Desk (<span id="tabCountEfiles">0</span>)
+            </button>
+            <button class="subtab-btn" onclick="switchAdminSubtab('mediaManage', this)">
+              <i class="fa-solid fa-users-viewfinder"></i> Leadership & Media Gallery
+            </button>
+            <button class="subtab-btn" onclick="switchAdminSubtab('noticesManage', this)">
+              <i class="fa-solid fa-bullhorn"></i> Public Announcements (<span id="tabCountNotices">4</span>)
+            </button>
+          </div>
+
+          <!-- SUBTAB 1: TRAINEES MANAGEMENT (SEQUENTIAL BY CENTER + ADD/EDIT/DELETE + REJECTION REASON) -->
+          <div id="subtab-traineesManage" class="admin-subtab-content active">
+            <div class="admin-table-header">
+              <div class="admin-filter-group">
+                <input type="text" id="traineeSearchQuery" placeholder="Search candidate, CNIC, Bank, Vendor..." oninput="renderAdminTraineesTable()">
+                <select id="traineeFilterDistrict" onchange="renderAdminTraineesTable()">
+                  <option value="All">All Districts</option>
+                </select>
+                <select id="traineeFilterStatus" onchange="renderAdminTraineesTable()">
+                  <option value="All">All Statuses</option>
+                  <option value="Approved">Approved</option>
+                  <option value="Under Scrutiny">Under Scrutiny</option>
+                  <option value="Waiting List">Waiting List</option>
+                  <option value="Rejected">Rejected (View Rejection Reasons)</option>
+                </select>
+              </div>
+              <div class="admin-download-group">
+                <button class="btn btn-primary" onclick="openAdminAddTraineeModal()"><i class="fa-solid fa-plus"></i> Add New Trainee</button>
+                <button class="btn btn-success" onclick="downloadTraineesCSV()"><i class="fa-solid fa-file-csv"></i> Download CSV</button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-data-table" id="traineesAdminTable">
+                <thead>
+                  <tr>
+                    <th>Roll / Token</th>
+                    <th>Center (Sequence Group)</th>
+                    <th>Candidate Particulars</th>
+                    <th>CNIC (Unique)</th>
+                    <th>Bank & Account No</th>
+                    <th>Vendor No</th>
+                    <th>Trade</th>
+                    <th>Status & Rejection Reason</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="traineesTableBody">
+                  <!-- Populated sequentially by center via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- SUBTAB 2: SIRKI ROAD QUETTA ESTATE OFFICE (FULL CRUD) -->
+          <div id="subtab-estatesManage" class="admin-subtab-content">
+            <div class="admin-table-header">
+              <div class="admin-filter-group">
+                <input type="text" id="estateSearchQuery" placeholder="Search enterprise, sponsor, token..." oninput="renderAdminEstatesTable()">
+                <select id="estateFilterSize" onchange="renderAdminEstatesTable()">
+                  <option value="All">All Plot Sizes</option>
+                  <option value="500 Sq. Yards">500 Sq. Yards</option>
+                  <option value="1,000 Sq. Yards">1,000 Sq. Yards</option>
+                  <option value="0.5 Acre">0.5 Acre</option>
+                  <option value="1.0 Acre">1.0 Acre</option>
+                  <option value="2.0 Acres">2.0 Acres</option>
+                </select>
+              </div>
+              <div class="admin-download-group">
+                <button class="btn btn-gold" onclick="openAdminAddEstateModal()"><i class="fa-solid fa-plus"></i> Add Plot Application</button>
+                <button class="btn btn-outline-primary" onclick="downloadEstatesCSV()"><i class="fa-solid fa-file-csv"></i> Download CSV</button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-data-table" id="estatesAdminTable">
+                <thead>
+                  <tr>
+                    <th>Ref Token</th>
+                    <th>Enterprise & Sponsor</th>
+                    <th>Plot Size</th>
+                    <th>Industrial Sector</th>
+                    <th>Investment (PKR)</th>
+                    <th>Jobs</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="estatesTableBody">
+                  <!-- Populated via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- SUBTAB 3: MANAGE CENTERS & TRADES (FULL CRUD FOR ADMIN) -->
+          <div id="subtab-centersManage" class="admin-subtab-content">
+            <div class="admin-table-header">
+              <div class="admin-filter-group">
+                <input type="text" id="adminCenterSearchQuery" placeholder="Search center code, name, trade..." oninput="renderAdminCentersManagementTable()">
+                <select id="adminCenterFilterDistrict" onchange="renderAdminCentersManagementTable()">
+                  <option value="All">All Districts</option>
+                </select>
+                <select id="adminCenterFilterStatus" onchange="renderAdminCentersManagementTable()">
+                  <option value="All">All Statuses</option>
+                  <option value="Functional">Functional</option>
+                  <option value="Non-functional">Non-functional</option>
+                </select>
+              </div>
+              <div class="admin-download-group">
+                <button class="btn btn-primary" onclick="openAdminAddCenterModal()"><i class="fa-solid fa-plus"></i> Add New Center</button>
+                <button class="btn btn-outline-primary" onclick="exportCentersCSV()"><i class="fa-solid fa-file-csv"></i> Download CSV</button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-data-table">
+                <thead>
+                  <tr>
+                    <th>Center Code</th>
+                    <th>Center Name</th>
+                    <th>District</th>
+                    <th>Official Trade</th>
+                    <th>Status</th>
+                    <th>Premises Type</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="adminCentersManagementBody">
+                  <!-- Injected via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- SUBTAB 4: MULTI-DESK E-FILING DESK -->
+          <div id="subtab-efilesManage" class="admin-subtab-content">
+            <div class="admin-table-header">
+              <div class="admin-filter-group">
+                <input type="text" id="efileSearchQuery" placeholder="Search file token, sender, subject..." oninput="renderAdminEfilesTable()">
+                <select id="efileFilterRecipient" onchange="renderAdminEfilesTable()">
+                  <option value="All">All Addressed Desks</option>
+                  <option value="Directorate">Directorate (HQ) Quetta</option>
+                  <option value="B-TEVTA">B-TEVTA Balochistan</option>
+                  <option value="Labour">Labour Department</option>
+                  <option value="Center">District Centers</option>
+                </select>
+              </div>
+              <div class="admin-download-group">
+                <button class="btn btn-primary" onclick="downloadEfilesCSV()"><i class="fa-solid fa-file-csv"></i> Download E-Filing Register (CSV)</button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-data-table" id="efilesAdminTable">
+                <thead>
+                  <tr>
+                    <th>File Token</th>
+                    <th>Sender Desk</th>
+                    <th>Addressed To (Recipient)</th>
+                    <th>Subject & Nature</th>
+                    <th>Stage</th>
+                    <th>Docs</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="efilesTableBody">
+                  <!-- Populated via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- SUBTAB 5: LEADERSHIP & ACHIEVEMENTS MEDIA MANAGER -->
+          <div id="subtab-mediaManage" class="admin-subtab-content">
+            <!-- Active Features Indicator Banner -->
+            <div style="background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; padding: 12px 18px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 14px; box-shadow: 0 2px 6px rgba(23,65,28,0.06);">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <i class="fa-solid fa-circle-check" style="color: #15803d; font-size: 1.3rem;"></i>
+                <div>
+                  <strong style="color: #166534; font-size: 0.95rem;">Live Profile & Media Controls Active</strong>
+                  <div style="color: #15803d; font-size: 0.85rem;">Every item has a gold <strong>Edit</strong> button and a green <strong>Upload Photo</strong> button to select images directly from your folder.</div>
+                </div>
+              </div>
+              <button class="btn btn-sm btn-outline-primary" onclick="window.location.reload(true)" title="Force reload latest updates" style="white-space: nowrap; font-weight: 600;">
+                <i class="fa-solid fa-rotate"></i> Sync / Refresh View
+              </button>
+            </div>
+
+            <div class="notices-manager-grid">
+              <!-- Manage Leadership Profiles -->
+              <div class="form-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                  <h3><i class="fa-solid fa-user-tie"></i> Directorate Leadership Profiles</h3>
+                  <button class="btn btn-sm btn-primary" onclick="openAddLeadershipModal()"><i class="fa-solid fa-plus"></i> Add Profile</button>
+                </div>
+                <div id="adminLeadershipList" class="admin-media-list">
+                  <!-- Directorate Leadership Row 1 -->
+                  <div class="media-item-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 10px;">
+                    <div style="display: flex; align-items: center; gap: 14px;">
+                      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid #17411C; flex-shrink: 0;" alt="Tariq Zehri">
+                      <div>
+                        <strong style="font-size: 0.96rem; color: #0f172a;">Tariq Zehri</strong><br>
+                        <small style="color: #64748b; font-weight: 500;">Secretary, Labour & Manpower Department</small>
+                      </div>
+                    </div>
+                    <div class="action-btns-group" style="display: flex; gap: 8px; align-items: center;">
+                      <button class="btn btn-sm btn-gold" onclick="openEditLeadershipModal(1)" title="Edit Profile Details & Photo" style="padding: 6px 12px; font-size: 0.82rem; font-weight: 600;">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                      </button>
+                      <label class="btn btn-sm btn-primary" style="margin: 0; cursor: pointer; padding: 6px 12px; font-size: 0.82rem; font-weight: 600;" title="Upload photo directly from folder">
+                        <i class="fa-solid fa-folder-open"></i> Upload Photo
+                        <input type="file" accept="image/*" style="display: none;" onchange="handleDirectRowPhotoUpload(event, 1)">
+                      </label>
+                      <button class="btn btn-sm btn-danger" onclick="confirmDeleteLeader(1)" title="Delete Profile" style="padding: 6px 10px;">
+                        <i class="fa-solid fa-trash-can"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Directorate Leadership Row 2 -->
+                  <div class="media-item-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 10px;">
+                    <div style="display: flex; align-items: center; gap: 14px;">
+                      <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&auto=format&fit=crop&q=80" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid #17411C; flex-shrink: 0;" alt="Engr. Noor Muhammad Mengal">
+                      <div>
+                        <strong style="font-size: 0.96rem; color: #0f172a;">Engr. Noor Muhammad Mengal</strong><br>
+                        <small style="color: #64748b; font-weight: 500;">Managing Director (MD)</small>
+                      </div>
+                    </div>
+                    <div class="action-btns-group" style="display: flex; gap: 8px; align-items: center;">
+                      <button class="btn btn-sm btn-gold" onclick="openEditLeadershipModal(2)" title="Edit Profile Details & Photo" style="padding: 6px 12px; font-size: 0.82rem; font-weight: 600;">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                      </button>
+                      <label class="btn btn-sm btn-primary" style="margin: 0; cursor: pointer; padding: 6px 12px; font-size: 0.82rem; font-weight: 600;" title="Upload photo directly from folder">
+                        <i class="fa-solid fa-folder-open"></i> Upload Photo
+                        <input type="file" accept="image/*" style="display: none;" onchange="handleDirectRowPhotoUpload(event, 2)">
+                      </label>
+                      <button class="btn btn-sm btn-danger" onclick="confirmDeleteLeader(2)" title="Delete Profile" style="padding: 6px 10px;">
+                        <i class="fa-solid fa-trash-can"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Directorate Leadership Row 3 -->
+                  <div class="media-item-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 10px;">
+                    <div style="display: flex; align-items: center; gap: 14px;">
+                      <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&auto=format&fit=crop&q=80" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid #17411C; flex-shrink: 0;" alt="Sardar Abdul Wahab Kakar">
+                      <div>
+                        <strong style="font-size: 0.96rem; color: #0f172a;">Sardar Abdul Wahab Kakar</strong><br>
+                        <small style="color: #64748b; font-weight: 500;">Director, Small Industries Wing (SIW)</small>
+                      </div>
+                    </div>
+                    <div class="action-btns-group" style="display: flex; gap: 8px; align-items: center;">
+                      <button class="btn btn-sm btn-gold" onclick="openEditLeadershipModal(3)" title="Edit Profile Details & Photo" style="padding: 6px 12px; font-size: 0.82rem; font-weight: 600;">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                      </button>
+                      <label class="btn btn-sm btn-primary" style="margin: 0; cursor: pointer; padding: 6px 12px; font-size: 0.82rem; font-weight: 600;" title="Upload photo directly from folder">
+                        <i class="fa-solid fa-folder-open"></i> Upload Photo
+                        <input type="file" accept="image/*" style="display: none;" onchange="handleDirectRowPhotoUpload(event, 3)">
+                      </label>
+                      <button class="btn btn-sm btn-danger" onclick="confirmDeleteLeader(3)" title="Delete Profile" style="padding: 6px 10px;">
+                        <i class="fa-solid fa-trash-can"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Manage Achievements (Photos & Videos) -->
+              <div class="form-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                  <h3><i class="fa-solid fa-photo-film"></i> Achievement Media (Photos & Videos)</h3>
+                  <button class="btn btn-sm btn-gold" onclick="openAddAchievementModal()"><i class="fa-solid fa-plus"></i> Add Media</button>
+                </div>
+                <div id="adminAchievementsList" class="admin-media-list">
+                  <div class="media-item-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 10px;">
+                    <div style="display: flex; align-items: center; gap: 14px;">
+                      <div style="width: 44px; height: 44px; border-radius: 8px; background: #dcfce7; color: #15803d; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0;">
+                        <i class="fa-solid fa-image"></i>
+                      </div>
+                      <div>
+                        <strong style="font-size: 0.95rem; color: #0f172a;">Annual Artisan Expo & Handicraft Showcase Quetta</strong> <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; color: #475569;">PHOTO</span><br>
+                        <small style="color: #64748b;">Provincial Exhibition • August 2026</small>
+                      </div>
+                    </div>
+                    <div class="action-btns-group" style="display: flex; gap: 8px; align-items: center;">
+                      <button class="btn btn-sm btn-gold" onclick="openEditAchievementModal(1)" title="Edit Achievement Media" style="padding: 6px 12px; font-size: 0.82rem; font-weight: 600;">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                      </button>
+                      <label class="btn btn-sm btn-primary" style="margin: 0; cursor: pointer; padding: 6px 12px; font-size: 0.82rem; font-weight: 600;" title="Upload photo directly from folder">
+                        <i class="fa-solid fa-folder-open"></i> Upload Photo
+                        <input type="file" accept="image/*" style="display: none;" onchange="handleDirectAchievementPhotoUpload(event, 1)">
+                      </label>
+                      <button class="btn btn-sm btn-danger" onclick="confirmDeleteAchievement(1)" title="Delete Media" style="padding: 6px 10px;">
+                        <i class="fa-solid fa-trash-can"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="media-item-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 10px;">
+                    <div style="display: flex; align-items: center; gap: 14px;">
+                      <div style="width: 44px; height: 44px; border-radius: 8px; background: #fee2e2; color: #b91c1c; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0;">
+                        <i class="fa-solid fa-video"></i>
+                      </div>
+                      <div>
+                        <strong style="font-size: 0.95rem; color: #0f172a;">Computerized Gangsaw Induction at Sirki Road Industrial Estate</strong> <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; color: #475569;">VIDEO</span><br>
+                        <small style="color: #64748b;">Industrial Infrastructure • September 2026</small>
+                      </div>
+                    </div>
+                    <div class="action-btns-group" style="display: flex; gap: 8px; align-items: center;">
+                      <button class="btn btn-sm btn-gold" onclick="openEditAchievementModal(2)" title="Edit Achievement Media" style="padding: 6px 12px; font-size: 0.82rem; font-weight: 600;">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                      </button>
+                      <button class="btn btn-sm btn-danger" onclick="confirmDeleteAchievement(2)" title="Delete Media" style="padding: 6px 10px;">
+                        <i class="fa-solid fa-trash-can"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="media-item-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 10px;">
+                    <div style="display: flex; align-items: center; gap: 14px;">
+                      <div style="width: 44px; height: 44px; border-radius: 8px; background: #dcfce7; color: #15803d; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0;">
+                        <i class="fa-solid fa-image"></i>
+                      </div>
+                      <div>
+                        <strong style="font-size: 0.95rem; color: #0f172a;">Vocational Toolkits & Certificate Distribution Convocation</strong> <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; color: #475569;">PHOTO</span><br>
+                        <small style="color: #64748b;">Graduation Convocation • July 2026</small>
+                      </div>
+                    </div>
+                    <div class="action-btns-group" style="display: flex; gap: 8px; align-items: center;">
+                      <button class="btn btn-sm btn-gold" onclick="openEditAchievementModal(3)" title="Edit Achievement Media" style="padding: 6px 12px; font-size: 0.82rem; font-weight: 600;">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                      </button>
+                      <label class="btn btn-sm btn-primary" style="margin: 0; cursor: pointer; padding: 6px 12px; font-size: 0.82rem; font-weight: 600;" title="Upload photo directly from folder">
+                        <i class="fa-solid fa-folder-open"></i> Upload Photo
+                        <input type="file" accept="image/*" style="display: none;" onchange="handleDirectAchievementPhotoUpload(event, 3)">
+                      </label>
+                      <button class="btn btn-sm btn-danger" onclick="confirmDeleteAchievement(3)" title="Delete Media" style="padding: 6px 10px;">
+                        <i class="fa-solid fa-trash-can"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUBTAB 6: PUBLIC NOTICES -->
+          <div id="subtab-noticesManage" class="admin-subtab-content">
+            <div class="notices-manager-grid">
+              <div class="form-card">
+                <h3><i class="fa-solid fa-bullhorn"></i> Post New Public Announcement</h3>
+                <form id="newNoticeForm" onsubmit="handleCreateNotice(event)">
+                  <div class="form-group">
+                    <label for="noticeTitle">Notice Title / Headline <span class="req">*</span></label>
+                    <input type="text" id="noticeTitle" required placeholder="e.g. Center Incharges: Submit Monthly Attendance by 10th">
+                  </div>
+                  <div class="form-group">
+                    <label for="noticeCategory">Category</label>
+                    <select id="noticeCategory">
+                      <option value="Admissions">Admissions & Accounts</option>
+                      <option value="Estate Office">Estate Office Sirki Road Quetta</option>
+                      <option value="Incharge E-Filing">Incharge E-Filing & Despatch</option>
+                      <option value="B-TEVTA / Labour">B-TEVTA & Labour Dept</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="noticeContent">Full Content / Bulletin</label>
+                    <textarea id="noticeContent" rows="3" required placeholder="Enter announcement text to appear on the public ticker..."></textarea>
+                  </div>
+                  <button type="submit" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Publish Announcement</button>
+                </form>
+              </div>
+
+              <div class="notices-list-card">
+                <h3>Active Directorate Announcements</h3>
+                <div class="notices-list" id="adminNoticesList">
+                  <!-- Populated via JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- MODAL: TRAINEE ADMISSION SLIP (PRINTABLE) -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="traineeSlipModal" style="display: none;">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-receipt"></i> Trainee Admission Registration Slip</h3>
+        <button class="modal-close" onclick="closeModal('traineeSlipModal')">&times;</button>
+      </div>
+      <div class="modal-body printable-area" id="traineeSlipPrintable">
+        <div class="slip-header">
+          <div class="slip-emblem">
+            <svg viewBox="0 0 100 100" class="crest-svg-sm">
+              <circle cx="50" cy="50" r="46" fill="#064e2e" stroke="#d4af37" stroke-width="4" />
+              <path d="M 20 68 L 38 42 L 54 62 L 68 36 L 82 68 Z" fill="#d4af37"/>
+              <path d="M 50 18 A 12 12 0 0 0 50 40 A 10 10 0 0 1 50 20 Z" fill="#ffffff" />
+            </svg>
+          </div>
+          <div class="slip-title-center">
+            <h4>DIRECTORATE OF SMALL INDUSTRIES BALOCHISTAN</h4>
+            <h5>GOVERNMENT OF BALOCHISTAN • HEAD QUARTER QUETTA</h5>
+            <p>VOCATIONAL TRAINING & SKILL DEVELOPMENT WING • OFFICIAL ADMISSION SLIP 2026-27</p>
+          </div>
+          <div class="slip-qr">
+            <div class="qr-mockup">
+              <i class="fa-solid fa-qrcode"></i>
+              <small>VERIFIED</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="slip-token-banner">
+          <div>OFFICIAL ROLL / TOKEN NO: <strong id="slipTokenNo">SIW-TR-2026-0000</strong></div>
+          <div id="slipStatusBadge" class="badge-status-slip">ADMISSION CONFIRMED</div>
+        </div>
+
+        <!-- REJECTION REASON CALLOUT ON SLIP (If Rejected) -->
+        <div id="slipRejectionCallout" class="slip-rejection-box" style="display: none;">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <div>
+            <strong>APPLICATION REJECTED:</strong>
+            <span id="slipRejectionReasonText">Reason unspecified</span>
+          </div>
+        </div>
+
+        <div class="slip-grid">
+          <div class="slip-field"><span>Candidate Full Name:</span> <strong id="slipName">-</strong></div>
+          <div class="slip-field"><span>Father's Name:</span> <strong id="slipFather">-</strong></div>
+          <div class="slip-field"><span>CNIC / Form-B (Verified):</span> <strong id="slipCnic">-</strong></div>
+          <div class="slip-field"><span>Gender / Date of Birth:</span> <strong id="slipGenderDob">-</strong></div>
+          <div class="slip-field"><span>Domicile District:</span> <strong id="slipDistrict">-</strong></div>
+          <div class="slip-field"><span>Contact Number:</span> <strong id="slipPhone">-</strong></div>
+          
+          <div class="slip-field"><span>Bank Name:</span> <strong id="slipBankName">-</strong></div>
+          <div class="slip-field"><span>Bank Account / IBAN:</span> <strong id="slipAccountNo" style="font-family: monospace;">-</strong></div>
+          <div class="slip-field full"><span>AG Balochistan Vendor No:</span> <strong id="slipVendorNo" style="color: #064e2e; font-size: 0.95rem;">-</strong></div>
+
+          <div class="slip-field full"><span>Allocated Center:</span> <strong id="slipCenter">-</strong></div>
+          <div class="slip-field"><span>Trade / Course:</span> <strong id="slipCourse">-</strong></div>
+          <div class="slip-field"><span>Shift:</span> <strong id="slipShift">-</strong></div>
+          <div class="slip-field full"><span>Permanent Address:</span> <strong id="slipAddress">-</strong></div>
+        </div>
+
+        <div class="slip-instructions">
+          <strong>Important Instructions for Candidate:</strong>
+          <ol>
+            <li>Bring this official computerized slip along with original CNIC/Form-B & Academic Certificates at the designated Training Center for biometric registration.</li>
+            <li>Training allowances and accounts are maintained through verified Bank Account & Vendor Number upon achieving 80%+ biometric attendance.</li>
+            <li>Any duplicate CNIC, Bank Account, or Vendor ID will lead to immediate cancellation of admission.</li>
+          </ol>
+        </div>
+
+        <div class="slip-signatures">
+          <div>
+            <div class="sig-line"></div>
+            <p>Candidate's Signature</p>
+          </div>
+          <div>
+            <div class="sig-line"></div>
+            <p>Center Incharge / Head Quarter Directorate</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-gray" onclick="closeModal('traineeSlipModal')">Close</button>
+        <button class="btn btn-primary" onclick="window.print()"><i class="fa-solid fa-print"></i> Print Official Slip</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: OFFICIAL E-FILE MINUTE SHEET (DOWNLOADABLE / PRINTABLE) -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="efileDocketModal" style="display: none;">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-file-invoice"></i> Official E-File Minute Sheet & Despatch Docket</h3>
+        <button class="modal-close" onclick="closeModal('efileDocketModal')">&times;</button>
+      </div>
+      <div class="modal-body printable-area" id="efileDocketPrintable">
+        <!-- Injected dynamically via JS with complete official minute dossier -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-gray" onclick="closeModal('efileDocketModal')">Close</button>
+        <button class="btn btn-gold" id="btnDownloadEfileTxt" onclick="downloadEfileTextDossier()"><i class="fa-solid fa-download"></i> Download File Dossier (.txt)</button>
+        <button class="btn btn-primary" onclick="window.print()"><i class="fa-solid fa-print"></i> Download / Print Official PDF Docket</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: DYNAMIC ADMIN MODAL (CRUD / EDIT)   -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="adminUpdateModal" style="display: none;">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <h3 id="adminModalTitle"><i class="fa-solid fa-pen-to-square"></i> Administrative Action</h3>
+        <button class="modal-close" onclick="closeModal('adminUpdateModal')">&times;</button>
+      </div>
+      <div class="modal-body" id="adminModalBody">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: TEVTA VIDEO PLAYER (SCREENSHOT 4)    -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="videoPlayerModal" style="display: none;">
+    <div class="modal-dialog modal-lg" style="max-width: 900px; background: #0b141a; color: #fff;">
+      <div class="modal-header" style="background: #111e25; border-bottom: 1px solid rgba(255,255,255,0.1); color: #fff;">
+        <h3 id="videoModalTitle" style="color: #fff;"><i class="fa-solid fa-circle-play" style="color: #278528;"></i> Directorate Video Documentary</h3>
+        <button class="modal-close" style="color: #fff;" onclick="closeModal('videoPlayerModal')">&times;</button>
+      </div>
+      <div class="modal-body" id="videoModalBody" style="padding: 0; background: #000;">
+        <!-- Embedded video presentation -->
+      </div>
+      <div class="modal-footer" style="background: #111e25; border-top: 1px solid rgba(255,255,255,0.1); justify-content: space-between;">
+        <span id="videoModalMeta" style="font-size: 0.85rem; color: #94a3b8;">Small Industries Wing • Directorate Video Archives</span>
+        <button class="btn btn-sm btn-outline-white" onclick="closeModal('videoPlayerModal')">Close Player</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: LIGHTBOX IMAGE VIEWER (SCREENSHOT 5)-->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="lightboxModal" style="display: none;">
+    <div class="modal-dialog modal-lg" style="max-width: 960px; background: #0f172a; color: #fff;">
+      <div class="modal-header" style="background: #1e293b; border-bottom: 1px solid rgba(255,255,255,0.1); color: #fff;">
+        <h3 id="lightboxTitle" style="color: #fff; font-size: 1.15rem;"><i class="fa-solid fa-camera"></i> Official Field Documentation</h3>
+        <button class="modal-close" style="color: #fff;" onclick="closeModal('lightboxModal')">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 16px; background: #000; text-align: center;">
+        <img id="lightboxImg" src="" alt="Full view" style="max-height: 520px; max-width: 100%; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); object-fit: contain;">
+        <div id="lightboxCaption" style="margin-top: 14px; font-size: 0.95rem; color: #cbd5e1; text-align: center;"></div>
+      </div>
+      <div class="modal-footer" style="background: #1e293b; border-top: 1px solid rgba(255,255,255,0.1); justify-content: space-between;">
+        <span style="font-size: 0.82rem; color: #94a3b8;"><i class="fa-solid fa-shield-halved"></i> Directorate of Small Industries Balochistan</span>
+        <button class="btn btn-sm btn-outline-white" onclick="closeModal('lightboxModal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: GAZETTED NOTIFICATION VIEWER       -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="circularViewerModal" style="display: none;">
+    <div class="modal-dialog modal-lg" style="max-width: 820px;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-file-invoice"></i> Official Directorate Gazette Notification</h3>
+        <button class="modal-close" onclick="closeModal('circularViewerModal')">&times;</button>
+      </div>
+      <div class="modal-body printable-area" id="circularPrintableArea" style="background: #ffffff; padding: 28px;">
+        <!-- Injected dynamically via showCircularModal(sr) -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-gray" onclick="closeModal('circularViewerModal')">Close</button>
+        <button class="btn btn-gold" id="btnDownloadCircularText" onclick="downloadCircularTextFile()"><i class="fa-solid fa-file-lines"></i> Download Text</button>
+        <button class="btn btn-primary" onclick="window.print()"><i class="fa-solid fa-print"></i> Print Official Gazette PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: ACADEMICS & TRAINING DESK           -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="academicInfoModal" style="display: none;">
+    <div class="modal-dialog modal-lg" style="max-width: 880px;">
+      <div class="modal-header">
+        <h3 id="academicModalTitle"><i class="fa-solid fa-graduation-cap"></i> Academics & Vocational Regulations</h3>
+        <button class="modal-close" onclick="closeModal('academicInfoModal')">&times;</button>
+      </div>
+      <div class="modal-body" id="academicModalBody" style="padding: 24px;">
+        <!-- Injected dynamically -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline-gray" onclick="closeModal('academicInfoModal')">Close</button>
+        <button class="btn btn-gold" onclick="switchTab('downloads'); closeModal('academicInfoModal');"><i class="fa-solid fa-download"></i> View Prospectus</button>
+        <button class="btn btn-primary" onclick="switchTab('trainees', '#enrolForm'); closeModal('academicInfoModal');"><i class="fa-solid fa-pen-to-square"></i> Apply Online Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: CITIZEN & TRAINEE COMPLAINT SYSTEM -->
+  <!-- ========================================== -->
+  <div class="modal-overlay" id="citizenComplaintModal" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-headset"></i> Directorate Complaint & Grievance Bureau</h3>
+        <button class="modal-close" onclick="closeModal('citizenComplaintModal')">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 24px;">
+        <p style="font-size: 0.9rem; color: #475569; margin-bottom: 16px;">
+          Submit your grievance, public feedback, or query regarding 130+ Vocational Centers, Sirki Road Industrial Estate (43.5 Acres), or Trainee Admissions. All submissions receive an official tracking token.
+        </p>
+        <form id="citizenComplaintForm" onsubmit="submitCitizenComplaint(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cmpCitizenName">Full Name *</label>
+              <input type="text" id="cmpCitizenName" class="form-control" required placeholder="Your full name">
+            </div>
+            <div class="form-group">
+              <label for="cmpCitizenPhone">Contact Mobile Number *</label>
+              <input type="text" id="cmpCitizenPhone" class="form-control" required placeholder="03XXXXXXXXX">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cmpCitizenCNIC">CNIC Number (Optional)</label>
+              <input type="text" id="cmpCitizenCNIC" class="form-control" placeholder="XXXXX-XXXXXXX-X">
+            </div>
+            <div class="form-group">
+              <label for="cmpCategory">Subject Category *</label>
+              <select id="cmpCategory" class="form-control" required>
+                <option value="Trainee Admissions & Scrutiny">Trainee Admissions & Scrutiny</option>
+                <option value="Field Center Facilities & Instructors">Field Center Facilities & Instructors (130+ Centers)</option>
+                <option value="Estate Office Sirki Road Quetta">Estate Office Sirki Road Quetta (43.5 Acres)</option>
+                <option value="E-Filing & Administrative Movement">E-Filing & Administrative Movement</option>
+                <option value="General Citizen Inquiry">General Citizen Inquiry</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="cmpDescription">Description of Grievance / Inquiry *</label>
+            <textarea id="cmpDescription" class="form-control" rows="4" required placeholder="Provide clear details including center name or application token..."></textarea>
+          </div>
+          <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; margin-top: 10px; font-size: 0.85rem; color: #64748b;">
+            <i class="fa-solid fa-phone" style="color: #17411C;"></i> Direct Official Line: <strong>0819211161</strong> | Official Email: <strong>hq@siw.balochistan.gov.pk</strong>
+          </div>
+          <div class="modal-footer" style="padding-top: 16px; padding-bottom: 0; padding-left: 0; padding-right: 0;">
+            <button type="button" class="btn btn-outline-gray" onclick="closeModal('citizenComplaintModal')">Cancel</button>
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Submit Grievance</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toastNotification" class="toast-notification" style="display: none;">
+    <div class="toast-icon" id="toastIcon"><i class="fa-solid fa-circle-check"></i></div>
+    <div class="toast-text">
+      <h4 id="toastTitle">Notification</h4>
+      <p id="toastMessage">Action performed successfully.</p>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- FLOATING RIGHT-SIDE VERTICAL TAB DOCK & SLIDE-OUT DRAWER   -->
+  <!-- ========================================================= -->
+
+
+  <!-- TEVTA-Inspired Executive Institutional Footer -->
+  <footer class="site-footer">
+    <div class="footer-middle">
+      <div class="container footer-grid">
+        <div class="footer-col brand-col">
+          <div class="footer-brand-wrap">
+            <div class="gov-crest">
+              <svg viewBox="0 0 100 100" class="crest-svg crest-svg-sm" aria-label="Balochistan Emblem">
+                <circle cx="50" cy="50" r="46" fill="#064e2e" stroke="#d4af37" stroke-width="4" />
+                <circle cx="50" cy="50" r="41" fill="none" stroke="#d4af37" stroke-width="1.5" stroke-dasharray="3 3"/>
+                <path d="M 20 68 L 38 42 L 54 62 L 68 36 L 82 68 Z" fill="#d4af37" opacity="0.95"/>
+                <path d="M 28 68 L 45 48 L 58 64 L 75 44 L 80 68 Z" fill="#094d2e" opacity="0.4"/>
+                <path d="M 50 18 A 12 12 0 0 0 50 40 A 10 10 0 0 1 50 20 Z" fill="#ffffff" />
+                <polygon points="56,22 58,28 64,28 59,32 61,38 56,34 51,38 53,32 48,28 54,28" fill="#ffffff" transform="scale(0.6) translate(38,10)"/>
+                <rect x="22" y="70" width="56" height="5" rx="2.5" fill="#d4af37"/>
+                <text x="50" y="86" font-size="8" fill="#ffffff" font-weight="bold" text-anchor="middle" letter-spacing="1">BALOCHISTAN</text>
+              </svg>
+            </div>
+            <div>
+              <h4 class="footer-heading">Small Industries Wing</h4>
+              <p class="footer-urdu">ڈائریکٹوریٹ آف سمال انڈسٹریز و اسٹیٹ آفس بلوچستان</p>
+            </div>
+          </div>
+          <p class="footer-desc">
+            Official statutory wing under the Directorate of Industries & Commerce, Government of Balochistan. Spearheading vocational craft excellence, SME infrastructure, and youth self-sufficiency across all districts of Balochistan.
+          </p>
+          <div class="footer-meta-pill">
+            <i class="fa-solid fa-shield-halved"></i> Government of Balochistan Official Portal
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title"><i class="fa-solid fa-graduation-cap"></i> Skill Training Network</h4>
+          <ul class="footer-links">
+            <li><a href="javascript:void(0)" onclick="switchTab('trainees', '#enrolForm')"><i class="fa-solid fa-angle-right"></i> Trainee Admission Portal</a></li>
+            <li><a href="javascript:void(0)" onclick="switchTab('centers')"><i class="fa-solid fa-angle-right"></i> 130+ Accredited Centers</a></li>
+            <li><a href="javascript:void(0)" onclick="switchTab('trainees', '#publicTraineesTable')"><i class="fa-solid fa-angle-right"></i> Trainees Sequential Registry</a></li>
+            <li><a href="javascript:void(0)" onclick="switchTab('tracking')"><i class="fa-solid fa-angle-right"></i> Verify Admission Token</a></li>
+            <li><a href="javascript:void(0)" onclick="switchTab('home', '#homeAuthoritySection')"><i class="fa-solid fa-angle-right"></i> Apex Leadership & B-TEVTA</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title"><i class="fa-solid fa-industry"></i> Estate Office & Desks</h4>
+          <ul class="footer-links">
+            <li><a href="javascript:void(0)" onclick="switchTab('estates')"><i class="fa-solid fa-angle-right"></i> Estate Office Sirki Road (43.5 Acres)</a></li>
+            <li><a href="javascript:void(0)" onclick="switchTab('estates', '#plotForm')"><i class="fa-solid fa-angle-right"></i> Industrial Plot Allotment Desk</a></li>
+            <li><a href="javascript:void(0)" onclick="switchTab('efiling')"><i class="fa-solid fa-angle-right"></i> Multi-Desk E-Filing System</a></li>
+            <li><a href="javascript:void(0)" onclick="switchTab('tracking')"><i class="fa-solid fa-angle-right"></i> Track Plot / File Dossier</a></li>
+            <li><a href="javascript:void(0)" onclick="switchTab('admin')"><i class="fa-solid fa-angle-right"></i> HQ Administration Access</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title"><i class="fa-solid fa-phone-volume"></i> Headquarters Bureau</h4>
+          <div class="footer-contact-block">
+            <p><i class="fa-solid fa-location-dot"></i> Directorate of Small Industries, Sirki Road, Quetta</p>
+            <p><i class="fa-solid fa-phone"></i> 0819211161</p>
+            <p><i class="fa-solid fa-envelope"></i> hq@siw.balochistan.gov.pk</p>
+            <p><i class="fa-regular fa-clock"></i> Monday – Friday: 08:30 AM – 04:30 PM</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container footer-bottom-content">
+        <p>
+          &copy; 2026 Small Industries Wing, Directorate of Industries & Commerce, Government of Balochistan. All Rights Reserved.
+        </p>
+        <div class="footer-bottom-links">
+          <span>Official Public Service Digital Portal</span>
+          <span class="sep">•</span>
+          <a href="javascript:void(0)" onclick="switchTab('admin')"><i class="fa-solid fa-lock"></i> HQ Admin Desk</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Centers Dataset and Application Engine -->
+  <script src="centers.js?v=20261013_v6"></script>
+  <script src="app.js?v=20261013_v6"></script>
+</body>
+</html>
