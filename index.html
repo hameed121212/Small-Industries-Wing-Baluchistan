@@ -18,7 +18,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   
-  <link rel="stylesheet" href="styles.css?v=20261018_v9">
+  <link rel="stylesheet" href="styles.css?v=20261018_v11">
 </head>
 <body>
 
@@ -48,16 +48,7 @@
     <div class="container header-container">
       <div class="brand-section">
         <div class="gov-crest">
-          <svg viewBox="0 0 100 100" class="crest-svg" aria-label="Balochistan Emblem">
-            <circle cx="50" cy="50" r="46" fill="#064e2e" stroke="#d4af37" stroke-width="4" />
-            <circle cx="50" cy="50" r="41" fill="none" stroke="#d4af37" stroke-width="1.5" stroke-dasharray="3 3"/>
-            <path d="M 20 68 L 38 42 L 54 62 L 68 36 L 82 68 Z" fill="#d4af37" opacity="0.95"/>
-            <path d="M 28 68 L 45 48 L 58 64 L 75 44 L 80 68 Z" fill="#094d2e" opacity="0.4"/>
-            <path d="M 50 18 A 12 12 0 0 0 50 40 A 10 10 0 0 1 50 20 Z" fill="#ffffff" />
-            <polygon points="56,22 58,28 64,28 59,32 61,38 56,34 51,38 53,32 48,28 54,28" fill="#ffffff" transform="scale(0.6) translate(38,10)"/>
-            <rect x="22" y="70" width="56" height="5" rx="2.5" fill="#d4af37"/>
-            <text x="50" y="86" font-size="8" fill="#ffffff" font-weight="bold" text-anchor="middle" letter-spacing="1">BALOCHISTAN</text>
-          </svg>
+          <img src="official-logo.png" alt="Directorate General Industries & Commerce Government of Balochistan" class="official-crest-img">
         </div>
         <div class="brand-text">
           <div class="urdu-title">ڈائریکٹوریٹ آف سمال انڈسٹریز بلوچستان</div>
@@ -374,6 +365,56 @@
         </div>
       </section>
 
+      <!-- BALOCHISTAN REGIONAL CRAFTS & VOCATIONAL HERITAGE MAP -->
+      <section class="section crafts-map-section" id="craftsMapSection">
+        <div class="container">
+          <div class="section-title-wrap text-center" style="margin-bottom: 28px; text-align: center;">
+            <span class="sub-badge"><i class="fa-solid fa-map-location-dot"></i> Geographical Crafts Heritage</span>
+            <h2 class="section-title" style="margin-bottom: 6px;">Balochistan Regional Crafts & Traditional Trades Map</h2>
+            <p class="section-subtitle">Geographical distribution of accredited cottage crafts, handloom embroidery, and artisan trades across all administrative divisions</p>
+          </div>
+
+          <div class="crafts-map-container-grid">
+            <!-- Map Display Card with Lightbox Zoom -->
+            <div class="crafts-map-card" onclick="openLightboxImage('balochistan-crafts-map.jpg', 'Cultural Craft Heritage Map of Balochistan', 'Regional trade specializations across Quetta, Kalat, Makran, Nasirabad, Sibi, and Zhob divisions')">
+              <img src="balochistan-crafts-map.jpg" alt="Balochistan Cultural Crafts & Indigenous Trades Map" class="crafts-map-img">
+              <div class="image-zoom-overlay">
+                <i class="fa-solid fa-magnifying-glass-plus"></i>
+                <span>Click to View Full High-Resolution Map</span>
+              </div>
+            </div>
+
+            <!-- Regional Trades Breakdown Column -->
+            <div class="crafts-map-info-col">
+              <div class="division-craft-badge-item">
+                <div class="division-name"><i class="fa-solid fa-location-dot" style="color: #15803d;"></i> Quetta Division</div>
+                <p class="division-trades"><strong>Specialized Trades:</strong> Balochi Traditional Dresses, Handmade Carpets & Rugs, Indigenous Balochi Jewelry, Handcrafted Balochi Chappal, Balochi Shawls & Chadri.</p>
+              </div>
+
+              <div class="division-craft-badge-item">
+                <div class="division-name"><i class="fa-solid fa-location-dot" style="color: #15803d;"></i> Kalat Division</div>
+                <p class="division-trades"><strong>Specialized Trades:</strong> Intricate Balochi Doch Embroidery, Hand-stitched Dresses, Woolen Balochi Shawls, Balochi Chadries, and Embroidered Waistcoats.</p>
+              </div>
+
+              <div class="division-craft-badge-item">
+                <div class="division-name"><i class="fa-solid fa-location-dot" style="color: #15803d;"></i> Makran Division</div>
+                <p class="division-trades"><strong>Specialized Trades:</strong> Coastal Balochi Dresses, Handloom Shawls, Traditional Chadries, Filigree Jewelry, and Indigenous Mizri (Date Palm Leaf) Weaving.</p>
+              </div>
+
+              <div class="division-craft-badge-item">
+                <div class="division-name"><i class="fa-solid fa-location-dot" style="color: #15803d;"></i> Nasirabad & Sibi Divisions</div>
+                <p class="division-trades"><strong>Specialized Trades:</strong> Balochi Dresses, Mirror-work Chadries, Balochi Caps (Topi), Handcrafted Leather Embroidery Products (Ladies Handbags, Key Chains, Wallets).</p>
+              </div>
+
+              <div class="division-craft-badge-item">
+                <div class="division-name"><i class="fa-solid fa-location-dot" style="color: #15803d;"></i> Zhob Division</div>
+                <p class="division-trades"><strong>Specialized Trades:</strong> Pashtun Cultural Dresses, Hand-woven Woolen Shawls, Traditional Chadries, and Tribal Embroidery Work.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- FEATURED OPERATIONAL DESKS & SERVICES (TEVTA EXECUTIVE PORTAL GRID) -->
       <section class="section home-services-section" style="padding: 42px 0; background: var(--bg-subtle);">
         <div class="container">
@@ -565,7 +606,39 @@
 
           <!-- 3 Image Cards Grid (Screenshot 5) -->
           <div class="tevta-images-grid" id="tevtaImagesGrid">
-            <!-- Image Card 1: Annual Convocation Ceremony -->
+            <!-- Image Card 1: Vocational Tailoring & Stitching Training Center -->
+            <div class="tevta-image-card" onclick="openLightboxImage('vocational-tailoring-hall.jpg', 'Vocational Tailoring & Garment Stitching Workshop', 'Active training session with female trainees operating industrial and manual sewing machines')">
+              <div class="image-thumb-wrap">
+                <img src="vocational-tailoring-hall.jpg" alt="Vocational Tailoring and Garment Stitching Center" class="image-thumb-img">
+                <div class="image-zoom-overlay">
+                  <i class="fa-solid fa-magnifying-glass-plus"></i>
+                  <span>View Full Photo</span>
+                </div>
+              </div>
+              <div class="image-caption-area">
+                <span class="gallery-category-badge">Vocational Training</span>
+                <h4>Vocational Tailoring & Garment Stitching Center</h4>
+                <p>Practical dressmaking, tailoring, and machine-stitching session for trainees at Directorate Vocational Institute.</p>
+              </div>
+            </div>
+
+            <!-- Image Card 2: Center Campus Grounds & Practical Facilities -->
+            <div class="tevta-image-card" onclick="openLightboxImage('center-campus-walkway.jpg', 'Directorate Vocational Institute Campus Grounds', 'Provincial technical center premises, grounds, and practical trade workshops')">
+              <div class="image-thumb-wrap">
+                <img src="center-campus-walkway.jpg" alt="Center Campus Grounds and Practical Facilities" class="image-thumb-img">
+                <div class="image-zoom-overlay">
+                  <i class="fa-solid fa-magnifying-glass-plus"></i>
+                  <span>View Full Photo</span>
+                </div>
+              </div>
+              <div class="image-caption-area">
+                <span class="gallery-category-badge">Institutional Campus</span>
+                <h4>Vocational Institute Campus & Workshop Grounds</h4>
+                <p>Provincial vocational institute grounds, trade workshops, and educational facilities administering technical training.</p>
+              </div>
+            </div>
+
+            <!-- Image Card 3: Annual Convocation Ceremony -->
             <div class="tevta-image-card" onclick="openLightboxImage('gallery-convocation.jpg', 'Annual Convocation & Trade Diploma Distribution Ceremony', 'Directorate of Small Industries Provincial Heritage Grounds, Quetta')">
               <div class="image-thumb-wrap">
                 <img src="gallery-convocation.jpg" alt="Annual Convocation Ceremony" class="image-thumb-img">
@@ -581,8 +654,23 @@
               </div>
             </div>
 
-            <!-- Image Card 2: Grand Handicraft Pavilion & Artisan Gathering -->
-            <div class="tevta-image-card" onclick="openLightboxImage('gallery-marquee.jpg', 'Provincial Gathering of Master Artisans & Center Supervisors', 'Grand Handicraft Pavilion and Annual Exhibition Canopy')">
+            <!-- Extra Images shown when 'View More' is clicked -->
+            <div class="tevta-image-card extra-image-item" style="display: none;" onclick="openLightboxImage('balochistan-crafts-map.jpg', 'Cultural Craft Heritage Map of Balochistan', 'Regional specializations across Quetta, Kalat, Makran, Nasirabad, Sibi, and Zhob divisions')">
+              <div class="image-thumb-wrap">
+                <img src="balochistan-crafts-map.jpg" alt="Balochistan Cultural Crafts Map" class="image-thumb-img">
+                <div class="image-zoom-overlay">
+                  <i class="fa-solid fa-magnifying-glass-plus"></i>
+                  <span>View Full Photo</span>
+                </div>
+              </div>
+              <div class="image-caption-area">
+                <span class="gallery-category-badge">Regional Heritage</span>
+                <h4>Balochistan Crafts & Trades Map</h4>
+                <p>Geographical distribution of Balochi Doch embroidery, carpet weaving, and leather work across all divisions.</p>
+              </div>
+            </div>
+
+            <div class="tevta-image-card extra-image-item" style="display: none;" onclick="openLightboxImage('gallery-marquee.jpg', 'Provincial Gathering of Master Artisans & Center Supervisors', 'Grand Handicraft Pavilion and Annual Exhibition Canopy')">
               <div class="image-thumb-wrap">
                 <img src="gallery-marquee.jpg" alt="Provincial Gathering of Artisans" class="image-thumb-img">
                 <div class="image-zoom-overlay">
@@ -597,8 +685,7 @@
               </div>
             </div>
 
-            <!-- Image Card 3: Technopreneurship Training Seminar -->
-            <div class="tevta-image-card" onclick="openLightboxImage('gallery-technopreneur.jpg', 'Technopreneurship & Digital Skills Seminar for Instructors', 'Directorate Executive Conference Room, Sirki Road Quetta')">
+            <div class="tevta-image-card extra-image-item" style="display: none;" onclick="openLightboxImage('gallery-technopreneur.jpg', 'Technopreneurship & Digital Skills Seminar for Instructors', 'Directorate Executive Conference Room, Sirki Road Quetta')">
               <div class="image-thumb-wrap">
                 <img src="gallery-technopreneur.jpg" alt="Technopreneurship Training Seminar" class="image-thumb-img">
                 <div class="image-zoom-overlay">
@@ -613,7 +700,6 @@
               </div>
             </div>
 
-            <!-- Extra Images shown when 'View More' is clicked -->
             <div class="tevta-image-card extra-image-item" style="display: none;" onclick="openLightboxImage('exhibition.jpg', 'Balochistan Traditional Handicrafts & Mirror-work Exhibition', 'Directorate Crafts Display Pavilion')">
               <div class="image-thumb-wrap">
                 <img src="exhibition.jpg" alt="Balochistan Traditional Handicrafts" class="image-thumb-img">
@@ -626,21 +712,6 @@
                 <span class="gallery-category-badge">Provincial Exhibition</span>
                 <h4>Balochistan Traditional Crafts Exhibition</h4>
                 <p>Exquisite display of Balochi Doch embroidery, carpet weaving, and leather work by center trainees.</p>
-              </div>
-            </div>
-
-            <div class="tevta-image-card extra-image-item" style="display: none;" onclick="openLightboxImage('gallery-marquee.jpg', 'Master Craftsmen & Artisan Trade Demonstration', 'Provincial Craft Skills Exhibition')">
-              <div class="image-thumb-wrap">
-                <img src="gallery-marquee.jpg" alt="Artisan Trade Demonstration" class="image-thumb-img">
-                <div class="image-zoom-overlay">
-                  <i class="fa-solid fa-magnifying-glass-plus"></i>
-                  <span>View Full Photo</span>
-                </div>
-              </div>
-              <div class="image-caption-area">
-                <span class="gallery-category-badge">Trade Skills</span>
-                <h4>Master Craftsmen & Trade Expo</h4>
-                <p>Live practical training demonstrations in traditional carpet knotting, leather stitching, and handloom craftsmanship.</p>
               </div>
             </div>
           </div>
@@ -876,7 +947,7 @@
           <div class="page-header-text">
             <span class="sub-badge"><i class="fa-solid fa-graduation-cap"></i> Directorate of Vocational Training</span>
             <h2>Online Trainee Admission & Trainee Registry</h2>
-            <p>Register trainees across accredited centers in Balochistan. Trainees are organized in sequence by center. In accordance with Directorate rules, <strong>CNIC, Bank Account Number, and Government Vendor Number are strictly checked for uniqueness</strong>.</p>
+            <p>Register trainees across accredited centers in Balochistan. Trainees are organized in sequence by center. In accordance with Directorate rules, <strong>CNIC is strictly verified for uniqueness; Bank Account Number and Vendor Number are optional at registration, but must be unique if provided</strong>.</p>
           </div>
           <div class="page-header-actions">
             <button class="btn btn-outline-primary" onclick="switchTab('centers')"><i class="fa-solid fa-list-ul"></i> Centers Directory</button>
@@ -1040,16 +1111,16 @@
               </div>
             </div>
 
-            <!-- Section 2: Bank & Vendor No -->
+            <!-- Section 2: Bank & Vendor No (Optional - Unique if Provided) -->
             <div class="form-section-title">
               <i class="fa-solid fa-building-columns"></i> 2. Bank & Vendor Credentials
-              <span class="pill-badge pill-green" style="margin-left: 10px; font-size: 0.72rem;"><i class="fa-solid fa-lock"></i> Strict Unique Check</span>
+              <span class="pill-badge pill-green" style="margin-left: 10px; font-size: 0.72rem;"><i class="fa-solid fa-shield-halved"></i> Optional • Unique if Provided</span>
             </div>
             <div class="form-grid-3">
               <div class="form-group">
-                <label for="trBankName">Bank Name <span class="req">*</span></label>
-                <select id="trBankName" required>
-                  <option value="">-- Select Bank --</option>
+                <label for="trBankName">Bank Name <small class="text-muted">(Optional)</small></label>
+                <select id="trBankName">
+                  <option value="">-- Select Bank (Optional) --</option>
                   <option value="National Bank of Pakistan (NBP)">National Bank of Pakistan (NBP)</option>
                   <option value="Bank of Khyber (BOK)">Bank of Khyber (BOK)</option>
                   <option value="Habib Bank Limited (HBL)">Habib Bank Limited (HBL)</option>
@@ -1062,15 +1133,15 @@
               </div>
 
               <div class="form-group">
-                <label for="trAccountNo">Bank Account / IBAN Number <span class="req">*</span> <small class="text-danger">(Unique)</small></label>
-                <input type="text" id="trAccountNo" required placeholder="e.g. 0010023456789012 or PK36NBPA..." onblur="checkFieldDuplicate('accountNo', this.value)">
-                <small class="form-hint">Duplicate bank account is blocked</small>
+                <label for="trAccountNo">Bank Account / IBAN Number <small class="text-muted">(Optional - Unique if provided)</small></label>
+                <input type="text" id="trAccountNo" placeholder="e.g. 0010023456789012 or PK36NBPA... (Optional)" onblur="checkFieldDuplicate('accountNo', this.value)">
+                <small class="form-hint">Leave blank if pending. Must be unique if provided.</small>
               </div>
 
               <div class="form-group">
-                <label for="trVendorNo">AG Balochistan / SAP Vendor Number <span class="req">*</span> <small class="text-danger">(Unique)</small></label>
-                <input type="text" id="trVendorNo" required placeholder="e.g. VR-304912 or 3004819" onblur="checkFieldDuplicate('vendorNo', this.value)">
-                <small class="form-hint">Government vendor registration ID</small>
+                <label for="trVendorNo">AG Balochistan / SAP Vendor Number <small class="text-muted">(Optional - Unique if provided)</small></label>
+                <input type="text" id="trVendorNo" placeholder="e.g. VR-304912 or 3004819 (Optional)" onblur="checkFieldDuplicate('vendorNo', this.value)">
+                <small class="form-hint">Leave blank if pending. Must be unique if provided.</small>
               </div>
             </div>
 
@@ -2263,11 +2334,7 @@
       <div class="modal-body printable-area" id="traineeSlipPrintable">
         <div class="slip-header">
           <div class="slip-emblem">
-            <svg viewBox="0 0 100 100" class="crest-svg-sm">
-              <circle cx="50" cy="50" r="46" fill="#064e2e" stroke="#d4af37" stroke-width="4" />
-              <path d="M 20 68 L 38 42 L 54 62 L 68 36 L 82 68 Z" fill="#d4af37"/>
-              <path d="M 50 18 A 12 12 0 0 0 50 40 A 10 10 0 0 1 50 20 Z" fill="#ffffff" />
-            </svg>
+            <img src="official-logo.png" alt="Directorate General Industries & Commerce Government of Balochistan" class="official-crest-img-sm">
           </div>
           <div class="slip-title-center">
             <h4>DIRECTORATE OF SMALL INDUSTRIES BALOCHISTAN</h4>
@@ -2532,20 +2599,11 @@
         <div class="footer-col brand-col">
           <div class="footer-brand-wrap">
             <div class="gov-crest">
-              <svg viewBox="0 0 100 100" class="crest-svg crest-svg-sm" aria-label="Balochistan Emblem">
-                <circle cx="50" cy="50" r="46" fill="#064e2e" stroke="#d4af37" stroke-width="4" />
-                <circle cx="50" cy="50" r="41" fill="none" stroke="#d4af37" stroke-width="1.5" stroke-dasharray="3 3"/>
-                <path d="M 20 68 L 38 42 L 54 62 L 68 36 L 82 68 Z" fill="#d4af37" opacity="0.95"/>
-                <path d="M 28 68 L 45 48 L 58 64 L 75 44 L 80 68 Z" fill="#094d2e" opacity="0.4"/>
-                <path d="M 50 18 A 12 12 0 0 0 50 40 A 10 10 0 0 1 50 20 Z" fill="#ffffff" />
-                <polygon points="56,22 58,28 64,28 59,32 61,38 56,34 51,38 53,32 48,28 54,28" fill="#ffffff" transform="scale(0.6) translate(38,10)"/>
-                <rect x="22" y="70" width="56" height="5" rx="2.5" fill="#d4af37"/>
-                <text x="50" y="86" font-size="8" fill="#ffffff" font-weight="bold" text-anchor="middle" letter-spacing="1">BALOCHISTAN</text>
-              </svg>
+              <img src="official-logo.png" alt="Directorate General Industries & Commerce Government of Balochistan" class="official-crest-img">
             </div>
             <div>
               <h4 class="footer-heading">Small Industries Wing</h4>
-              <p class="footer-urdu">ڈائریکٹوریٹ آف سمال انڈسٹریز و اسٹیٹ آفس بلوچستان</p>
+              <p class="footer-urdu">ڈائریکٹوریٹ آف سمال انڈسٹریز بلوچستان</p>
             </div>
           </div>
           <p class="footer-desc">
@@ -2605,7 +2663,7 @@
   </footer>
 
   <!-- Centers Dataset and Application Engine -->
-  <script src="centers.js?v=20261018_v9"></script>
-  <script src="app.js?v=20261018_v9"></script>
+  <script src="centers.js?v=20261018_v11"></script>
+  <script src="app.js?v=20261018_v11"></script>
 </body>
 </html>

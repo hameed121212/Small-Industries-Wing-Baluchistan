@@ -5022,4 +5022,129 @@ input.input-duplicate-error {
   }
 }
 
+/* ============================================================= */
+/* OFFICIAL DIRECTORATE LOGO (GOVERNMENT OF BALOCHISTAN)         */
+/* ============================================================= */
+.official-crest-img {
+  width: 76px;
+  height: 76px;
+  object-fit: contain;
+  border-radius: 50%;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.16));
+  background: #ffffff;
+  padding: 2px;
+  border: 2px solid #d4af37;
+  transition: transform 0.3s ease;
+  display: block;
+}
+
+.official-crest-img:hover {
+  transform: scale(1.05);
+}
+
+.official-crest-img-sm {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: #ffffff;
+  padding: 2px;
+  border: 1.5px solid #064e2e;
+  display: block;
+}
+
+/* ============================================================= */
+/* BALOCHISTAN CRAFTS & INDIGENOUS TRADES GEOGRAPHICAL MAP       */
+/* ============================================================= */
+.crafts-map-section {
+  background: #ffffff;
+  padding: 48px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.crafts-map-container-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 32px;
+  align-items: center;
+}
+
+.crafts-map-card {
+  position: relative;
+  background: #f8fafc;
+  border: 2px solid #cbd5e1;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.crafts-map-card:hover {
+  border-color: #15803d;
+  box-shadow: 0 16px 40px rgba(21, 128, 61, 0.14);
+}
+
+.crafts-map-img {
+  width: 100%;
+  height: auto;
+  max-height: 540px;
+  object-fit: contain;
+  display: block;
+  border-radius: 12px;
+  transition: transform 0.5s ease;
+}
+
+.crafts-map-card:hover .crafts-map-img {
+  transform: scale(1.02);
+}
+
+.crafts-map-info-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.division-craft-badge-item {
+  background: #f8fafc;
+  border-left: 4px solid #15803d;
+  padding: 12px 18px;
+  border-radius: 0 10px 10px 0;
+  border-top: 1px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  transition: all 0.25s ease;
+}
+
+.division-craft-badge-item:hover {
+  background: #f0fdf4;
+  transform: translateX(4px);
+  border-left-color: #d4af37;
+}
+
+.division-name {
+  font-weight: 800;
+  color: #064e2e;
+  font-size: 1.02rem;
+  margin-bottom: 3px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.division-trades {
+  font-size: 0.86rem;
+  color: #475569;
+  line-height: 1.45;
+  margin: 0;
+}
+
+@media (max-width: 992px) {
+  .crafts-map-container-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
 

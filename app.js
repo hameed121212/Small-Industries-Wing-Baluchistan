@@ -1549,15 +1549,31 @@ function renderPublicTraineesList(filterStatus = 'all') {
   tbody.innerHTML = html;
 }
 
-// Check duplicate on blur
+// Check duplicate on blur (CNIC strictly unique; Account & Vendor optional but unique if provided)
 function checkFieldDuplicate(fieldType, value) {
   const alertBox = document.getElementById('duplicateAlertBox');
   const alertMsg = document.getElementById('duplicateAlertMessage');
-  if (!value || !value.trim()) return false;
+  
+  // If blank or whitespace, allowed (optional field for account and vendor)
+  if (!value || !value.trim()) {
+    let targetInput = null;
+    if (fieldType === 'accountNo') targetInput = document.getElementById('trAccountNo');
+    else if (fieldType === 'vendorNo') targetInput = document.getElementById('trVendorNo');
+    else if (fieldType === 'cnic') targetInput = document.getElementById('trCnic');
+    if (targetInput) targetInput.classList.remove('input-duplicate-error');
+    if (alertBox) alertBox.style.display = 'none';
+    return false;
+  }
 
-  const cleanedVal = value.trim().toLowerCase();
+  const rawTrimmed = value.trim();
+  const cleanedVal = rawTrimmed.toLowerCase();
+
+  // N/A or empty indicators are not unique keys
+  if (cleanedVal === 'n/a' || cleanedVal === 'na' || cleanedVal === 'none' || cleanedVal === '-' || cleanedVal === '--') {
+    return false;
+  }
+
   const trainees = SIWStorage.getTrainees();
-
   let isDuplicate = false;
   let errorMsg = '';
   let targetInput = null;
@@ -1571,14 +1587,26 @@ function checkFieldDuplicate(fieldType, value) {
     }
   } else if (fieldType === 'accountNo') {
     targetInput = document.getElementById('trAccountNo');
-    const existing = trainees.find(t => t.accountNo && t.accountNo.replace(/\s+/g, '').toLowerCase() === cleanedVal.replace(/\s+/g, ''));
+    const targetComp = cleanedVal.replace(/[\s-]+/g, '');
+    const existing = trainees.find(t => {
+      if (!t.accountNo) return false;
+      const acc = t.accountNo.trim().toLowerCase();
+      if (!acc || acc === 'n/a' || acc === 'na' || acc === 'none' || acc === '-' || acc === '--') return false;
+      return acc.replace(/[\s-]+/g, '') === targetComp;
+    });
     if (existing) {
       isDuplicate = true;
       errorMsg = `DUPLICATE PROHIBITED: Bank Account "${value}" is already registered under Candidate: "${existing.fullName}"!`;
     }
   } else if (fieldType === 'vendorNo') {
     targetInput = document.getElementById('trVendorNo');
-    const existing = trainees.find(t => t.vendorNo && t.vendorNo.replace(/\s+/g, '').toLowerCase() === cleanedVal.replace(/\s+/g, ''));
+    const targetComp = cleanedVal.replace(/[\s-]+/g, '');
+    const existing = trainees.find(t => {
+      if (!t.vendorNo) return false;
+      const v = t.vendorNo.trim().toLowerCase();
+      if (!v || v === 'n/a' || v === 'na' || v === 'none' || v === '-' || v === '--') return false;
+      return v.replace(/[\s-]+/g, '') === targetComp;
+    });
     if (existing) {
       isDuplicate = true;
       errorMsg = `DUPLICATE PROHIBITED: Government Vendor Number "${value}" is already registered under Candidate: "${existing.fullName}"!`;
@@ -1605,8 +1633,11 @@ async function handleTraineeSubmit(e) {
   e.preventDefault();
 
   const cnicVal = document.getElementById('trCnic').value.trim();
-  const accountNoVal = document.getElementById('trAccountNo').value.trim();
-  const vendorNoVal = document.getElementById('trVendorNo').value.trim();
+  const rawAccountNo = document.getElementById('trAccountNo') ? document.getElementById('trAccountNo').value.trim() : '';
+  const rawVendorNo = document.getElementById('trVendorNo') ? document.getElementById('trVendorNo').value.trim() : '';
+  const bankNameVal = (document.getElementById('trBankName') && document.getElementById('trBankName').value) ? document.getElementById('trBankName').value : 'N/A';
+  const accountNoVal = rawAccountNo || 'N/A';
+  const vendorNoVal = rawVendorNo || 'N/A';
 
   if (cnicVal.replace(/\D/g, '').length !== 13) {
     showToast('Invalid CNIC', 'CNIC must contain 13 digits (format: 54400-XXXXXXX-X).', 'error');
@@ -1614,7 +1645,18 @@ async function handleTraineeSubmit(e) {
     return;
   }
 
-  if (checkFieldDuplicate('cnic', cnicVal) || checkFieldDuplicate('accountNo', accountNoVal) || checkFieldDuplicate('vendorNo', vendorNoVal)) {
+  // CNIC is strictly unique
+  if (checkFieldDuplicate('cnic', cnicVal)) {
+    return;
+  }
+
+  // Bank Account is unique IF provided
+  if (rawAccountNo && checkFieldDuplicate('accountNo', rawAccountNo)) {
+    return;
+  }
+
+  // Vendor Number is unique IF provided
+  if (rawVendorNo && checkFieldDuplicate('vendorNo', rawVendorNo)) {
     return;
   }
 
@@ -1629,7 +1671,7 @@ async function handleTraineeSubmit(e) {
     gender: document.getElementById('trGender').value,
     dob: document.getElementById('trDob').value,
     phone: document.getElementById('trPhone').value.trim(),
-    bankName: document.getElementById('trBankName').value,
+    bankName: bankNameVal,
     accountNo: accountNoVal,
     vendorNo: vendorNoVal,
     district: document.getElementById('trDistrict').value,
@@ -1649,7 +1691,7 @@ async function handleTraineeSubmit(e) {
 
   openTraineeSlipModal(trainee);
   document.getElementById('traineeEnrollmentForm').reset();
-  showToast('Enrolment Successful', `Registered under Token ${token} with verified Vendor credentials.`, 'success');
+  showToast('Enrolment Successful', `Registered under Token ${token}.`, 'success');
 
   // Immediately broadcast to cloud so all devices (admin & public) see this record instantaneously
   if (typeof SIWCloudSync !== 'undefined') {
@@ -3029,21 +3071,26 @@ function openAdminAddTraineeModal() {
           <input type="text" id="admTrCnic" required placeholder="54400-XXXXXXX-X" oninput="formatCNIC(this)">
         </div>
         <div class="form-group">
-          <label>Bank Name *</label>
-          <select id="admTrBank" required>
+          <label>Bank Name <small class="text-muted">(Optional)</small></label>
+          <select id="admTrBank">
+            <option value="N/A">-- Select Bank (Optional) --</option>
             <option value="National Bank of Pakistan (NBP)">NBP</option>
             <option value="Bank of Khyber (BOK)">BOK</option>
             <option value="Habib Bank Limited (HBL)">HBL</option>
             <option value="United Bank Limited (UBL)">UBL</option>
+            <option value="MCB Bank Limited">MCB</option>
+            <option value="Allied Bank Limited (ABL)">ABL</option>
+            <option value="Bank Alfalah">Bank Alfalah</option>
+            <option value="Meezan Bank Limited">Meezan Bank</option>
           </select>
         </div>
         <div class="form-group">
-          <label>Bank Account Number (Unique) *</label>
-          <input type="text" id="admTrAccount" required placeholder="Account or IBAN">
+          <label>Bank Account Number <small class="text-muted">(Optional - Unique)</small></label>
+          <input type="text" id="admTrAccount" placeholder="Account or IBAN (Optional)">
         </div>
         <div class="form-group">
-          <label>Vendor Number (Unique) *</label>
-          <input type="text" id="admTrVendor" required placeholder="VR-XXXXXX">
+          <label>Vendor Number <small class="text-muted">(Optional - Unique)</small></label>
+          <input type="text" id="admTrVendor" placeholder="VR-XXXXXX (Optional)">
         </div>
         <div class="form-group">
           <label>Allocated Center *</label>
@@ -3087,13 +3134,44 @@ function toggleAdminRejectionReasonField(status) {
   }
 }
 
-function handleAdminCreateTrainee(e) {
+async function handleAdminCreateTrainee(e) {
   e.preventDefault();
   const cnicVal = document.getElementById('admTrCnic').value.trim();
-  const accVal = document.getElementById('admTrAccount').value.trim();
-  const venVal = document.getElementById('admTrVendor').value.trim();
+  const rawAcc = document.getElementById('admTrAccount').value.trim();
+  const rawVen = document.getElementById('admTrVendor').value.trim();
+  const accVal = rawAcc || 'N/A';
+  const venVal = rawVen || 'N/A';
   const status = document.getElementById('admTrStatus').value;
   const reason = document.getElementById('admTrRejectionReason')?.value.trim() || '';
+
+  const trainees = SIWStorage.getTrainees();
+
+  // Validate CNIC uniqueness
+  const cleanedCnic = cnicVal.replace(/\D/g, '');
+  if (trainees.some(t => t.cnic && t.cnic.replace(/\D/g, '') === cleanedCnic)) {
+    showToast('Duplicate CNIC', `CNIC ${cnicVal} is already enrolled under an existing candidate!`, 'error');
+    return;
+  }
+
+  // Validate Bank Account uniqueness IF provided
+  if (rawAcc && rawAcc.toLowerCase() !== 'n/a') {
+    const cleanedAcc = rawAcc.trim().toLowerCase().replace(/[\s-]+/g, '');
+    const dup = trainees.find(t => t.accountNo && t.accountNo.toLowerCase() !== 'n/a' && t.accountNo.trim().toLowerCase().replace(/[\s-]+/g, '') === cleanedAcc);
+    if (dup) {
+      showToast('Duplicate Account', `Bank Account "${rawAcc}" is already registered under "${dup.fullName}"!`, 'error');
+      return;
+    }
+  }
+
+  // Validate Vendor uniqueness IF provided
+  if (rawVen && rawVen.toLowerCase() !== 'n/a') {
+    const cleanedVen = rawVen.trim().toLowerCase().replace(/[\s-]+/g, '');
+    const dup = trainees.find(t => t.vendorNo && t.vendorNo.toLowerCase() !== 'n/a' && t.vendorNo.trim().toLowerCase().replace(/[\s-]+/g, '') === cleanedVen);
+    if (dup) {
+      showToast('Duplicate Vendor', `Vendor Number "${rawVen}" is already registered under "${dup.fullName}"!`, 'error');
+      return;
+    }
+  }
 
   const randomNum = Math.floor(1000 + Math.random() * 9000);
   const token = `SIW-TR-2026-${randomNum}`;
@@ -3106,7 +3184,7 @@ function handleAdminCreateTrainee(e) {
     gender: "Male",
     dob: "2002-01-01",
     phone: "03001234567",
-    bankName: document.getElementById('admTrBank').value,
+    bankName: document.getElementById('admTrBank').value || 'N/A',
     accountNo: accVal,
     vendorNo: venVal,
     district: "Quetta",
@@ -3125,6 +3203,10 @@ function handleAdminCreateTrainee(e) {
   refreshAdminDashboard();
   renderPublicTraineesList('all');
   showToast('Trainee Created', `Candidate added under token ${token}.`, 'success');
+
+  if (typeof SIWCloudSync !== 'undefined') {
+    await SIWCloudSync.push();
+  }
 }
 
 // ADMIN EDIT TRAINEE MODAL (FULL DETAILS)
@@ -3156,16 +3238,16 @@ function openAdminEditTraineeModal(token) {
           <input type="text" id="editTrCnic" value="${t.cnic}" required oninput="formatCNIC(this)">
         </div>
         <div class="form-group">
-          <label>Bank Name *</label>
-          <input type="text" id="editTrBank" value="${t.bankName || 'NBP'}" required>
+          <label>Bank Name <small class="text-muted">(Optional)</small></label>
+          <input type="text" id="editTrBank" value="${t.bankName || 'N/A'}">
         </div>
         <div class="form-group">
-          <label>Bank Account Number *</label>
-          <input type="text" id="editTrAccount" value="${t.accountNo || ''}" required>
+          <label>Bank Account Number <small class="text-muted">(Optional - Unique)</small></label>
+          <input type="text" id="editTrAccount" value="${(!t.accountNo || t.accountNo === 'N/A') ? '' : t.accountNo}" placeholder="Account or IBAN (Optional)">
         </div>
         <div class="form-group">
-          <label>Vendor Number *</label>
-          <input type="text" id="editTrVendor" value="${t.vendorNo || ''}" required>
+          <label>Vendor Number <small class="text-muted">(Optional - Unique)</small></label>
+          <input type="text" id="editTrVendor" value="${(!t.vendorNo || t.vendorNo === 'N/A') ? '' : t.vendorNo}" placeholder="VR-XXXXXX (Optional)">
         </div>
         <div class="form-group">
           <label>Allocated Center *</label>
@@ -3209,18 +3291,52 @@ function toggleAdminRejectionReasonFieldEdit(status) {
   }
 }
 
-function handleAdminSaveEditTrainee(e, token) {
+async function handleAdminSaveEditTrainee(e, token) {
   e.preventDefault();
+  const cnicVal = document.getElementById('editTrCnic').value.trim();
+  const rawAcc = document.getElementById('editTrAccount').value.trim();
+  const rawVen = document.getElementById('editTrVendor').value.trim();
+  const accVal = rawAcc || 'N/A';
+  const venVal = rawVen || 'N/A';
   const status = document.getElementById('editTrStatus').value;
   const reason = document.getElementById('editTrRejectionReason')?.value.trim() || '';
+
+  const trainees = SIWStorage.getTrainees();
+
+  // Validate CNIC uniqueness (excluding current trainee)
+  const cleanedCnic = cnicVal.replace(/\D/g, '');
+  if (trainees.some(t => t.token !== token && t.cnic && t.cnic.replace(/\D/g, '') === cleanedCnic)) {
+    showToast('Duplicate CNIC', `CNIC ${cnicVal} is already enrolled under another candidate!`, 'error');
+    return;
+  }
+
+  // Validate Bank Account uniqueness IF provided (excluding current trainee)
+  if (rawAcc && rawAcc.toLowerCase() !== 'n/a') {
+    const cleanedAcc = rawAcc.trim().toLowerCase().replace(/[\s-]+/g, '');
+    const dup = trainees.find(t => t.token !== token && t.accountNo && t.accountNo.toLowerCase() !== 'n/a' && t.accountNo.trim().toLowerCase().replace(/[\s-]+/g, '') === cleanedAcc);
+    if (dup) {
+      showToast('Duplicate Account', `Bank Account "${rawAcc}" is already registered under "${dup.fullName}"!`, 'error');
+      return;
+    }
+  }
+
+  // Validate Vendor uniqueness IF provided (excluding current trainee)
+  if (rawVen && rawVen.toLowerCase() !== 'n/a') {
+    const cleanedVen = rawVen.trim().toLowerCase().replace(/[\s-]+/g, '');
+    const dup = trainees.find(t => t.token !== token && t.vendorNo && t.vendorNo.toLowerCase() !== 'n/a' && t.vendorNo.trim().toLowerCase().replace(/[\s-]+/g, '') === cleanedVen);
+    if (dup) {
+      showToast('Duplicate Vendor', `Vendor Number "${rawVen}" is already registered under "${dup.fullName}"!`, 'error');
+      return;
+    }
+  }
 
   const updatedFields = {
     fullName: document.getElementById('editTrName').value.trim(),
     fatherName: document.getElementById('editTrFather').value.trim(),
-    cnic: document.getElementById('editTrCnic').value.trim(),
-    bankName: document.getElementById('editTrBank').value.trim(),
-    accountNo: document.getElementById('editTrAccount').value.trim(),
-    vendorNo: document.getElementById('editTrVendor').value.trim(),
+    cnic: cnicVal,
+    bankName: document.getElementById('editTrBank').value.trim() || 'N/A',
+    accountNo: accVal,
+    vendorNo: venVal,
     center: document.getElementById('editTrCenter').value,
     course: document.getElementById('editTrCourse').value.trim(),
     status: status,
@@ -3232,6 +3348,10 @@ function handleAdminSaveEditTrainee(e, token) {
   refreshAdminDashboard();
   renderPublicTraineesList('all');
   showToast('Record Updated', `Trainee ${token} modified successfully.`, 'success');
+
+  if (typeof SIWCloudSync !== 'undefined') {
+    await SIWCloudSync.push();
+  }
 }
 
 function confirmDeleteTrainee(token) {
