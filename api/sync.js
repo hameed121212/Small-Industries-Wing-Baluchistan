@@ -1,5 +1,5 @@
 // Vercel Serverless Function: /api/sync
-// Universal zero-CORS cloud synchronization engine with server-side union & collision-protection
+// Universal zero-CORS cloud synchronization engine with real-time CDN cache-busting & server-side union
 
 const CLOUD_MASTER_BIN = 'https://extendsclass.com/api/json-storage/bin/adcaccb';
 
@@ -37,11 +37,18 @@ async function handler(req, res) {
     return res.status(200).end();
   }
 
+  // Real-time upstream URL with CDN cache-buster timestamp
+  const getUrl = `${CLOUD_MASTER_BIN}?t=${Date.now()}`;
+
   // GET: Fetch master authoritative state
   if (req.method === 'GET') {
     try {
-      const response = await fetchUpstreamWithRetry(CLOUD_MASTER_BIN, {
-        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' }
+      const response = await fetchUpstreamWithRetry(getUrl, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache'
+        }
       });
       if (response && response.ok) {
         const data = await response.json();
@@ -69,11 +76,15 @@ async function handler(req, res) {
         return res.status(400).json({ error: 'Invalid payload' });
       }
 
-      // 1. Fetch current remote master data to merge with
+      // 1. Fetch current remote master data to merge with (bypassing CDN cache)
       let currentMaster = null;
       try {
-        const getRes = await fetchUpstreamWithRetry(CLOUD_MASTER_BIN, {
-          headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' }
+        const getRes = await fetchUpstreamWithRetry(getUrl, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache'
+          }
         });
         if (getRes && getRes.ok) {
           currentMaster = await getRes.json();
@@ -160,7 +171,6 @@ async function handler(req, res) {
       });
 
       if (response && response.ok) {
-        // Return full merged state to client so client immediately updates local cache
         return res.status(200).json(finalData);
       } else {
         const text = response ? await response.text() : 'No response';

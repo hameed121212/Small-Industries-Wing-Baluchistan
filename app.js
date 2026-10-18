@@ -479,13 +479,18 @@ class SIWCloudSync {
   }
 
   static async fetchCloudData() {
-    const endpoint = this.getEndpoint();
+    const baseEndpoint = this.getEndpoint();
+    const endpointWithTs = `${baseEndpoint}${baseEndpoint.includes('?') ? '&' : '?'}t=${Date.now()}`;
     // 1. Try primary endpoint (/api/sync)
     try {
-      const res = await fetch(endpoint, {
+      const res = await fetch(endpointWithTs, {
         method: 'GET',
         cache: 'no-store',
-        headers: { 'Accept': 'application/json' }
+        headers: {
+          'Accept': 'application/json',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache'
+        }
       });
       if (res.ok) {
         const data = await res.json();
@@ -496,10 +501,15 @@ class SIWCloudSync {
     }
 
     // 2. Direct cloud bin fallback
-    const fallbackRes = await fetch(this.DEFAULT_BIN_URL, {
+    const fallbackUrl = `${this.DEFAULT_BIN_URL}?t=${Date.now()}`;
+    const fallbackRes = await fetch(fallbackUrl, {
       method: 'GET',
       cache: 'no-store',
-      headers: { 'Accept': 'application/json' }
+      headers: {
+        'Accept': 'application/json',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache'
+      }
     });
     if (!fallbackRes.ok) {
       throw new Error(`Cloud DB responded with status ${fallbackRes.status}`);
