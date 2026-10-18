@@ -392,8 +392,10 @@ class SIWCloudSync {
   static getEndpoint() {
     const custom = localStorage.getItem('siw_cloud_endpoint');
     if (custom && custom !== this.DEFAULT_BIN_URL && custom.trim() !== '') return custom.trim();
-    // Use same-origin Vercel serverless function /api/sync (zero CORS restrictions)
-    return '/api/sync';
+    if (typeof window !== 'undefined' && (window.location.protocol === 'http:' || window.location.protocol === 'https:')) {
+      return '/api/sync';
+    }
+    return 'https://small-industries-wing-balochistan.vercel.app/api/sync';
   }
 
   static setEndpoint(url) {
@@ -406,13 +408,13 @@ class SIWCloudSync {
 
   static async init() {
     console.log('[SIWCloudSync] Initializing universal multi-device cloud sync...');
-    // Initial sync
-    await this.syncBothWays(true);
+    // Initial authoritative pull to get latest server records
+    await this.pull(true);
 
-    // Periodic sync heartbeat every 8 seconds
+    // Periodic sync heartbeat every 6 seconds
     setInterval(() => {
       this.pull(true);
-    }, 8000);
+    }, 6000);
 
     // Sync when user returns to this browser tab or window
     window.addEventListener('focus', () => {
@@ -424,7 +426,7 @@ class SIWCloudSync {
       }
     });
     window.addEventListener('online', () => {
-      this.syncBothWays(true);
+      this.pull(true);
     });
   }
 
@@ -613,9 +615,9 @@ class SIWCloudSync {
 
       // If data changed, re-render visible admin tables and KPIs
       if (hadChanges) {
+        if (typeof refreshAdminDashboard === 'function') refreshAdminDashboard();
         if (typeof renderAdminTraineesTable === 'function') renderAdminTraineesTable();
-        if (typeof updateAdminKpiMetrics === 'function') updateAdminKpiMetrics();
-        if (typeof renderAdminEstateTable === 'function') renderAdminEstateTable();
+        if (typeof renderAdminEstatesTable === 'function') renderAdminEstatesTable();
         if (typeof renderAdminEfilesTable === 'function') renderAdminEfilesTable();
         if (typeof renderAdminNoticesList === 'function') renderAdminNoticesList();
         if (typeof refreshHeaderBadges === 'function') refreshHeaderBadges();
@@ -632,58 +634,36 @@ class SIWCloudSync {
     }
   }
 
-  static schedulePush(delay = 150) {
+  static schedulePush(extraPayload = {}, delay = 150) {
     if (this._pushTimeout) clearTimeout(this._pushTimeout);
     this._pushTimeout = setTimeout(() => {
-      this.push();
+      this.push(extraPayload);
     }, delay);
   }
 
-  static async push() {
+  static async push(extraPayload = {}) {
     const endpoint = this.getEndpoint();
     this.updateUIStatus('syncing');
 
     try {
-      // First, get latest cloud data to perform union and ensure no remote entries are overwritten
-      let remoteTrainees = [];
-      try {
-        const existingCloud = await this.fetchCloudData();
-        if (existingCloud && Array.isArray(existingCloud.trainees)) {
-          remoteTrainees = existingCloud.trainees;
-        }
-      } catch (e) {
-        console.warn('[SIWCloudSync] Remote pre-fetch failed, pushing current local state');
-      }
-
-      // Merge local trainees with remote trainees
       const localTrainees = SIWStorage.getTrainees();
-      const localTokenMap = new Map();
-      localTrainees.forEach(t => localTokenMap.set(t.token, t));
-
-      // Union: Start with local trainees
-      const mergedTrainees = [...localTrainees];
-      remoteTrainees.forEach(rt => {
-        if (!localTokenMap.has(rt.token)) {
-          mergedTrainees.push(rt);
-        }
-      });
-
-      // Update local storage with the union as well
-      localStorage.setItem('siw_trainees_v3', JSON.stringify(mergedTrainees));
 
       const payload = {
         adminPassword: SIWStorage.getAdminPassword(),
         lastUpdated: new Date().toISOString(),
-        trainees: mergedTrainees,
+        trainees: localTrainees,
         estates: SIWStorage.getEstates(),
         efiles: SIWStorage.getEfiles(),
         notices: SIWStorage.getNotices(),
         leadership: SIWStorage.getLeadership(),
-        achievements: SIWStorage.getAchievements()
+        achievements: SIWStorage.getAchievements(),
+        ...extraPayload
       };
 
       let uploaded = false;
-      // 1. Try serverless endpoint /api/sync
+      let serverData = null;
+
+      // 1. Send to serverless endpoint /api/sync
       try {
         const res = await fetch(endpoint, {
           method: 'POST',
@@ -693,33 +673,50 @@ class SIWCloudSync {
           body: JSON.stringify(payload)
         });
         if (res.ok) {
+          serverData = await res.json();
           uploaded = true;
         }
       } catch (err) {
-        console.warn('[SIWCloudSync] /api/sync POST error, trying direct text/plain PUT:', err);
+        console.warn('[SIWCloudSync] /api/sync POST error, trying direct fallback:', err);
       }
 
       // 2. Direct fallback using text/plain (avoids browser CORS preflight blocks)
       if (!uploaded) {
-        const directRes = await fetch(this.DEFAULT_BIN_URL, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'text/plain'
-          },
-          body: JSON.stringify(payload)
-        });
-        if (!directRes.ok) {
-          throw new Error(`Direct upload failed with status ${directRes.status}`);
+        try {
+          const directRes = await fetch(this.DEFAULT_BIN_URL, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'text/plain'
+            },
+            body: JSON.stringify(payload)
+          });
+          if (directRes.ok) {
+            serverData = await directRes.json();
+            uploaded = true;
+          }
+        } catch (e) {
+          console.warn('[SIWCloudSync] Direct upload fallback error:', e);
+        }
+      }
+
+      // If server returned authoritative merged dataset, update local cache immediately
+      if (serverData && typeof serverData === 'object') {
+        if (Array.isArray(serverData.trainees)) {
+          localStorage.setItem('siw_trainees_v3', JSON.stringify(serverData.trainees));
+        }
+        if (serverData.adminPassword) {
+          localStorage.setItem('siw_admin_password', serverData.adminPassword);
         }
       }
 
       this._lastSyncTime = new Date();
       this.updateUIStatus('success');
 
-      if (typeof updateAdminKpiMetrics === 'function') updateAdminKpiMetrics();
+      if (typeof refreshAdminDashboard === 'function') refreshAdminDashboard();
       if (typeof renderAdminTraineesTable === 'function') renderAdminTraineesTable();
+      if (typeof renderPublicTraineesList === 'function') renderPublicTraineesList('all');
 
-      return true;
+      return uploaded;
     } catch (err) {
       console.error('[SIWCloudSync] Push error:', err);
       this.updateUIStatus('offline', err.message);
@@ -730,7 +727,6 @@ class SIWCloudSync {
   static async syncBothWays(silent = false) {
     if (!silent) this.updateUIStatus('syncing');
     await this.pull(silent);
-    await this.push();
   }
 
   static async forcePush() {
@@ -770,8 +766,9 @@ class SIWStorage {
 
   static saveTrainee(trainee) {
     const trainees = this.getTrainees();
-    trainees.unshift(trainee);
-    localStorage.setItem('siw_trainees_v3', JSON.stringify(trainees));
+    const filtered = trainees.filter(t => t.token !== trainee.token);
+    filtered.unshift(trainee);
+    localStorage.setItem('siw_trainees_v3', JSON.stringify(filtered));
     if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.push();
     return trainee;
   }
@@ -792,7 +789,7 @@ class SIWStorage {
     let trainees = this.getTrainees();
     trainees = trainees.filter(t => t.token !== token);
     localStorage.setItem('siw_trainees_v3', JSON.stringify(trainees));
-    if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.push();
+    if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.push({ deleteTraineeToken: token });
   }
 
   // Estates (Sirki Road Quetta)
@@ -1123,10 +1120,18 @@ function switchTab(tabName, scrollTarget = null) {
 
   if (tabName === 'admin' || tabName === 'trainees') {
     if (typeof SIWCloudSync !== 'undefined') {
-      SIWCloudSync.pull(true);
+      SIWCloudSync.pull(true).then(() => {
+        if (tabName === 'admin' && SIWStorage.isAdminLoggedIn()) {
+          refreshAdminDashboard();
+        }
+        renderPublicTraineesList('all');
+      });
     }
     if (tabName === 'admin' && SIWStorage.isAdminLoggedIn()) {
       refreshAdminDashboard();
+    }
+    if (tabName === 'trainees') {
+      renderPublicTraineesList('all');
     }
   }
 
@@ -1586,7 +1591,7 @@ function checkFieldDuplicate(fieldType, value) {
 }
 
 // Handle Form Submission
-function handleTraineeSubmit(e) {
+async function handleTraineeSubmit(e) {
   e.preventDefault();
 
   const cnicVal = document.getElementById('trCnic').value.trim();
@@ -1635,6 +1640,11 @@ function handleTraineeSubmit(e) {
   openTraineeSlipModal(trainee);
   document.getElementById('traineeEnrollmentForm').reset();
   showToast('Enrolment Successful', `Registered under Token ${token} with verified Vendor credentials.`, 'success');
+
+  // Immediately broadcast to cloud so all devices (admin & public) see this record instantaneously
+  if (typeof SIWCloudSync !== 'undefined') {
+    await SIWCloudSync.push();
+  }
 }
 
 function openTraineeSlipModal(t) {
@@ -2680,11 +2690,16 @@ async function handleTraineeTabQuickUnlock(e) {
     }
   }
 
-  if (entered === realPassword || entered === DEFAULT_ADMIN_PASSWORD) {
+  if (entered === realPassword || (entered === DEFAULT_ADMIN_PASSWORD && realPassword === DEFAULT_ADMIN_PASSWORD)) {
     SIWStorage.setAdminLoggedIn(true);
     checkAdminAuthState();
     passInput.value = '';
     showToast('Admin Access Granted', 'Enrolled trainees register unlocked for administration.', 'success');
+    if (typeof SIWCloudSync !== 'undefined') {
+      await SIWCloudSync.pull(true);
+    }
+    refreshAdminDashboard();
+    renderAdminTraineesTable();
   } else {
     showToast('Access Denied', 'Incorrect administrator passphrase.', 'error');
     passInput.focus();
@@ -2712,10 +2727,15 @@ async function handleAdminLogin(e) {
     }
   }
 
-  if (username === 'admin' && (password === realPassword || password === DEFAULT_ADMIN_PASSWORD)) {
+  if (username === 'admin' && (password === realPassword || (password === DEFAULT_ADMIN_PASSWORD && realPassword === DEFAULT_ADMIN_PASSWORD))) {
     SIWStorage.setAdminLoggedIn(true);
     checkAdminAuthState();
     showToast('Authenticated', 'Access granted to Directorate Head Quarter Control Center.', 'success');
+    if (typeof SIWCloudSync !== 'undefined') {
+      await SIWCloudSync.pull(true);
+    }
+    refreshAdminDashboard();
+    renderAdminTraineesTable();
   } else {
     showToast('Access Denied', 'Invalid administrative credentials.', 'error');
   }
@@ -2771,7 +2791,7 @@ async function handleUpdateAdminPassword(e) {
 
   if (typeof SIWCloudSync !== 'undefined') {
     try {
-      await SIWCloudSync.push();
+      await SIWCloudSync.push({ isExplicitPasswordChange: true });
       showToast('Password Broadcasted', 'New administrator passphrase is now live on all devices.', 'success');
     } catch (err) {
       showToast('Saved Locally', 'Saved in local storage. Will replicate once online.', 'warning');
@@ -2789,7 +2809,15 @@ function switchAdminSubtab(subtabId, btn) {
   const target = document.getElementById(`subtab-${subtabId}`);
   if (target) target.classList.add('active');
 
-  if (subtabId === 'cloudSync' && typeof SIWCloudSync !== 'undefined') {
+  if (subtabId === 'traineesManage') {
+    renderAdminTraineesTable();
+  } else if (subtabId === 'estatesManage') {
+    renderAdminEstatesTable();
+  } else if (subtabId === 'efilesManage') {
+    renderAdminEfilesTable();
+  } else if (subtabId === 'noticesManage') {
+    renderAdminNoticesList();
+  } else if (subtabId === 'cloudSync' && typeof SIWCloudSync !== 'undefined') {
     SIWCloudSync.updateUIStatus('success');
     const endpointInput = document.getElementById('cloudEndpointUrl');
     if (endpointInput) endpointInput.value = SIWCloudSync.getEndpoint();
