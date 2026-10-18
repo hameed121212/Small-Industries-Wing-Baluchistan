@@ -1,0 +1,8 @@
+{
+  "name": "small-industries-wing-balochistan",
+  "version": "1.0.0",
+  "description": "Small Industries Wing, Government of Balochistan Official Web Portal",
+  "scripts": {
+    "start": "serve ."
+  }
+}

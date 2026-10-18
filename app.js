@@ -390,7 +390,10 @@ class SIWCloudSync {
   static _lastSyncTime = null;
 
   static getEndpoint() {
-    return localStorage.getItem('siw_cloud_endpoint') || this.DEFAULT_BIN_URL;
+    const custom = localStorage.getItem('siw_cloud_endpoint');
+    if (custom && custom !== this.DEFAULT_BIN_URL && custom.trim() !== '') return custom.trim();
+    // Use same-origin Vercel serverless function /api/sync (zero CORS restrictions)
+    return '/api/sync';
   }
 
   static setEndpoint(url) {
@@ -406,10 +409,10 @@ class SIWCloudSync {
     // Initial sync
     await this.syncBothWays(true);
 
-    // Periodic sync heartbeat every 12 seconds
+    // Periodic sync heartbeat every 8 seconds
     setInterval(() => {
       this.pull(true);
-    }, 12000);
+    }, 8000);
 
     // Sync when user returns to this browser tab or window
     window.addEventListener('focus', () => {
@@ -475,16 +478,31 @@ class SIWCloudSync {
 
   static async fetchCloudData() {
     const endpoint = this.getEndpoint();
-    const res = await fetch(endpoint, {
+    // 1. Try primary endpoint (/api/sync)
+    try {
+      const res = await fetch(endpoint, {
+        method: 'GET',
+        cache: 'no-store',
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && typeof data === 'object') return data;
+      }
+    } catch (e) {
+      console.warn('[SIWCloudSync] Primary endpoint fetch failed, trying direct cloud fallback:', e);
+    }
+
+    // 2. Direct cloud bin fallback
+    const fallbackRes = await fetch(this.DEFAULT_BIN_URL, {
       method: 'GET',
       cache: 'no-store',
       headers: { 'Accept': 'application/json' }
     });
-    if (!res.ok) {
-      throw new Error(`Cloud DB responded with status ${res.status}`);
+    if (!fallbackRes.ok) {
+      throw new Error(`Cloud DB responded with status ${fallbackRes.status}`);
     }
-    const data = await res.json();
-    return data;
+    return await fallbackRes.json();
   }
 
   static async pull(silent = false) {
@@ -614,7 +632,7 @@ class SIWCloudSync {
     }
   }
 
-  static schedulePush(delay = 800) {
+  static schedulePush(delay = 150) {
     if (this._pushTimeout) clearTimeout(this._pushTimeout);
     this._pushTimeout = setTimeout(() => {
       this.push();
@@ -664,16 +682,35 @@ class SIWCloudSync {
         achievements: SIWStorage.getAchievements()
       };
 
-      const res = await fetch(endpoint, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      });
+      let uploaded = false;
+      // 1. Try serverless endpoint /api/sync
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          uploaded = true;
+        }
+      } catch (err) {
+        console.warn('[SIWCloudSync] /api/sync POST error, trying direct text/plain PUT:', err);
+      }
 
-      if (!res.ok) {
-        throw new Error(`Upload failed with status ${res.status}`);
+      // 2. Direct fallback using text/plain (avoids browser CORS preflight blocks)
+      if (!uploaded) {
+        const directRes = await fetch(this.DEFAULT_BIN_URL, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'text/plain'
+          },
+          body: JSON.stringify(payload)
+        });
+        if (!directRes.ok) {
+          throw new Error(`Direct upload failed with status ${directRes.status}`);
+        }
       }
 
       this._lastSyncTime = new Date();
@@ -735,7 +772,7 @@ class SIWStorage {
     const trainees = this.getTrainees();
     trainees.unshift(trainee);
     localStorage.setItem('siw_trainees_v3', JSON.stringify(trainees));
-    if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.schedulePush();
+    if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.push();
     return trainee;
   }
 
@@ -745,7 +782,7 @@ class SIWStorage {
     if (idx !== -1) {
       trainees[idx] = { ...trainees[idx], ...fields };
       localStorage.setItem('siw_trainees_v3', JSON.stringify(trainees));
-      if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.schedulePush();
+      if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.push();
       return trainees[idx];
     }
     return null;
@@ -755,7 +792,7 @@ class SIWStorage {
     let trainees = this.getTrainees();
     trainees = trainees.filter(t => t.token !== token);
     localStorage.setItem('siw_trainees_v3', JSON.stringify(trainees));
-    if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.schedulePush();
+    if (typeof SIWCloudSync !== 'undefined') SIWCloudSync.push();
   }
 
   // Estates (Sirki Road Quetta)
@@ -1084,8 +1121,13 @@ function switchTab(tabName, scrollTarget = null) {
     renderNotificationsTable();
   }
 
-  if (tabName === 'admin' && SIWStorage.isAdminLoggedIn()) {
-    refreshAdminDashboard();
+  if (tabName === 'admin' || tabName === 'trainees') {
+    if (typeof SIWCloudSync !== 'undefined') {
+      SIWCloudSync.pull(true);
+    }
+    if (tabName === 'admin' && SIWStorage.isAdminLoggedIn()) {
+      refreshAdminDashboard();
+    }
   }
 
   if (scrollTarget) {

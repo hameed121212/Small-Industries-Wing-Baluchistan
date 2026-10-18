@@ -4819,3 +4819,207 @@ input.input-duplicate-error {
   display: block;
 }
 
+/* ============================================================= */
+/* TEVTA STYLE HERO & QUAID-E-AZAM BANNER (AUTHENTIC REPLICA)   */
+/* ============================================================= */
+.tevta-hero-section {
+  background: #f8fafc;
+  padding: 28px 0 32px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.tevta-hero-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.tevta-building-showcase {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  display: flex;
+  min-height: 400px;
+}
+
+.tevta-building-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.tevta-building-showcase:hover .tevta-building-img {
+  transform: scale(1.02);
+}
+
+.tevta-building-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(6, 78, 46, 0.95) 0%, rgba(6, 78, 46, 0.75) 60%, transparent 100%);
+  color: #ffffff;
+  padding: 28px 24px 20px 24px;
+}
+
+.tevta-building-overlay h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+  color: #ffffff;
+  line-height: 1.3;
+}
+
+.tevta-building-overlay p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: #e2e8f0;
+  line-height: 1.5;
+}
+
+/* 2x2 Quick Access Portal Tiles (TEVTA Screenshot 4) */
+.tevta-portals-quad {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.tevta-portal-tile {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 28px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.tevta-portal-tile:hover {
+  transform: translateY(-5px);
+  border-color: #15803d;
+  box-shadow: 0 14px 28px rgba(21, 128, 61, 0.12);
+}
+
+.tevta-portal-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  background: #f0fdf4;
+  color: #15803d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  transition: all 0.25s ease;
+}
+
+.tevta-portal-tile:hover .tevta-portal-icon {
+  background: #15803d;
+  color: #ffffff;
+  transform: scale(1.08);
+}
+
+.tevta-portal-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.tevta-portal-desc {
+  font-size: 0.78rem;
+  color: #64748b;
+  margin: 0;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Quaid-e-Azam Quote & Vision Banner (TEVTA Screenshot 4) */
+.quaid-vision-banner {
+  background: #ffffff;
+  border-top: 3px solid #15803d;
+  padding: 36px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.quaid-vision-grid {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 40px;
+  align-items: center;
+}
+
+.quaid-quote-text {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.15rem;
+  line-height: 1.85;
+  color: #334155;
+  font-style: normal;
+  margin: 0 0 14px 0;
+}
+
+.quaid-quote-author {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: #064e2e;
+  margin-bottom: 2px;
+}
+
+.quaid-quote-date {
+  font-size: 0.78rem;
+  color: #64748b;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.quaid-portrait-wrap {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.quaid-portrait-img {
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  border: 4px solid #ffffff;
+  outline: 2px solid #d4af37;
+  transition: transform 0.3s ease;
+}
+
+.quaid-portrait-img:hover {
+  transform: scale(1.04);
+}
+
+@media (max-width: 992px) {
+  .tevta-hero-grid {
+    grid-template-columns: 1fr;
+  }
+  .quaid-vision-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .quaid-portrait-wrap {
+    order: -1;
+  }
+}
+
+
